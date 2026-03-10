@@ -1,4 +1,4 @@
-# C++ objects and libs
+\# C++ objects and libs
 *.slo
 *.lo
 *.o
@@ -52,3 +52,8 @@ compile_commands.json
 *creator.user*
 
 *_qmlcache.qrc
+
+# Build folders
+build/
+build-*/
+cmake-build-*/

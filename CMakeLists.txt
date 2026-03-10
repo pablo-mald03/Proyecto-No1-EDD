@@ -1,17 +1,22 @@
 cmake_minimum_required(VERSION 3.19)
 project(ProyectoNo1-EDD LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 6 REQUIRED COMPONENTS Core Widgets)
 
 qt_standard_project_setup()
+
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/ui)
 
 qt_add_executable(ProyectoNo1-EDD
     WIN32 MACOSX_BUNDLE
     main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindow.ui
+    include/mainwindow.h
+    src/mainwindow.cpp
+    ui/mainwindow.ui
 )
+
+target_include_directories(ProyectoNo1-EDD PRIVATE include)
+
 
 target_link_libraries(ProyectoNo1-EDD
     PRIVATE

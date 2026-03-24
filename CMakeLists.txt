@@ -20,6 +20,8 @@ qt_add_executable(ProyectoNo1-EDD
     ui/mainwindow.ui
     ui/pantallaprincipal.ui
     recursos.qrc
+    include/controlador.h
+    src/controlador.cpp
 
 
 )

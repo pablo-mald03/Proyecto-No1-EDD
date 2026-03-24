@@ -31,14 +31,35 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->inicio = new PantallaPrincipal(this);
 
-    //Se agrega el widget
-    ui->stackedWidget->addWidget(this->inicio);
+    this->controladorCrud= new Controlador();
+    this->ui->stackedWidget->addWidget(this->inicio);
 
-    ui->stackedWidget->setCurrentWidget(this->inicio);
 
-    //connect(inicio, &PantallaInicio::solicitarSeleccion, this, &MainWindow::mostrarSeleccion);
+
+    connect(this->inicio, &PantallaPrincipal::csvCargado, this->controladorCrud, &Controlador::procesarCsv);
+
+    connect(this->controladorCrud, &Controlador::logArbolAvl,this->inicio, &PantallaPrincipal::appendAvlLog);
+
+    connect(this->controladorCrud, &Controlador::logArboB,this->inicio, &PantallaPrincipal::appendBLog);
+
+    connect(this->controladorCrud, &Controlador::logArbolBMas,this->inicio, &PantallaPrincipal::appendBMasLog);
+
+    connect(this->controladorCrud, &Controlador::logLista,this->inicio, &PantallaPrincipal::appendListLog);
+
+    connect(this->controladorCrud, &Controlador::tiempoProceso, this->inicio, &PantallaPrincipal::mostrarTiempo);
+
+    mostrarInicio();
 
 }
+
+/*Metodo utilizado para poder inicializar el controlador*/
+void MainWindow::mostrarInicio(){
+
+
+
+    this->ui->stackedWidget->setCurrentWidget(this->inicio);
+}
+
 
 MainWindow::~MainWindow()
 {

@@ -5,6 +5,7 @@
 
 /*Region de importacion de la UI*/
 #include"pantallaprincipal.h"
+#include"controlador.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -24,5 +25,12 @@ private:
     Ui::MainWindow *ui;
 
     PantallaPrincipal *inicio = nullptr;
+
+    /*Controlador*/
+    Controlador * controladorCrud;
+
+
+    /*Metodos para navegar por la UI*/
+    void mostrarInicio();
 };
 #endif // MAINWINDOW_H

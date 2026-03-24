@@ -15,13 +15,41 @@ qt_add_executable(ProyectoNo1-EDD
     main.cpp
     include/mainwindow.h
     include/pantallaprincipal.h
+    include/pantallaagregar.h
+    include/controlador.h
+    include/pantallabuscarporcategoria.h
+    include/pantallabuscarpornombre.h
+    include/pantallabuscarrango.h
+    include/pantallalistarnombre.h
+    include/pantallaeliminarproducto.h
+    include/pantallacompararbusqueda.h
+    include/pantallaverarboles.h
+
     src/mainwindow.cpp
     src/pantallaprincipal.cpp
+    src/pantallaagregar.cpp
+    src/controlador.cpp
+    src/pantallabuscarporcategoria.cpp
+    src/pantallabuscarpornombre.cpp
+    src/pantallabuscarrango.cpp
+    src/pantallalistarnombre.cpp
+    src/pantallaeliminarproducto.cpp
+    src/pantallacompararbusqueda.cpp
+    src/pantallaverarboles.cpp
+
     ui/mainwindow.ui
     ui/pantallaprincipal.ui
+    ui/pantallaagregar.ui
+    ui/pantallabuscarporcategoria.ui
+    ui/pantallabuscarpornombre.ui
+    ui/pantallabuscarrango.ui
+    ui/pantallalistarnombre.ui
+    ui/pantallaeliminarproducto.ui
+    ui/pantallacompararbusqueda.ui
+    ui/pantallaverarboles.ui
+
     recursos.qrc
-    include/controlador.h
-    src/controlador.cpp
+
 
 
 )

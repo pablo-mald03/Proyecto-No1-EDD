@@ -803,7 +803,7 @@ QPushButton#btnCerrar:pressed {
 }</string>
               </property>
               <property name="placeholderText">
-               <string>Log del Arbol AVL</string>
+               <string>Log del Arbol B+</string>
               </property>
              </widget>
             </item>

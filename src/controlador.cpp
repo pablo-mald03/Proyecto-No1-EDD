@@ -45,3 +45,9 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
     emit tiempoProceso(1, tiempo);
 }
+
+/*Metodo que permite insertar los productos*/
+void Controlador::insercionProducto(){
+
+    emit logInsertArbolAvl("Error: clave negativa", "red");
+}

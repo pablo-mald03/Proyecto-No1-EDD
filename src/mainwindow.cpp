@@ -69,13 +69,22 @@ void MainWindow::mostrarAgregar(){
 
         ui->stackedWidget->addWidget(this->pantallaAgregar);
 
-        //Se conectan las signlas para poder interactuar con las pantallas
-       /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        //Se conectan las signals para poder interactuar con la pantalla
+        connect(this->controladorCrud, &Controlador::logInsertArbolAvl,this->pantallaAgregar, &PantallaAgregar::appendAvlLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+        connect(this->controladorCrud, &Controlador::logInsertArbolB,this->pantallaAgregar, &PantallaAgregar::appendBLog);
+
+        connect(this->controladorCrud, &Controlador::logInsertArbolBMas,this->pantallaAgregar, &PantallaAgregar::appendBMasLog);
+
+        connect(this->controladorCrud, &Controlador::logInsertListaOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::logInsertListaNoOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListNoOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
+
+        connect(this->pantallaAgregar, &PantallaAgregar::insertarProducto, this->controladorCrud, &Controlador::insercionProducto);
+
+        connect(this->pantallaAgregar, &PantallaAgregar::verArboles, this, &MainWindow::mostrarVerArboles);
     }
 
     this->ui->labelTasks->setText("Agregar Productos");

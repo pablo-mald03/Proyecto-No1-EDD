@@ -15,7 +15,13 @@ PantallaAgregar::PantallaAgregar(QWidget *parent)
                         "} ");
 
     this->ui->dateExpiracion->setCalendarPopup(true);
+    this->ui->dateExpiracion->setDate(QDate::currentDate());
 
+    this->ui->textArbolAvl->setReadOnly(true);
+    this->ui->textArbolB->setReadOnly(true);
+    this->ui->textArbolBMas->setReadOnly(true);
+    this->ui->textEditListNoOrdenada->setReadOnly(true);
+    this->ui->textEditListOrdenada->setReadOnly(true);
 }
 
 /*Destructor*/
@@ -106,6 +112,8 @@ void PantallaAgregar::mostrarTiempo(int estructura, qint64 milisegundos){
 /*Metodo que permite insertar un producto nuevo en todas las estructuras*/
 void PantallaAgregar::on_btnAgregar_clicked()
 {
+    this->limpiarLogs();
+
     std::string fecha = ui->dateExpiracion->date().toString("yyyy-MM-dd").toStdString();
     /*Pendiente*/
     emit insertarProducto();
@@ -117,6 +125,45 @@ void PantallaAgregar::on_btnVerArboles_clicked()
     emit verArboles();
 }
 
+/*Metodo signal que permite limpiar los datos de una pantalla*/
+void PantallaAgregar::limpiarPantalla(){
+    this->limpiarDatos();
+    this->limpiarLogs();
+}
+
 
 /*Metodo que permite limpiar los componentes de insercion*/
+void PantallaAgregar::limpiarDatos(){
+
+    this->ui->textNombre->clear();
+    this->ui->textBarra->clear();
+    this->ui->textMarca->clear();
+    this->ui->textStock->clear();
+    this->ui->textCategoria->clear();
+    this->ui->dateExpiracion->setDate(QDate::currentDate());
+}
+
+/*Metodo que permite limpiar los logs*/
+void PantallaAgregar::limpiarLogs(){
+
+    this->ui->textArbolB->clear();
+    this->ui->textArbolAvl->clear();
+    this->ui->textArbolBMas->clear();
+    this->ui->textEditListNoOrdenada->clear();
+    this->ui->textEditListOrdenada->clear();
+
+    this->ui->labelTiempoListNoOrdenada->setText("Tiempo de insercion:");
+    this->ui->labelTiempoListOrdenada->setText("Tiempo de insercion:");
+    this->ui->labelTiempoAvl->setText("Tiempo de insercion:");
+    this->ui->labelTiempoB->setText("Tiempo de insercion:");
+    this->ui->labelTiempoBMas->setText("Tiempo de insercion:");
+}
+
+/*Metodo del boton para limpiar*/
+void PantallaAgregar::on_btnLimpiar_clicked()
+{
+    this->limpiarDatos();
+}
+
+
 

@@ -92,5 +92,9 @@ private:
 
     /*Metodos para navegar por la UI*/
 
+    /*Metodos signals que permiten dar ordenes a las pantallas hijas para que hagan acciones*/
+signals:
+    void limpiarAgregar();
+
 };
 #endif // MAINWINDOW_H

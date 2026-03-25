@@ -85,8 +85,13 @@ void MainWindow::mostrarAgregar(){
         connect(this->pantallaAgregar, &PantallaAgregar::insertarProducto, this->controladorCrud, &Controlador::insercionProducto);
 
         connect(this->pantallaAgregar, &PantallaAgregar::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarAgregar, this->pantallaAgregar, &PantallaAgregar::limpiarPantalla);
     }
 
+    emit this->limpiarAgregar();
     this->ui->labelTasks->setText("Agregar Productos");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaAgregar);
 }

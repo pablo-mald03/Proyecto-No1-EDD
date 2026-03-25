@@ -18,6 +18,10 @@ public:
 private:
     Ui::PantallaAgregar *ui;
 
+    void limpiarDatos();
+
+    void limpiarLogs();
+
 signals:
     /*Pendiente insertar*/
     void insertarProducto();
@@ -34,10 +38,13 @@ public slots:
 
     void mostrarTiempo(int estructura, qint64 milisegundos);
 
+    void limpiarPantalla();
+
 
 private slots:
     void on_btnAgregar_clicked();
     void on_btnVerArboles_clicked();
+    void on_btnLimpiar_clicked();
 };
 
 #endif // PANTALLAAGREGAR_H

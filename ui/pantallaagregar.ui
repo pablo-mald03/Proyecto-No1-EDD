@@ -545,19 +545,6 @@ QLineEdit#textStock:disabled {
             </property>
             <layout class="QHBoxLayout" name="horizontalLayout_9">
              <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
               <widget class="QPushButton" name="btnAgregar">
                <property name="minimumSize">
                 <size>
@@ -583,7 +570,7 @@ QLineEdit#textStock:disabled {
     padding: 10px 25px;
 }
 
-QPushButton#btnCargar:hover {
+QPushButton#btnAgregar:hover {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgba(41, 128, 185, 255), 
                         stop:1 rgba(142, 68, 173, 255));
@@ -591,7 +578,7 @@ QPushButton#btnCargar:hover {
 }
 
 
-QPushButton#btnCargar:pressed {
+QPushButton#btnAgregar:pressed {
     background-color: #2c3e50;
     padding-top: 12px;
     padding-left: 27px;
@@ -603,17 +590,65 @@ QPushButton#btnCargar:pressed {
               </widget>
              </item>
              <item>
-              <spacer name="horizontalSpacer_2">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
+              <widget class="QWidget" name="widget_12" native="true">
+               <property name="minimumSize">
                 <size>
-                 <width>40</width>
-                 <height>20</height>
+                 <width>60</width>
+                 <height>0</height>
                 </size>
                </property>
-              </spacer>
+               <property name="maximumSize">
+                <size>
+                 <width>60</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnLimpiar">
+               <property name="minimumSize">
+                <size>
+                 <width>160</width>
+                 <height>60</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QPushButton#btnLimpiar {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(198, 70, 0), 
+                        stop:1 rgb(192, 97, 203));
+    
+    border: 3px solid black;
+    border-radius: 8px;
+    
+    color: white;
+    font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    padding: 10px 25px;
+}
+
+QPushButton#btnLimpiar:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgba(41, 128, 185, 255), 
+                        stop:1 rgba(142, 68, 173, 255));
+    border-color: #f1c40f;
+}
+
+
+QPushButton#btnLimpiar:pressed {
+    background-color: #2c3e50;
+    padding-top: 12px;
+    padding-left: 27px;
+}</string>
+               </property>
+               <property name="text">
+                <string>Limpiar</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -704,17 +739,20 @@ QPushButton#btnCargar:pressed {
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_11">
+             <property name="spacing">
+              <number>2</number>
+             </property>
              <item>
               <widget class="QWidget" name="widget_7" native="true">
                <property name="minimumSize">
                 <size>
-                 <width>300</width>
+                 <width>340</width>
                  <height>290</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>300</width>
+                 <width>304</width>
                  <height>290</height>
                 </size>
                </property>
@@ -830,13 +868,13 @@ QPushButton#btnCargar:pressed {
               <widget class="QWidget" name="widget_8" native="true">
                <property name="minimumSize">
                 <size>
-                 <width>300</width>
+                 <width>340</width>
                  <height>290</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>290</width>
+                 <width>340</width>
                  <height>300</height>
                 </size>
                </property>
@@ -1013,7 +1051,7 @@ QPushButton#btnCargar:pressed {
     padding: 10px 25px;
 }
 
-QPushButton#btnExportar:hover {
+QPushButton#btnVerArboles:hover {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgba(41, 128, 185, 255), 
                         stop:1 rgba(142, 68, 173, 255));
@@ -1021,7 +1059,7 @@ QPushButton#btnExportar:hover {
 }
 
 
-QPushButton#btnExportar:pressed {
+QPushButton#btnVerArboles:pressed {
     background-color: #2c3e50;
     padding-top: 12px;
     padding-left: 27px;

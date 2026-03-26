@@ -96,6 +96,8 @@ private:
 signals:
     void limpiarAgregar();
     void limpiarBuscarNombre();
+    void limpiarBuscarCategoria();
+    void limpiarBuscarRango();
 
 };
 #endif // MAINWINDOW_H

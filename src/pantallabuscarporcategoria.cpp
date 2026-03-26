@@ -14,6 +14,10 @@ PantallaBuscarPorCategoria::PantallaBuscarPorCategoria(QWidget *parent)
     this->setStyleSheet("QWidget#PantallaBuscarPorCategoria { "
                         "border-image: url(:/assets/fondo/fondooverlay.png) 0 0 0 0 stretch stretch; "
                         "} ");
+
+    this->ui->textArbolBMas->setReadOnly(true);
+    this->ui->textListaOrdenada->setReadOnly(true);
+    this->ui->textListaNoOrdenada->setReadOnly(true);
 }
 
 PantallaBuscarPorCategoria::~PantallaBuscarPorCategoria()

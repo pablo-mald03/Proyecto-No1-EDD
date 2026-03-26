@@ -60,3 +60,22 @@ void Controlador::buscarPorNombre(std::string nombre){
     emit logBusquedaNombreListaOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
     emit logBusquedaNombreListaNoOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
 }
+
+
+/*Metodo que permite buscar los productos por categoria*/
+void Controlador::buscarPorCategoria(std::string categoria){
+
+    /*Pendiente*/
+    emit logBusquedaCategoriaArbolBMas("Categoria buscado: "+ QString::fromStdString(categoria), "green");
+    emit logBusquedaCategoriaListaOrdenada("Categoria buscado: "+ QString::fromStdString(categoria), "green");
+    emit logBusquedaCategoriaListaNoOrdenada("Categoria buscado: "+ QString::fromStdString(categoria), "green");
+}
+
+/*Metodo que permite buscar los productos por fechas*/
+void Controlador::buscarPorFecha(std::string limiteInferior, std::string limiteSuperior){
+
+    /*Pendiente*/
+    emit logBusquedaFechasArbolB("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
+    emit logBusquedaFechasListaOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
+    emit logBusquedaFechasListaNoOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
+}

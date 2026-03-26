@@ -108,14 +108,11 @@ void MainWindow::mostrarBuscarNombre(){
         //Se conectan las signlas para poder interactuar con las pantallas
         connect(this->controladorCrud, &Controlador::logBusquedaNombreArbolAvl,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendAvlLog);
 
-
         connect(this->controladorCrud, &Controlador::logBusquedaNombreListaOrdenada,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendListOrdenadaLog);
 
         connect(this->controladorCrud, &Controlador::logBusquedaNombreListaNoOrdenada,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendListNoOrdenadaLog);
 
-
-        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempo);
-
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempo);
 
         connect(this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::buscarPorNombre, this->controladorCrud, &Controlador::buscarPorNombre);
 
@@ -142,14 +139,24 @@ void MainWindow::mostrarBuscarCategoria(){
         ui->stackedWidget->addWidget(this->pantallaBusquedaCategoria);
 
         //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        connect(this->controladorCrud, &Controlador::logBusquedaCategoriaArbolBMas,this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::appendBMasLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+        connect(this->controladorCrud, &Controlador::logBusquedaCategoriaListaOrdenada,this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::appendListOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::logBusquedaCategoriaListaNoOrdenada,this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::appendListNoOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::mostrarTiempo);
+
+        connect(this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::buscarPorCategoria, this->controladorCrud, &Controlador::buscarPorCategoria);
+
+        connect(this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarBuscarCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::limpiarPantalla);
     }
 
+    emit this->limpiarBuscarCategoria();
     this->ui->labelTasks->setText("Busqueda por categoria");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaCategoria);
 
@@ -165,13 +172,24 @@ void MainWindow::mostrarBuscarRango(){
         ui->stackedWidget->addWidget(this->pantallaBusquedaRango);
 
         //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        connect(this->controladorCrud, &Controlador::logBusquedaFechasArbolB,this->pantallaBusquedaRango, &PantallaBuscarRango::appendBLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+        connect(this->controladorCrud, &Controlador::logBusquedaFechasListaOrdenada,this->pantallaBusquedaRango, &PantallaBuscarRango::appendListOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::logBusquedaFechasListaNoOrdenada,this->pantallaBusquedaRango, &PantallaBuscarRango::appendListNoOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaFechas, this->pantallaBusquedaRango, &PantallaBuscarRango::mostrarTiempo);
+
+        connect(this->pantallaBusquedaRango, &PantallaBuscarRango::buscarPorFechas, this->controladorCrud, &Controlador::buscarPorFecha);
+
+        connect(this->pantallaBusquedaRango, &PantallaBuscarRango::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaCategoria, this->pantallaBusquedaRango, &PantallaBuscarRango::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarBuscarRango, this->pantallaBusquedaRango, &PantallaBuscarRango::limpiarPantalla);
     }
+
+    emit this->limpiarBuscarRango();
 
     this->ui->labelTasks->setText("Busqueda por rango de caducidad");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaRango);

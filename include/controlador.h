@@ -14,6 +14,8 @@ public slots:
 
     void insercionProducto();
     void buscarPorNombre(std::string nombre);
+    void buscarPorCategoria(std::string categoria);
+    void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);
 
 signals:
 
@@ -49,6 +51,27 @@ signals:
 
     /*Signal que permite setear el tiempo en el label*/
     void tiempoProcesoBusquedaNombre (int estructura, qint64 milisegundos);
+
+    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
+
+    /*Signals que permiten comunicarse con la pantalla de buscar por nombre */
+    void logBusquedaCategoriaArbolBMas(QString mensaje, QString color);
+    void logBusquedaCategoriaListaOrdenada(QString mensaje, QString color);
+    void logBusquedaCategoriaListaNoOrdenada(QString mensaje, QString color);
+
+    /*Signal que permite setear el tiempo en el label*/
+    void tiempoProcesoBusquedaCategoria (int estructura, qint64 milisegundos);
+
+    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
+
+
+    /*Signals que permiten comunicarse con la pantalla de buscar por rango de fechas */
+    void logBusquedaFechasArbolB(QString mensaje, QString color);
+    void logBusquedaFechasListaOrdenada(QString mensaje, QString color);
+    void logBusquedaFechasListaNoOrdenada(QString mensaje, QString color);
+
+    /*Signal que permite setear el tiempo en el label*/
+    void tiempoProcesoBusquedaFechas (int estructura, qint64 milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
 

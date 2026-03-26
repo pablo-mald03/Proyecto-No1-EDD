@@ -79,3 +79,16 @@ void Controlador::buscarPorFecha(std::string limiteInferior, std::string limiteS
     emit logBusquedaFechasListaOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
     emit logBusquedaFechasListaNoOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
 }
+
+/*Metodo que permite eliminar un producto por codigo*/
+void Controlador::eliminarProducto(std::string codigo){
+
+    /*Pendiente*/
+    emit logEliminarArbolAvl("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+    emit logEliminarArbolB("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+    emit logEliminarArbolBMas("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+    emit logEliminarListaOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+    emit logEliminarListaNoOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+
+
+}

@@ -206,14 +206,26 @@ void MainWindow::mostrarEliminar(){
         ui->stackedWidget->addWidget(this->pantallaEliminar);
 
         //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        connect(this->controladorCrud, &Controlador::logEliminarArbolAvl,this->pantallaEliminar, &PantallaEliminarProducto::appendAvlLog);
+        connect(this->controladorCrud, &Controlador::logEliminarArbolB,this->pantallaEliminar, &PantallaEliminarProducto::appendBLog);
+        connect(this->controladorCrud, &Controlador::logEliminarArbolBMas,this->pantallaEliminar, &PantallaEliminarProducto::appendBMasLog);
+        connect(this->controladorCrud, &Controlador::logEliminarListaOrdenada,this->pantallaEliminar, &PantallaEliminarProducto::appendListOrdenadaLog);
+        connect(this->controladorCrud, &Controlador::logEliminarListaNoOrdenada,this->pantallaEliminar, &PantallaEliminarProducto::appendListNoOrdenadaLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+
+        connect(this->controladorCrud, &Controlador::tiempoEliminarProceso, this->pantallaEliminar, &PantallaEliminarProducto::mostrarTiempo);
+
+
+        connect(this->pantallaEliminar, &PantallaEliminarProducto::eliminarProducto, this->controladorCrud, &Controlador::eliminarProducto);
+
+        connect(this->pantallaEliminar, &PantallaEliminarProducto::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoEliminarProceso, this->pantallaEliminar, &PantallaEliminarProducto::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarEliminar, this->pantallaEliminar, &PantallaEliminarProducto::limpiarPantalla);
     }
 
+    emit this->limpiarEliminar();
     this->ui->labelTasks->setText("Eliminar productos");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaEliminar);
 

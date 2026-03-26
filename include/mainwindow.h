@@ -98,6 +98,7 @@ signals:
     void limpiarBuscarNombre();
     void limpiarBuscarCategoria();
     void limpiarBuscarRango();
+    void limpiarEliminar();
 
 };
 #endif // MAINWINDOW_H

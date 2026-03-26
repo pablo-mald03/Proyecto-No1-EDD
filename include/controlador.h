@@ -12,10 +12,12 @@ public:
 public slots:
     void procesarCsv(const std::vector<QString> & data);
 
+    /*Metodos que permiten realizar el CRUD de la aplicacion*/
     void insercionProducto();
     void buscarPorNombre(std::string nombre);
     void buscarPorCategoria(std::string categoria);
     void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);
+    void eliminarProducto(std::string codigo);
 
 signals:
 
@@ -73,7 +75,21 @@ signals:
     /*Signal que permite setear el tiempo en el label*/
     void tiempoProcesoBusquedaFechas (int estructura, qint64 milisegundos);
 
-    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
+    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombre */
+
+
+
+    /*Signals que permiten comunicarse con la pantalla de eliminar productos */
+    void logEliminarArbolAvl(QString mensaje, QString color);
+    void logEliminarArbolB(QString mensaje, QString color);
+    void logEliminarArbolBMas(QString mensaje, QString color);
+    void logEliminarListaOrdenada(QString mensaje, QString color);
+    void logEliminarListaNoOrdenada(QString mensaje, QString color);
+
+    /*Signal que permite setear el tiempo en el label*/
+    void tiempoEliminarProceso(int estructura, qint64 milisegundos);
+
+    /*Fin de los Signals que permiten comunicarse con la pantalla de eliminar productos */
 
 
 };

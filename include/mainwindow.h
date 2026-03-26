@@ -99,6 +99,7 @@ signals:
     void limpiarBuscarCategoria();
     void limpiarBuscarRango();
     void limpiarEliminar();
+    void limpiarListar();
 
 };
 #endif // MAINWINDOW_H

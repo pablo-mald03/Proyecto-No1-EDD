@@ -241,14 +241,23 @@ void MainWindow::mostrarListarNombre(){
         ui->stackedWidget->addWidget(this->pantallaListarNombre);
 
         //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        connect(this->controladorCrud, &Controlador::logListarArbolAvl,this->pantallaListarNombre, &PantallaListarNombre::appendAvlLog);
+        connect(this->controladorCrud, &Controlador::logListarListaOrdenada,this->pantallaListarNombre, &PantallaListarNombre::appendListOrdenadaLog);
+        connect(this->controladorCrud, &Controlador::logListarListaNoOrdenada,this->pantallaListarNombre, &PantallaListarNombre::appendListNoOrdenadaLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+
+        connect(this->controladorCrud, &Controlador::tiempoEliminarProceso, this->pantallaListarNombre, &PantallaListarNombre::mostrarTiempo);
+
+        connect(this->pantallaListarNombre, &PantallaListarNombre::listarPorNombres, this->controladorCrud, &Controlador::listarProductos);
+
+        connect(this->pantallaListarNombre, &PantallaListarNombre::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoListarNombre, this->pantallaListarNombre, &PantallaListarNombre::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarListar, this->pantallaListarNombre, &PantallaListarNombre::limpiarPantalla);
     }
 
+    emit this->limpiarListar();
     this->ui->labelTasks->setText("Listar por nombre");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaListarNombre);
 

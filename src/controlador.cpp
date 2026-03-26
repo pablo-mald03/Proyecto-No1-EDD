@@ -89,6 +89,15 @@ void Controlador::eliminarProducto(std::string codigo){
     emit logEliminarArbolBMas("Producto eliminado: "+ QString::fromStdString(codigo), "green");
     emit logEliminarListaOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
     emit logEliminarListaNoOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+}
 
+
+/*Metodo que permite listar los productos*/
+void Controlador::listarProductos(){
+
+    /*Pendiente*/
+    emit logListarArbolAvl("Producto listado: ", "green");
+    emit logListarListaOrdenada("Producto listado: ", "green");
+    emit logListarListaNoOrdenada("Producto listado: ", "green");
 
 }

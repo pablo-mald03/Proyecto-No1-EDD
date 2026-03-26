@@ -18,6 +18,7 @@ public slots:
     void buscarPorCategoria(std::string categoria);
     void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);
     void eliminarProducto(std::string codigo);
+    void listarProductos();
 
 signals:
 
@@ -64,7 +65,7 @@ signals:
     /*Signal que permite setear el tiempo en el label*/
     void tiempoProcesoBusquedaCategoria (int estructura, qint64 milisegundos);
 
-    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
+    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombre*/
 
 
     /*Signals que permiten comunicarse con la pantalla de buscar por rango de fechas */
@@ -89,7 +90,17 @@ signals:
     /*Signal que permite setear el tiempo en el label*/
     void tiempoEliminarProceso(int estructura, qint64 milisegundos);
 
-    /*Fin de los Signals que permiten comunicarse con la pantalla de eliminar productos */
+    /*Fin de los Signals que permiten comunicarse con la pantalla de listar productos */
+
+    /*Signals que permiten comunicarse con la pantalla de buscar por nombre */
+    void logListarArbolAvl(QString mensaje, QString color);
+    void logListarListaOrdenada(QString mensaje, QString color);
+    void logListarListaNoOrdenada(QString mensaje, QString color);
+
+    /*Signal que permite setear el tiempo en el label*/
+    void tiempoProcesoListarNombre (int estructura, qint64 milisegundos);
+
+    /*Fin de las Signals que permiten comunicarse con la pantalla de listai productos */
 
 
 };

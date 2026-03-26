@@ -51,3 +51,12 @@ void Controlador::insercionProducto(){
 
     emit logInsertArbolAvl("Error: clave negativa", "red");
 }
+
+/*Metodo que permite buscar los productos por nombre*/
+void Controlador::buscarPorNombre(std::string nombre){
+
+    /*Pendiente*/
+    emit logBusquedaNombreArbolAvl("Nombre buscado: "+ QString::fromStdString(nombre), "green");
+    emit logBusquedaNombreListaOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
+    emit logBusquedaNombreListaNoOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
+}

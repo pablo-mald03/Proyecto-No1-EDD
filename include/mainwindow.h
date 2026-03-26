@@ -95,6 +95,7 @@ private:
     /*Metodos signals que permiten dar ordenes a las pantallas hijas para que hagan acciones*/
 signals:
     void limpiarAgregar();
+    void limpiarBuscarNombre();
 
 };
 #endif // MAINWINDOW_H

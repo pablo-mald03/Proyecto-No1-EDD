@@ -13,7 +13,7 @@ public slots:
     void procesarCsv(const std::vector<QString> & data);
 
     void insercionProducto();
-
+    void buscarPorNombre(std::string nombre);
 
 signals:
 
@@ -38,6 +38,20 @@ signals:
 
     /*Signal que permite setear el tiempo en el label*/
     void tiempoProcesoInsert (int estructura, qint64 milisegundos);
+
+    /*Fin de las Signals que permiten comunicarse con la pantalla de agregar */
+
+
+    /*Signals que permiten comunicarse con la pantalla de buscar por nombre */
+    void logBusquedaNombreArbolAvl(QString mensaje, QString color);
+    void logBusquedaNombreListaOrdenada(QString mensaje, QString color);
+    void logBusquedaNombreListaNoOrdenada(QString mensaje, QString color);
+
+    /*Signal que permite setear el tiempo en el label*/
+    void tiempoProcesoBusquedaNombre (int estructura, qint64 milisegundos);
+
+    /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
+
 
 };
 

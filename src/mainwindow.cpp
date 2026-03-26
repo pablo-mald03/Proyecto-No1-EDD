@@ -105,15 +105,28 @@ void MainWindow::mostrarBuscarNombre(){
 
         ui->stackedWidget->addWidget(this->pantallaBusquedaNombre);
 
-        //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        //Se conectan las signlas para poder interactuar con las pantallas
+        connect(this->controladorCrud, &Controlador::logBusquedaNombreArbolAvl,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendAvlLog);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+
+        connect(this->controladorCrud, &Controlador::logBusquedaNombreListaOrdenada,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendListOrdenadaLog);
+
+        connect(this->controladorCrud, &Controlador::logBusquedaNombreListaNoOrdenada,this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::appendListNoOrdenadaLog);
+
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempo);
+
+
+        connect(this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::buscarPorNombre, this->controladorCrud, &Controlador::buscarPorNombre);
+
+        connect(this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::verArboles, this, &MainWindow::mostrarVerArboles);
+
+        connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempo);
+
+        connect(this, &MainWindow::limpiarBuscarNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::limpiarPantalla);
     }
 
+    emit this->limpiarBuscarNombre();
     this->ui->labelTasks->setText("Busqueda por nombre");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaNombre);
 

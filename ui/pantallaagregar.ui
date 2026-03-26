@@ -126,7 +126,7 @@
     border-radius: 4px;
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
-	font-size: bold;
+	font-size: 15px;
     color: black;
     selection-background-color: #3498db;
 }
@@ -196,7 +196,7 @@ QLineEdit#textBarra:disabled {
     border-radius: 4px;
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
-	font-size: bold;
+	font-size: 15px;
     color: black;
     selection-background-color: #3498db;
 }
@@ -266,7 +266,7 @@ QLineEdit#textNombre:disabled {
     border-radius: 4px;
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
-	font-size: bold;
+	font-size: 15px;
     color: black;
     selection-background-color: #3498db;
 }
@@ -337,6 +337,7 @@ QLineEdit#textCategoria:disabled {
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
     color: rgb(0, 0, 0);
+	font-size: 14px;
     font-family: Consolas, monospace;
 }
 
@@ -445,7 +446,7 @@ QCalendarWidget QWidget#qt_calendar_navigationbar {
     border-radius: 4px;
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
-	font-size: bold;
+	font-size: 15px;
     color: black;
     selection-background-color: #3498db;
 }
@@ -515,7 +516,7 @@ QLineEdit#textBarra:disabled {
     border-radius: 4px;
     padding: 5px 10px;
     background-color: rgb(222, 221, 218);
-	font-size: bold;
+	font-size: 15px;
     color: black;
     selection-background-color: #3498db;
 }
@@ -816,7 +817,7 @@ QPushButton#btnLimpiar:pressed {
     border-radius: 10px;          
     padding: 8px;
     font-family: Consolas, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }</string>
                      </property>
                      <property name="placeholderText">
@@ -839,7 +840,7 @@ QPushButton#btnLimpiar:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 13px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -938,7 +939,7 @@ QPushButton#btnLimpiar:pressed {
     border-radius: 10px;          
     padding: 8px;
     font-family: Consolas, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }</string>
                      </property>
                      <property name="placeholderText">
@@ -961,7 +962,7 @@ QPushButton#btnLimpiar:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 13px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1139,7 +1140,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(77, 5, 57));
 
-  	 font-size: 15px;
+  	 font-size: 18px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1189,7 +1190,7 @@ QPushButton#btnVerArboles:pressed {
     border-radius: 10px;          
     padding: 8px;
     font-family: Consolas, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }</string>
               </property>
               <property name="placeholderText">
@@ -1212,7 +1213,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 13px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1267,7 +1268,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(77, 5, 57));
 
-  	 font-size: 15px;
+  	 font-size: 18px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1317,7 +1318,7 @@ QPushButton#btnVerArboles:pressed {
     border-radius: 10px;          
     padding: 8px;
     font-family: Consolas, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }</string>
               </property>
               <property name="placeholderText">
@@ -1340,7 +1341,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 13px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1395,7 +1396,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(77, 5, 57));
 
-  	 font-size: 15px;
+  	 font-size: 18px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -1445,7 +1446,7 @@ QPushButton#btnVerArboles:pressed {
     border-radius: 10px;          
     padding: 8px;
     font-family: Consolas, monospace;
-    font-size: 13px;
+    font-size: 15px;
 }</string>
               </property>
               <property name="placeholderText">
@@ -1468,7 +1469,7 @@ QPushButton#btnVerArboles:pressed {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 13px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     

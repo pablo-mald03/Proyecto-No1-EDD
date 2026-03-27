@@ -20,7 +20,15 @@ public slots:
     void eliminarProducto(std::string codigo);
     void listarProductos();
 
+
+    /*Metodos que permiten obtener las referencias de los arboles*/
+    void obtenerArbolAvl();
+
 signals:
+
+    /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
+    void enviarArbolAvl(int * arbol);
+
 
     /*Signals que permiten comunicarse con la pantalla del csv */
     void logArbolAvl(QString mensaje, QString color);
@@ -101,6 +109,7 @@ signals:
     void tiempoProcesoListarNombre (int estructura, qint64 milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de listai productos */
+
 
 
 };

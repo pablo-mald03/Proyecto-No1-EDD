@@ -101,3 +101,10 @@ void Controlador::listarProductos(){
     emit logListarListaNoOrdenada("Producto listado: ", "green");
 
 }
+
+
+/*Apartado de metodos*/
+/*pendiente*/
+void Controlador::obtenerArbolAvl(){
+    emit enviarArbolAvl(new int(1));
+}

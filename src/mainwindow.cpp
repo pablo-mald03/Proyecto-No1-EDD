@@ -295,17 +295,16 @@ void MainWindow::mostrarVerArboles(){
 
         ui->stackedWidget->addWidget(this->pantallaVerArboles);
 
-        //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolAvl,
+                this->controladorCrud, &Controlador::obtenerArbolAvl);
 
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
+        connect(this->controladorCrud, &Controlador::enviarArbolAvl,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirArbolAvl);
     }
 
     this->ui->labelTasks->setText("Visualizar Arboles");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaVerArboles);
+    this->pantallaVerArboles->reestablecerVistas();
 
 }
 

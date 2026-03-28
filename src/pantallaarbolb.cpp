@@ -125,8 +125,6 @@ void PantallaArbolB::dibujarArbolB(NodoBFake* nodo, int x, int y, int offset) {
     int anchoCelda = 30;
     int anchoNodo = dibujarNodoB(x, y, nodo);
 
-    dibujarNodoB(x, y, nodo);
-
     int numHijos = nodo->hijos.size();
 
     for (int i = 0; i < numHijos; i++) {

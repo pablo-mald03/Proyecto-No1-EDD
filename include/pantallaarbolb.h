@@ -40,11 +40,13 @@ private:
     /*Referencia del arbol*/
     int * arbol = nullptr;
 
+    /*Metodo que permite dibujar a los nodos*/
     int dibujarNodoB(int x, int y, NodoBFake* nodo);
 
+    /*Metodo que permite dibujar a las lineas que unen a los nodos*/
     void dibujarLineaB(int x1, int y1, int x2, int y2);
 
-    /*Pendiente reemplazar*/
+    /*Pendiente reemplazar PENDIENTE LA INTEGRACION REAL*/
     void dibujarArbolB(NodoBFake* nodo, int x, int y, int offset);
 
     /*METODO TEMPORAL*/

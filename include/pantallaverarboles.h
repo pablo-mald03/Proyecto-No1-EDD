@@ -29,9 +29,8 @@ signals:
 public slots:
     /*pendiente redefnir tipos*/
     void recibirArbolAvl(int * arbol);
-
-    void cargarVistaArbolB();
-    void cargarVistaArbolBMas();
+    void recibirArbolB(int * arbol);
+    void recibirArbolBMas(int * arbol);
 
 private slots:
     void on_btnSiguiente_clicked();
@@ -41,6 +40,8 @@ private slots:
 
     /*Metodos propios para solicitar estructuras de arboles*/
     void onSolicitarArbolAvl();
+    void onSolicitarArbolB();
+    void onSolicitarArbolBMas();
 
 private:
     Ui::PantallaVerArboles *ui;

@@ -103,8 +103,16 @@ void Controlador::listarProductos(){
 }
 
 
-/*Apartado de metodos*/
-/*pendiente*/
+/*Apartado de metodos para poder generar las vistas de los arboles*/
+/*pendiente definir estado real*/
 void Controlador::obtenerArbolAvl(){
     emit enviarArbolAvl(new int(1));
+}
+
+void Controlador::obtenerArbolB(){
+    emit enviarArbolB(new int(1));
+}
+
+void Controlador::obtenerArbolBMas(){
+    emit enviarArbolBMas(new int(1));
 }

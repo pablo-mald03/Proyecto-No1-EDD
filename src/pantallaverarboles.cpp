@@ -54,29 +54,12 @@ void PantallaVerArboles::mostrarVistaB(){
         ui->stackedWidget->addWidget(this->pantallaB);
 
         //Se conectan las signals para poder interactuar con la pantalla
-        /*connect(this->controladorCrud, &Controlador::logInsertArbolAvl,this->pantallaAgregar, &PantallaAgregar::appendAvlLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertArbolB,this->pantallaAgregar, &PantallaAgregar::appendBLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertArbolBMas,this->pantallaAgregar, &PantallaAgregar::appendBMasLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertListaOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListOrdenadaLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertListaNoOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListNoOrdenadaLog);
-
-        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
-
-        connect(this->pantallaAgregar, &PantallaAgregar::insertarProducto, this->controladorCrud, &Controlador::insercionProducto);
-
-        connect(this->pantallaAgregar, &PantallaAgregar::verArboles, this, &MainWindow::mostrarVerArboles);
-
-        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
-
-        connect(this, &MainWindow::limpiarAgregar, this->pantallaAgregar, &PantallaAgregar::limpiarPantalla);*/
+        connect(this->pantallaB, &PantallaArbolB::solicitarArbolB, this, &PantallaVerArboles::onSolicitarArbolB);
     }
 
     this->ui->labelArboles->setText("Arbol B");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaB);
+    this->solicitarArbolB();
 }
 
 /*Metodo que permite mostrar el arbol B+*/
@@ -89,30 +72,12 @@ void PantallaVerArboles::mostrarVistaBMas(){
         ui->stackedWidget->addWidget(this->pantallaBMas);
 
         //Se conectan las signals para poder interactuar con la pantalla
-        /*connect(this->controladorCrud, &Controlador::logInsertArbolAvl,this->pantallaAgregar, &PantallaAgregar::appendAvlLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertArbolB,this->pantallaAgregar, &PantallaAgregar::appendBLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertArbolBMas,this->pantallaAgregar, &PantallaAgregar::appendBMasLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertListaOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListOrdenadaLog);
-
-        connect(this->controladorCrud, &Controlador::logInsertListaNoOrdenada,this->pantallaAgregar, &PantallaAgregar::appendListNoOrdenadaLog);
-
-        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
-
-        connect(this->pantallaAgregar, &PantallaAgregar::insertarProducto, this->controladorCrud, &Controlador::insercionProducto);
-
-        connect(this->pantallaAgregar, &PantallaAgregar::verArboles, this, &MainWindow::mostrarVerArboles);
-
-        connect(this->controladorCrud, &Controlador::tiempoProcesoInsert, this->pantallaAgregar, &PantallaAgregar::mostrarTiempo);
-
-        connect(this, &MainWindow::limpiarAgregar, this->pantallaAgregar, &PantallaAgregar::limpiarPantalla);*/
+        connect(this->pantallaBMas, &PantallaArbolBMas::solicitarArbolBMas, this, &PantallaVerArboles::onSolicitarArbolBMas);
     }
 
     this->ui->labelArboles->setText("Arbol B+");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBMas);
-
+    this->solicitarArbolBMas();
 }
 
 
@@ -145,14 +110,11 @@ void PantallaVerArboles::on_btnSiguiente_clicked()
     this->contadorPantallas++;
 
     this->refrescarVista();
-
-
 }
 
 /*Metodo que permite ir a la anterior vista*/
 void PantallaVerArboles::on_btnAnterior_clicked()
 {
-
     if(this->contadorPantallas == 1){
         return;
     }
@@ -160,11 +122,10 @@ void PantallaVerArboles::on_btnAnterior_clicked()
     this->contadorPantallas--;
 
     this->refrescarVista();
-
 }
 
 /*Metodos que permiten generar las acciones cada vez que se ejecutan las cargas de los arboles*/
-
+/*Metodo para recibir el arbol AVL*/
 void PantallaVerArboles::recibirArbolAvl(int * arbol){
 
     if(this->pantallaAvl){
@@ -173,19 +134,40 @@ void PantallaVerArboles::recibirArbolAvl(int * arbol){
 
 }
 
-void PantallaVerArboles::cargarVistaArbolB(){
+/*Metodo para recibir el arbol B*/
+void PantallaVerArboles::recibirArbolB(int * arbol){
 
+    if(this->pantallaB){
+        this->pantallaB->setArbol(arbol);
+    }
 
 }
 
-void PantallaVerArboles::cargarVistaArbolBMas(){
+/*Metodo para recibir el arbol B+ */
+void PantallaVerArboles::recibirArbolBMas(int * arbol){
 
-
+    if(this->pantallaBMas){
+        this->pantallaBMas->setArbol(arbol);
+    }
 }
 
 
-/*Metodo que permite solicitar al arbol Avl para poderlo graficar*/
+/*Metodo que permite solicitar al arbol AVL para poderlo graficar*/
 void PantallaVerArboles::onSolicitarArbolAvl()
 {
     emit solicitarArbolAvl();
 }
+
+/*Metodo que permite solicitar al arbol B para poderlo graficar*/
+void PantallaVerArboles::onSolicitarArbolB()
+{
+    emit solicitarArbolB();
+}
+
+
+/*Metodo que permite solicitar al arbol B+ para poderlo graficar*/
+void PantallaVerArboles::onSolicitarArbolBMas()
+{
+    emit solicitarArbolBMas();
+}
+

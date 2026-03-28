@@ -2,6 +2,16 @@
 #define PANTALLAARBOLB_H
 
 #include <QWidget>
+#include<QGraphicsView>
+#include <QWheelEvent>
+#include <QGraphicsTextItem>
+
+
+/*STRUCT QUEMADO NO TIENE NINGUN CONTEXTO EN LA FASE DE FRONT MAS QUE ESTAR QUEMADO*/
+struct NodoBFake {
+    std::vector<int> claves;
+    std::vector<NodoBFake*> hijos;
+};
 
 namespace Ui {
 class PantallaArbolB;
@@ -14,9 +24,34 @@ class PantallaArbolB : public QWidget
 public:
     explicit PantallaArbolB(QWidget *parent = nullptr);
     ~PantallaArbolB();
+    void setArbol(int * _arbol);
+
+signals:
+    void solicitarArbolB();
+
+private slots:
+    void on_btnExportar_clicked();
 
 private:
     Ui::PantallaArbolB *ui;
+
+    QGraphicsScene * scene = nullptr;
+
+    /*Referencia del arbol*/
+    int * arbol = nullptr;
+
+    int dibujarNodoB(int x, int y, NodoBFake* nodo);
+
+    void dibujarLineaB(int x1, int y1, int x2, int y2);
+
+    /*Pendiente reemplazar*/
+    void dibujarArbolB(NodoBFake* nodo, int x, int y, int offset);
+
+    /*METODO TEMPORAL*/
+    NodoBFake* crearArbolBPrueba();
+
+    /*Metodo que actualiza la vista*/
+    void actualizarVista();
 };
 
 #endif // PANTALLAARBOLB_H

@@ -31,6 +31,9 @@ public:
 signals:
     void solicitarArbolAvl();
 
+private slots:
+    void on_btnExportar_clicked();
+
 private:
     Ui::PantallaArbolAvl *ui;
 
@@ -45,9 +48,8 @@ private:
     /*Metodo que actualiza la vista*/
     void actualizarVista();
 
-
     /*Metodos utilizador para poder dibujar el arbol avl*/
-    void dibujarNodo(int x, int y, int valor);
+    int dibujarNodo(int x, int y, int valor);
 
     /*Metodo que permite dibujar las lineas de trazo*/
     void dibujarLinea(int x1, int y1, int x2, int y2);
@@ -55,7 +57,7 @@ private:
     /*Pendiente cambiar*/
     void dibujarArbol(NodoFake* nodo, int x, int y, int offset) ;
 
-    /*Funcion a eliminar SOLO ES SILUMACION*/
+    /*Funcion a eliminar SOLO ES SILUMACION SERA REMOVIDO CUANDO SE INTEGRE EL BACKEND REAL*/
     NodoFake* crearArbolPrueba();
 };
 #endif // PANTALLAARBOLAVL_H

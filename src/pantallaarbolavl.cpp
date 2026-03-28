@@ -28,7 +28,6 @@ PantallaArbolAvl::~PantallaArbolAvl()
 }
 
 /*Metodo delegado para poder cargar la vista al momento de moverse*/
-
 void PantallaArbolAvl::setArbol(int * _arbol){
     this->arbol = _arbol;
     actualizarVista();
@@ -63,12 +62,26 @@ NodoFake* PantallaArbolAvl::crearArbolPrueba() {
 }
 
 /*Metodo utilizado para poder dibujar a la esecena*/
-void PantallaArbolAvl::dibujarNodo(int x, int y, int valor) {
-    int radio = 20;
+int PantallaArbolAvl::dibujarNodo(int x, int y, int valor) {
 
-    scene->addEllipse(x, y, radio*2, radio*2, QPen(Qt::white));
-    QGraphicsTextItem* text = this->scene->addText(QString::number(valor));
-    text->setPos(x + 10, y + 5);
+    int padding = 10;
+
+    QGraphicsTextItem* text = scene->addText(QString::number(valor));
+    QRectF rect = text->boundingRect();
+
+    int ancho = rect.width() + padding * 2;
+    int alto  = rect.height() + padding * 2;
+
+    int size = std::max(ancho, alto);
+
+    this->scene->addEllipse(x, y, size, size, QPen(Qt::white));
+
+    int textX = x + (size - rect.width()) / 2;
+    int textY = y + (size - rect.height()) / 2;
+
+    text->setPos(textX, textY);
+
+    return size;
 }
 
 /*Metodo que permite dibujar las lineas de trazo*/
@@ -79,18 +92,50 @@ void PantallaArbolAvl::dibujarLinea(int x1, int y1, int x2, int y2) {
 }
 
 void PantallaArbolAvl::dibujarArbol(NodoFake* nodo, int x, int y, int offset) {
-    if (!nodo) return;
 
-    dibujarNodo(x, y, nodo->valor);
+    if (!nodo){
+        return;
+    }
+
+    int size = dibujarNodo(x, y, nodo->valor);
+
+    int centerX = x + size / 2;
+    int bottomY = y + size;
 
     if (nodo->izq) {
-        dibujarLinea(x + 20, y + 40, x - offset + 20, y + 80);
-        dibujarArbol(nodo->izq, x - offset, y + 80, offset / 2);
+
+        int childX = x - offset;
+        int childY = y + 80;
+
+        dibujarLinea(
+            centerX,
+            bottomY,
+            childX + size / 2,
+            childY
+            );
+
+        dibujarArbol(nodo->izq, childX, childY, offset / 2);
     }
 
     if (nodo->der) {
-        dibujarLinea(x + 20, y + 40, x + offset + 20, y + 80);
-        dibujarArbol(nodo->der, x + offset, y + 80, offset / 2);
+
+        int childX = x + offset;
+        int childY = y + 80;
+
+        dibujarLinea(
+            centerX,
+            bottomY,
+            childX + size / 2,
+            childY
+            );
+
+        dibujarArbol(nodo->der, childX, childY, offset / 2);
     }
+}
+
+/*Metodo que permite exportar el .dot*/
+void PantallaArbolAvl::on_btnExportar_clicked()
+{
+
 }
 

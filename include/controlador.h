@@ -23,11 +23,15 @@ public slots:
 
     /*Metodos que permiten obtener las referencias de los arboles*/
     void obtenerArbolAvl();
+    void obtenerArbolB();
+    void obtenerArbolBMas();
 
 signals:
 
     /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
     void enviarArbolAvl(int * arbol);
+    void enviarArbolB(int * arbol);
+    void enviarArbolBMas(int * arbol);
 
 
     /*Signals que permiten comunicarse con la pantalla del csv */
@@ -109,8 +113,6 @@ signals:
     void tiempoProcesoListarNombre (int estructura, qint64 milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de listai productos */
-
-
 
 };
 

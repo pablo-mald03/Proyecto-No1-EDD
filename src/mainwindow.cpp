@@ -300,6 +300,18 @@ void MainWindow::mostrarVerArboles(){
 
         connect(this->controladorCrud, &Controlador::enviarArbolAvl,
                 this->pantallaVerArboles, &PantallaVerArboles::recibirArbolAvl);
+
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolB,
+                this->controladorCrud, &Controlador::obtenerArbolB);
+
+        connect(this->controladorCrud, &Controlador::enviarArbolB,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirArbolB);
+
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolBMas,
+                this->controladorCrud, &Controlador::obtenerArbolBMas);
+
+        connect(this->controladorCrud, &Controlador::enviarArbolBMas,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirArbolBMas);
     }
 
     this->ui->labelTasks->setText("Visualizar Arboles");

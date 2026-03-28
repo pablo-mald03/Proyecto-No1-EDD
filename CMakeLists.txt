@@ -22,7 +22,7 @@ qt_add_executable(ProyectoNo1-EDD
     include/pantallabuscarrango.h
     include/pantallalistarnombre.h
     include/pantallaeliminarproducto.h
-    include/pantallacompararbusqueda.h
+
     include/pantallaverarboles.h
     include/graphicsviewzoom.h
 
@@ -39,7 +39,7 @@ qt_add_executable(ProyectoNo1-EDD
     src/pantallabuscarrango.cpp
     src/pantallalistarnombre.cpp
     src/pantallaeliminarproducto.cpp
-    src/pantallacompararbusqueda.cpp
+
     src/pantallaverarboles.cpp
 
     src/pantallaarbolavl.cpp
@@ -55,7 +55,7 @@ qt_add_executable(ProyectoNo1-EDD
     ui/pantallabuscarrango.ui
     ui/pantallalistarnombre.ui
     ui/pantallaeliminarproducto.ui
-    ui/pantallacompararbusqueda.ui
+
     ui/pantallaverarboles.ui
 
     ui/pantallaarbolavl.ui

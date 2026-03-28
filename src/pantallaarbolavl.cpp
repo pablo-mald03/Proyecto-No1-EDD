@@ -2,6 +2,15 @@
 #include "ui_pantallaarbolavl.h"
 #include"graphicsviewzoom.h"
 
+#include <QFileDialog>
+#include <QProcess>
+#include <QFile>
+#include <QTextStream>
+#include <QMessageBox>
+#include <QDir>
+#include <QDesktopServices>
+#include <QUrl>
+
 PantallaArbolAvl::PantallaArbolAvl(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::PantallaArbolAvl)
@@ -136,6 +145,76 @@ void PantallaArbolAvl::dibujarArbol(NodoFake* nodo, int x, int y, int offset) {
 /*Metodo que permite exportar el .dot*/
 void PantallaArbolAvl::on_btnExportar_clicked()
 {
+
+    QString ruta = QFileDialog::getSaveFileName(
+        this,
+        "Guardar arbol B como imagen",
+        "",
+        "Imagen PNG (*.png)"
+        );
+
+    if (ruta.isEmpty()) return;
+
+    QString dotPath = QDir::tempPath() + "/arbol_avl.dot";
+
+    QFile file(dotPath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "No se pudo crear el archivo temporal.");
+        return;
+    }
+
+    QTextStream out(&file);
+
+    /*CODIGO HARDOCDEADO DE MOMENTO. A LA ESPERA DEL CODIGO REAL PARA PODER GENERAR EL GRAPHVIZ RESPECTIVO*/
+    out << "digraph G {\n";
+
+    out << "node [shape=circle, style=filled, fillcolor=lightblue];\n";
+
+    // nodos
+    out << "n10 [label=\"10\"];\n";
+    out << "n5  [label=\"5\"];\n";
+    out << "n15 [label=\"15\"];\n";
+    out << "n3  [label=\"3\"];\n";
+    out << "n7  [label=\"7\"];\n";
+
+    // conexiones
+    out << "n10 -> n5;\n";
+    out << "n10 -> n15;\n";
+    out << "n5 -> n3;\n";
+    out << "n5 -> n7;\n";
+
+    out << "}\n";
+
+    file.close();
+
+
+#ifdef Q_OS_WIN
+    QString programa = "C:/Program Files/Graphviz/bin/dot.exe";
+#else
+    QString programa = "dot";
+#endif
+
+    QProcess proceso;
+    QStringList argumentos;
+    argumentos << "-Tpng" << dotPath << "-o" << ruta;
+
+    proceso.start(programa, argumentos);
+
+    if (!proceso.waitForFinished()) {
+        QMessageBox::critical(this, "Error", "No se pudo ejecutar Graphviz.");
+        return;
+    }
+
+    if (proceso.exitStatus() == QProcess::NormalExit && proceso.exitCode() == 0) {
+
+        QMessageBox::information(this, "Exito", "Imagen generada correctamente.");
+        QDesktopServices::openUrl(QUrl::fromLocalFile(ruta));
+
+    } else {
+
+        QMessageBox::critical(this, "Error", "Fallo la generacion de la imagen.");
+    }
 
 }
 

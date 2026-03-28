@@ -186,7 +186,7 @@ void PantallaArbolBMas::on_btnExportar_clicked()
 
     /*HARDCODEADO SE REMOVERA CUANDO SE TENGA LA INTEGRACION REAL*/
     out << "digraph G {\n";
-    out << "node [shape=record];\n";
+    out << "node [shape=record, style=filled, fillcolor=\"#dbeafe\", color=\"black\"];\n";
 
     out << "n1 [label=\"<f0> |10| <f1> |20| <f2>\"];\n";
     out << "n2 [label=\"5|8\"];\n";

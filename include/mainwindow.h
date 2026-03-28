@@ -13,8 +13,6 @@
 #include"pantallabuscarrango.h"
 #include"pantallaeliminarproducto.h"
 #include"pantallaverarboles.h"
-#include"pantallacompararbusqueda.h"
-#include"pantallacompararbusqueda.h"
 #include"pantallalistarnombre.h"
 
 
@@ -47,8 +45,6 @@ private slots:
 
     void on_btnListarNombre_clicked();
 
-    void on_btnCompararBusqueda_clicked();
-
     void on_btnArboles_clicked();
 
 private:
@@ -70,8 +66,6 @@ private:
     PantallaVerArboles * pantallaVerArboles = nullptr;
 
     PantallaListarNombre * pantallaListarNombre = nullptr;
-
-    PantallaCompararBusqueda * pantallaComparar = nullptr;
 
     /*Punteros de pantallas en la UI*/
 

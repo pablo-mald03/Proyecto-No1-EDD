@@ -263,29 +263,6 @@ void MainWindow::mostrarListarNombre(){
 
 }
 
-/*Metodo utilizado para poder navegar a la ventana de comparar busquedas*/
-void MainWindow::mostrarCompararBusqueda(){
-
-    if (!this->pantallaComparar) {
-
-        this->pantallaComparar = new PantallaCompararBusqueda(this);
-
-        ui->stackedWidget->addWidget(this->pantallaComparar);
-
-        //Se conectan las signlas para poder interactuar con las pantallas PENDIENTE
-        /* connect(this->pantallaSelect, &PantallaSeleccion::solicitarModalidad, this, &MainWindow::mostrarModalidad);
-
-        connect(this->pantallaSelect, &PantallaSeleccion::solicitarRegresoInicio, this, [this](){
-            this->estaConfigurando = false;
-            ui->gestorVentanas->setCurrentWidget(this->inicio);
-        });*/
-    }
-
-    this->ui->labelTasks->setText("Comparar busquedas");
-    this->ui->stackedWidget->setCurrentWidget(this->pantallaComparar);
-
-}
-
 /*Metodo utilizado para poder navegar a la ventana de ver arboles*/
 void MainWindow::mostrarVerArboles(){
 
@@ -366,12 +343,6 @@ void MainWindow::on_btnEliminar_clicked()
 void MainWindow::on_btnListarNombre_clicked()
 {
     this->mostrarListarNombre();
-}
-
-/*Metodo que permite navegar a la pantalla de comparar busquedas*/
-void MainWindow::on_btnCompararBusqueda_clicked()
-{
-    this->mostrarCompararBusqueda();
 }
 
 /*Metodo que permite navegar a la pantalla de mostrar el estado de los arboles*/

@@ -180,7 +180,7 @@ void PantallaArbolB::on_btnExportar_clicked()
 
     /*CODIGO HARDCODEADO TEMPORAL YA QUE SE SUSTITUIRA POR LA INTEGRACION REAL DE LOS ARBOLES*/
     out << "digraph G {\n";
-    out << "node [shape=record];\n";
+    out << "node [shape=record, style=filled, fillcolor=\"#dbeafe\", color=\"black\"];\n";
 
     // Nodo raíz con 2 claves  3 hijos (SINTAXIS DEJADA PARA MI PORQUE NO ME ACUERDO DEL TODO DE LAS REGLAS)
     out << "n1 [label=\"<f0> |10| <f1> |20| <f2>\"];\n";
@@ -224,7 +224,6 @@ void PantallaArbolB::on_btnExportar_clicked()
     } else {
 
         QMessageBox::critical(this, "Error", "Fallo la generacion de la imagen.");
-        qDebug() << proceso.readAllStandardError();
     }
 
 }

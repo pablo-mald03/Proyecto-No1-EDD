@@ -17,8 +17,8 @@ public:
     NodoLista* getSiguiente() const;
     NodoLista* getAnterior() const;
 
-    void setSiguiente(NodoLista* sig);
-    void setAnterior(NodoLista* ant);
+    void setSiguiente(NodoLista* _siguiente);
+    void setAnterior(NodoLista* _anterior);
 
 
 private:

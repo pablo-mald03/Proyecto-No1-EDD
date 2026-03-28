@@ -13,7 +13,6 @@ ListaEnlazada::~ListaEnlazada()
     limpiar();
 }
 
-
 //Metodo que obtiene la cabeza de la lista enlazada para poder recorrerla sin mayor complejidad
 NodoLista* ListaEnlazada::getCabeza() const {
     return this->cabeza;

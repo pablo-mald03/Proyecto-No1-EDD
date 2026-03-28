@@ -16,6 +16,8 @@ public:
 private:
     GestorEstructuras * gestorBackend = nullptr;
 
+    void insertarLista(const std::vector<QString> & data);
+
 public slots:
     void procesarCsv(const std::vector<QString> & data);
 

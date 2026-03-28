@@ -24,34 +24,50 @@ Controlador::~Controlador(){
     * 3 -> B+
     * 4 -> LISTA
 */
-
 void Controlador::procesarCsv(const std::vector<QString> & data){
 
-    /*PENDIENTE (PROVISIONAL)*/
+    this->insertarLista(data);
+
+}
+
+/*Metodo que permite llenar las listas con el arreglo de entrada del csv*/
+void Controlador::insertarLista(const std::vector<QString> & data){
 
     QElapsedTimer timer;
     timer.start();
+
+    bool okPrecio;
+    bool okStock;
 
     for(const QString &linea: data){
 
         QStringList columnas = linea.split(",");
 
+        std::string nombre = columnas[0].toStdString();
 
         std::string key = columnas[1].toStdString();
 
-        std::string keyStr = columnas[0].toStdString();
+        std::string categoria = columnas[2].toStdString();
 
+        std::string fechaExp = columnas[3].toStdString();
 
-        emit logArbolAvl("Insertado: " + QString::fromStdString(key), "green");
+        std::string marca = columnas[4].toStdString();
 
-        // Simulación error
+        double precio = columnas[5].toDouble(&okPrecio);
+        int stock = columnas[6].toInt(&okStock);
+
+        if (!okPrecio || !okStock) {
+            emit logArbolAvl("Error en conversion numerica: " + linea, "red");
+            continue;
+        }
+
+        this->gestorBackend->insertarListas(nombre,key,categoria,fechaExp,marca,precio,stock);
+
+        emit logLista("Insertado: " + QString::fromStdString(key), "green");
     }
 
-    emit logArbolAvl("Error: clave negativa", "red");
-
     qint64 tiempo = timer.elapsed();
-
-    emit tiempoProceso(1, tiempo);
+    emit tiempoProceso(4, tiempo);
 }
 
 /*Metodo que permite insertar los productos*/

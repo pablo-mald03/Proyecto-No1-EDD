@@ -49,6 +49,8 @@ signals:
     void logArbolBMas(QString mensaje, QString color);
     void logLista(QString mensaje, QString color);
 
+    void logCargaCsv(QString mensaje, QString color);
+
     /*Signal que permite setear el tiempo en el label*/
     void tiempoProceso(int estructura, qint64 milisegundos);
 

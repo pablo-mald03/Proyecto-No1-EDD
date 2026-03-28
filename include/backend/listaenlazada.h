@@ -3,26 +3,26 @@
 
 /*Includes de la clase*/
 #include"nodolista.h"
-#include"producto.h"
 
+template<typename T>
 class ListaEnlazada
 {
 
 private:
-    NodoLista * cabeza;
-    NodoLista * cola;
+    NodoLista<T> * cabeza;
+    NodoLista<T> * cola;
     int longitud;
 
     //Metodo especial para hallar los nodos
-    NodoLista* getNodo(int pos) const;
+    NodoLista<T> * getNodo(int pos) const;
 
 public:
     ListaEnlazada();
     ~ListaEnlazada();
 
     //Metodos para usar la lista
-    void insertarAtras(const Producto&valor);
-    void insertarFrente (const Producto&valor);
+    void insertarAtras(const T&valor);
+    void insertarFrente (const T&valor);
 
     void removerAtras();
     void removerFrente();
@@ -33,13 +33,13 @@ public:
     void limpiar();
 
     //METODOS ESPECIALES QUE PERMITEN MOVERSE POR LA LISTA COMO SE DESEE
-    void insertar(int pos, const Producto& valor);
+    void insertar(int pos, const T& valor);
     void eliminar(int pos);
 
-    Producto& getValor(int pos);
+    T& getValor(int pos);
 
     //Metodo para obtener la cabeza
-    NodoLista* getCabeza() const;
+    NodoLista<T>* getCabeza() const;
 
 
 };

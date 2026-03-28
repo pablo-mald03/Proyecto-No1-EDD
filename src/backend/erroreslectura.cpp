@@ -1,0 +1,20 @@
+#include "erroreslectura.h"
+
+ErroresLectura::ErroresLectura(const std::string &_mensaje,int _linea):mensaje(_mensaje),linea(_linea)
+{
+
+}
+
+/*Destructor*/
+ErroresLectura::~ErroresLectura(){
+
+}
+
+/*Metodos getter para poder obtener la informacion para armar el log*/
+std::string ErroresLectura::getMensaje(){
+    return this->mensaje;
+}
+
+int ErroresLectura::getLinea(){
+    return this->linea;
+}

@@ -63,8 +63,6 @@ void PantallaPrincipal::on_btnCargar_clicked()
     while (!in.atEnd()) {
         QString line = in.readLine();
         buffer.push_back(line);
-
-        ui->textEditCsv->append("<span style='color:white;'>" + line + "</span>");
     }
 
     file.close();
@@ -75,6 +73,14 @@ void PantallaPrincipal::on_btnCargar_clicked()
 
 
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
+
+void PantallaPrincipal::appendLogCarga(QString mensaje, QString color){
+
+    this->ui->textEditCsv->append(
+        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        );
+}
+
 void PantallaPrincipal::appendAvlLog(QString mensaje, QString color){
 
     this->ui->textEditAvl->append(
@@ -136,6 +142,13 @@ void PantallaPrincipal::mostrarTiempo(int estructura, qint64 milisegundos){
             this->ui->labelTiempoLista->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
             break;
     }
+
+}
+
+//Metodo que permite descargar el log de errores
+void PantallaPrincipal::on_btnErrores_clicked()
+{
+
 
 }
 

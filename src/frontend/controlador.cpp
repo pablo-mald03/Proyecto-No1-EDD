@@ -1,4 +1,5 @@
 #include "controlador.h"
+#include "readercsvexception.h"
 #include<QElapsedTimer>
 
 
@@ -26,8 +27,52 @@ Controlador::~Controlador(){
 */
 void Controlador::procesarCsv(const std::vector<QString> & data){
 
-    this->insertarLista(data);
+    if (data.empty()) {
+        this->gestorBackend->agregarErrorLista("El archivo de entrada esta vacio", 0);
+        emit logCargaCsv("El archivo esta vacio.", "red");
+        return;
+    }
 
+    int filaActual = 1;
+
+    /*Buffer filtrado*/
+    std::vector<QString> datosValidados;
+
+    for (const QString &linea : data) {
+
+        if (linea.trimmed().isEmpty()) {
+            filaActual++;
+            continue;
+        }
+
+        try {
+            QStringList columnas = linea.split(",");
+
+            this->gestorBackend->validarCsv(columnas, filaActual);
+
+            datosValidados.push_back(linea);
+
+            emit logCargaCsv(linea, "white");
+
+        }catch (const ReaderCsvException& e) {
+            emit logCargaCsv(QString::fromUtf8(e.what()), "red");
+        }
+        catch (const std::exception& e) {
+            emit logCargaCsv("Error inesperado: " + QString::fromStdString(e.what()), "red");
+        }
+        filaActual++;
+    }
+
+    if (!datosValidados.empty()) {
+
+        this->insertarLista(datosValidados);
+
+        emit logCargaCsv("\nProceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
+
+    }
+    else {
+        emit logCargaCsv("No se inserto nada: Todas las lineas tenian errores.", "yellow");
+    }
 }
 
 /*Metodo que permite llenar las listas con el arreglo de entrada del csv*/
@@ -57,7 +102,7 @@ void Controlador::insertarLista(const std::vector<QString> & data){
         int stock = columnas[6].toInt(&okStock);
 
         if (!okPrecio || !okStock) {
-            emit logArbolAvl("Error en conversion numerica: " + linea, "red");
+            emit logLista("Error en conversion numerica: " + linea, "red");
             continue;
         }
 

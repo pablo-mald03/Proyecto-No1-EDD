@@ -2,7 +2,11 @@
 #define GESTORESTRUCTURAS_H
 
 //Includes de la clase
+#include "erroreslectura.h"
 #include"listaenlazada.h"
+#include"producto.h"
+#include <QStringList>
+#include <QDate>
 
 class GestorEstructuras
 {
@@ -13,11 +17,24 @@ public:
     /*Metodos para insertar datos en las estructuras provinientes del csv*/
     void insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
 
+
+    /*Metodo de validacion del csv delegado para validar*/
+    void validarCsv(const QStringList& columnas, int fila);
+
+    /*Metodo para agregar errores al log*/
+    void agregarErrorLista(const std::string mensaje, int fila);
+
 private:
 
     /*Atributos de la clase gestor*/
-    ListaEnlazada *listaNoOrdenada = nullptr;
-    ListaEnlazada * listaOrdenada = nullptr;
+    ListaEnlazada<Producto> *listaNoOrdenada = nullptr;
+    ListaEnlazada<Producto> * listaOrdenada = nullptr;
+
+    /*Lista de errores*/
+    ListaEnlazada<ErroresLectura> * listaErrores = nullptr;
+
+    /*Metodo delegado para poder validar la fecha*/
+    bool esFechaISO(const QString& fecha);
 
 };
 

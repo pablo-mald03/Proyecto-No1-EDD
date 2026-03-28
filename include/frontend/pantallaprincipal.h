@@ -18,6 +18,8 @@ public:
 private slots:
     void on_btnCargar_clicked();
 
+    void on_btnErrores_clicked();
+
 signals:
     void csvCargado(const std::vector<QString>& data);
 
@@ -29,6 +31,8 @@ public slots:
     void appendBLog(QString mensaje, QString color);
     void appendBMasLog(QString mensaje, QString color);
     void appendListLog(QString mensaje, QString color);
+
+    void appendLogCarga(QString mensaje, QString color);
 
     void mostrarTiempo(int estructura, qint64 milisegundos);
 

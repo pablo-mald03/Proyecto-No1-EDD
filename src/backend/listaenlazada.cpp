@@ -1,39 +1,54 @@
 #include "listaenlazada.h"
 #include <stdexcept>
 
+/*Includes de la clase*/
+#include "erroreslectura.h"
+#include"producto.h"
+
+
+//instancia posible de lista
+template class ListaEnlazada<Producto>;
+template class ListaEnlazada<ErroresLectura>;
+
 /*Constructor de la lista enlazada*/
-ListaEnlazada::ListaEnlazada(): cabeza(nullptr),cola(nullptr), longitud(0)
+template<typename T>
+ListaEnlazada<T>::ListaEnlazada(): cabeza(nullptr),cola(nullptr), longitud(0)
 {
 
 }
 
 /*Destructor*/
-ListaEnlazada::~ListaEnlazada()
+template<typename T>
+ListaEnlazada<T>::~ListaEnlazada()
 {
     limpiar();
 }
 
 //Metodo que obtiene la cabeza de la lista enlazada para poder recorrerla sin mayor complejidad
-NodoLista* ListaEnlazada::getCabeza() const {
+template<typename T>
+NodoLista<T>* ListaEnlazada<T>::getCabeza() const {
     return this->cabeza;
 }
 
 //Metodo que retorna si la lista esta vacia
-bool ListaEnlazada::esVacia() const{
+template<typename T>
+bool ListaEnlazada<T>::esVacia() const{
     return this->cabeza == nullptr;
 }
 
 //Metodo que retorna la longitud de la lista
-int ListaEnlazada::getLongitud() const
+template<typename T>
+int ListaEnlazada<T>::getLongitud() const
 {
     return this->longitud;
 }
 
 
 //Metodo que agrega al frente de la lista
-void ListaEnlazada::insertarAtras(const Producto& valor)
+template<typename T>
+void ListaEnlazada<T>::insertarAtras(const T& valor)
 {
-    NodoLista* nuevo = new NodoLista(valor);
+    NodoLista<T>* nuevo = new NodoLista<T>(valor);
 
     if (esVacia())
     {
@@ -50,9 +65,10 @@ void ListaEnlazada::insertarAtras(const Producto& valor)
 }
 
 //Metodo para insertar al frente de la lista
-void ListaEnlazada::insertarFrente(const Producto& valor){
+template<typename T>
+void ListaEnlazada<T>::insertarFrente(const T& valor){
 
-    NodoLista* nuevo = new NodoLista(valor);
+    NodoLista<T>* nuevo = new NodoLista<T>(valor);
 
     if (esVacia())
     {
@@ -70,13 +86,14 @@ void ListaEnlazada::insertarFrente(const Producto& valor){
 
 
 //Metodo para remover atras de la lista
-void ListaEnlazada::removerAtras()
+template<typename T>
+void ListaEnlazada<T>::removerAtras()
 {
     if (esVacia()){
         return;
     }
 
-    NodoLista* temporal = this->cola;
+    NodoLista<T>* temporal = this->cola;
 
     if (this->cabeza == this->cola)
     {
@@ -94,11 +111,12 @@ void ListaEnlazada::removerAtras()
 
 
 //Metodo para remover al frente
-void ListaEnlazada::removerFrente()
+template<typename T>
+void ListaEnlazada<T>::removerFrente()
 {
     if (esVacia()) return;
 
-    NodoLista* temporal = this->cabeza;
+    NodoLista<T>* temporal = this->cabeza;
 
     if (this->cabeza == cola)
     {
@@ -117,13 +135,14 @@ void ListaEnlazada::removerFrente()
 //====================REGION DE METODOS ESPECIALES DE LA LISTA=================================
 
 //Metodo privado de la clase (Busca nodos) por busqueda secuencial con modificacion O(n)
-NodoLista* ListaEnlazada::getNodo(int indice) const{
+template<typename T>
+NodoLista<T>* ListaEnlazada<T>::getNodo(int indice) const{
 
     if(indice>=longitud){
         throw std::out_of_range("Indice fuera de rango de la lista enlazada");
     }
 
-    NodoLista* actual;
+    NodoLista<T>* actual;
 
     if (indice < this->longitud / 2)
     {
@@ -144,7 +163,8 @@ NodoLista* ListaEnlazada::getNodo(int indice) const{
 }
 
 //Metodo que sirve para insertar en cualquier indice
-void ListaEnlazada::insertar(int indice, const Producto& valor)
+template<typename T>
+void ListaEnlazada<T>::insertar(int indice, const T& valor)
 {
     if (indice > this->longitud){
         throw std::out_of_range("Indice fuera de rango de la lista enlazada");
@@ -162,10 +182,10 @@ void ListaEnlazada::insertar(int indice, const Producto& valor)
         return;
     }
 
-    NodoLista* actual = getNodo(indice);
-    NodoLista* anterior = actual->getAnterior();
+    NodoLista<T>* actual = getNodo(indice);
+    NodoLista<T>* anterior = actual->getAnterior();
 
-    NodoLista* nuevo = new NodoLista(valor);
+    NodoLista<T>* nuevo = new NodoLista<T>(valor);
 
     nuevo->setSiguiente(actual);
     nuevo->setAnterior(anterior);
@@ -177,7 +197,8 @@ void ListaEnlazada::insertar(int indice, const Producto& valor)
 }
 
 //Metodo que sirve para eliminar un dato EN CUALQUIER POSICION
-void ListaEnlazada::eliminar(int indice)
+template<typename T>
+void ListaEnlazada<T>::eliminar(int indice)
 {
     if (indice >= this->longitud){
         throw std::out_of_range("Indice fuera de rango de la lista enlazada");
@@ -195,9 +216,9 @@ void ListaEnlazada::eliminar(int indice)
         return;
     }
 
-    NodoLista* actual = getNodo(indice);
-    NodoLista* anterior = actual->getAnterior();
-    NodoLista* siguiente = actual->getSiguiente();
+    NodoLista<T>* actual = getNodo(indice);
+    NodoLista<T>* anterior = actual->getAnterior();
+    NodoLista<T>* siguiente = actual->getSiguiente();
 
     anterior->setSiguiente(siguiente);
     siguiente->setAnterior(anterior);
@@ -207,7 +228,8 @@ void ListaEnlazada::eliminar(int indice)
 }
 
 //Metodo que permite obtener un valor por posicion
-Producto& ListaEnlazada::getValor(int indice)
+template<typename T>
+T& ListaEnlazada<T>::getValor(int indice)
 {
     return getNodo(indice)->getDato();
 }
@@ -215,7 +237,8 @@ Producto& ListaEnlazada::getValor(int indice)
 //====================FIN DE LA REGION DE METODOS ESPECIALES DE LA LISTA=================================
 
 /*Metodo que permite limpiar la lista por completo*/
-void ListaEnlazada::limpiar()
+template<typename T>
+void ListaEnlazada<T>::limpiar()
 {
     while (!esVacia())
         removerFrente();

@@ -1,32 +1,28 @@
 #ifndef NODOLISTA_H
 #define NODOLISTA_H
 
-/*Includes de la clase*/
-#include"producto.h"
-
+template<typename T>
 class NodoLista
 {
 
+private:
+    T dato;
+    NodoLista<T> * siguiente;
+    NodoLista<T> * anterior;
+
+
 public:
-    NodoLista(const Producto &producto);
+    NodoLista(const T &producto);
     ~NodoLista();
 
     /*Metodos getters y setters*/
-    Producto& getDato();
+    T& getDato();
 
-    NodoLista* getSiguiente() const;
-    NodoLista* getAnterior() const;
+    NodoLista<T>* getSiguiente() const;
+    NodoLista<T>* getAnterior() const;
 
-    void setSiguiente(NodoLista* _siguiente);
-    void setAnterior(NodoLista* _anterior);
-
-
-private:
-    Producto dato;
-    NodoLista * siguiente;
-    NodoLista * anterior;
-
-
+    void setSiguiente(NodoLista<T>* _siguiente);
+    void setAnterior(NodoLista<T>* _anterior);
 
 };
 

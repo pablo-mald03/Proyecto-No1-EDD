@@ -1,38 +1,50 @@
 #include "nodolista.h"
 
-NodoLista::NodoLista(const Producto &producto):dato(producto)
+/*Includes de la clase*/
+#include "erroreslectura.h"
+#include"producto.h"
+
+
+template class NodoLista<Producto>;
+template class NodoLista<ErroresLectura>;
+
+template<typename T>
+NodoLista<T>::NodoLista(const T &producto):dato(producto)
 {
 
 }
 
 /*Destructor*/
-NodoLista::~NodoLista(){
+template<typename T>
+NodoLista<T>::~NodoLista(){
 
 }
 
 /*Metodos getter y setter*/
-
-Producto& NodoLista::getDato(){
+template<typename T>
+T& NodoLista<T>::getDato(){
     return dato;
 }
 
 
 /*Metodos getters y setters para reutilizar nodo*/
-NodoLista* NodoLista::getSiguiente() const{
+template<typename T>
+NodoLista<T>* NodoLista<T>::getSiguiente() const{
     return this->siguiente;
 }
 
-NodoLista* NodoLista::getAnterior() const{
+template<typename T>
+NodoLista<T>* NodoLista<T>::getAnterior() const{
     return this->anterior;
 }
 
-
-void NodoLista::setSiguiente(NodoLista* _siguiente){
+template<typename T>
+void NodoLista<T>::setSiguiente(NodoLista<T>* _siguiente){
     this->siguiente = _siguiente;
 }
 
-
-void NodoLista::setAnterior(NodoLista* _anterior){
+template<typename T>
+void NodoLista<T>::setAnterior(NodoLista<T>* _anterior){
     this->anterior = _anterior;
 }
 

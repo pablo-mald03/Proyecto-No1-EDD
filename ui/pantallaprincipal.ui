@@ -207,16 +207,6 @@
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
-               <widget class="QWidget" name="widget_11" native="true">
-                <property name="minimumSize">
-                 <size>
-                  <width>60</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </widget>
-              </item>
-              <item>
                <widget class="QPushButton" name="btnCargar">
                 <property name="minimumSize">
                  <size>
@@ -262,12 +252,73 @@ QPushButton#btnCargar:pressed {
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="widget_12" native="true">
+               <widget class="QWidget" name="widget_14" native="true">
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>70</width>
                   <height>0</height>
                  </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>70</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnErrores">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>60</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QPushButton#btnErrores {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(136, 5, 29)
+                        stop:1 rgb(246, 211, 45));
+    
+    border: 3px solid black;
+    border-radius: 10px;
+    
+    color: white;
+    font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    padding: 10px 25px;
+}
+
+QPushButton#btnErrores:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(9, 147, 29), 
+                        stop:1 rgb(94, 92, 100));
+    border-color: #f1c40f;
+}
+
+
+QPushButton#btnErrores:pressed {
+    background-color: #2c3e50;
+    padding-top: 12px;
+    padding-left: 27px;
+}
+
+QPushButton#btnErrores:disabled {
+    background: #2d2d2d; 
+    color: #555555;
+    border: 2px dashed #444444; 
+    border-radius: 10px;
+}</string>
+                </property>
+                <property name="text">
+                 <string>Errors.log</string>
                 </property>
                </widget>
               </item>

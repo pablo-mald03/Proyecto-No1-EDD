@@ -78,6 +78,7 @@ set(BACKEND_SOURCES
     src/backend/listaenlazada.cpp
     src/backend/nodolista.cpp
     src/backend/producto.cpp
+    src/backend/erroreslectura.cpp
 )
 
 
@@ -87,7 +88,19 @@ set(BACKEND_HEADERS
     include/backend/listaenlazada.h
     include/backend/nodolista.h
     include/backend/producto.h
+    include/backend/erroreslectura.h
 )
+
+set(EXCEPTIONS_SOURCES
+
+    src/exceptions/readercsvexception.cpp
+)
+
+set(EXCEPTIONS_HEADERS
+
+    include/exceptions/readercsvexception.h
+)
+
 
 qt_add_executable(ProyectoNo1-EDD
     WIN32 MACOSX_BUNDLE
@@ -95,14 +108,16 @@ qt_add_executable(ProyectoNo1-EDD
     ${FRONTEND_HEADERS}
     ${BACKEND_SOURCES}
     ${BACKEND_HEADERS}
+    ${EXCEPTIONS_SOURCES}
+    ${EXCEPTIONS_HEADERS}
     ${UI_FILES}
     recursos.qrc
-
 )
 
 target_include_directories(ProyectoNo1-EDD PRIVATE
     include/frontend
     include/backend
+    include/exceptions
 )
 
 

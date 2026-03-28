@@ -3,11 +3,18 @@
 
 #include <QObject>
 
+/*Includes de backend*/
+#include"gestorestructuras.h"
+
 class Controlador : public QObject
 {
     Q_OBJECT
 public:
     explicit Controlador(QObject *parent = nullptr);
+    ~Controlador();
+
+private:
+    GestorEstructuras * gestorBackend = nullptr;
 
 public slots:
     void procesarCsv(const std::vector<QString> & data);

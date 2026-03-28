@@ -5,9 +5,17 @@
 /*Clase delegada como el respectivo controlador de todo lo que se hara en el programa*/
 
 Controlador::Controlador(QObject *parent)
-    : QObject{parent}
-{}
+    : QObject{parent}, gestorBackend(new GestorEstructuras())
+{
 
+
+
+}
+
+/*Destructor*/
+Controlador::~Controlador(){
+    delete this->gestorBackend;
+}
 
 /*Metodo que permite comunicar a la ui para poder enviar el csv procesado*/
  /*

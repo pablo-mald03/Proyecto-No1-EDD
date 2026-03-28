@@ -10,42 +10,50 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-qt_add_executable(ProyectoNo1-EDD
-    WIN32 MACOSX_BUNDLE
+set(FRONTEND_SOURCES
+
     main.cpp
-    include/mainwindow.h
-    include/pantallaprincipal.h
-    include/pantallaagregar.h
-    include/controlador.h
-    include/pantallabuscarporcategoria.h
-    include/pantallabuscarpornombre.h
-    include/pantallabuscarrango.h
-    include/pantallalistarnombre.h
-    include/pantallaeliminarproducto.h
+    src/frontend/mainwindow.cpp
+    src/frontend/pantallaprincipal.cpp
+    src/frontend/pantallaagregar.cpp
+    src/frontend/controlador.cpp
+    src/frontend/pantallabuscarporcategoria.cpp
+    src/frontend/pantallabuscarpornombre.cpp
+    src/frontend/pantallabuscarrango.cpp
+    src/frontend/pantallalistarnombre.cpp
+    src/frontend/pantallaeliminarproducto.cpp
 
-    include/pantallaverarboles.h
-    include/graphicsviewzoom.h
+    src/frontend/pantallaverarboles.cpp
 
-    include/pantallaarbolavl.h
-    include/pantallaarbolb.h
-    include/pantallaarbolbmas.h
+    src/frontend/pantallaarbolavl.cpp
+    src/frontend/pantallaarbolb.cpp
+    src/frontend/pantallaarbolbmas.cpp
+    src/frontend/graphicsviewzoom.cpp
 
-    src/mainwindow.cpp
-    src/pantallaprincipal.cpp
-    src/pantallaagregar.cpp
-    src/controlador.cpp
-    src/pantallabuscarporcategoria.cpp
-    src/pantallabuscarpornombre.cpp
-    src/pantallabuscarrango.cpp
-    src/pantallalistarnombre.cpp
-    src/pantallaeliminarproducto.cpp
+)
 
-    src/pantallaverarboles.cpp
+set(FRONTEND_HEADERS
 
-    src/pantallaarbolavl.cpp
-    src/pantallaarbolb.cpp
-    src/pantallaarbolbmas.cpp
-    src/graphicsviewzoom.cpp
+    include/frontend/mainwindow.h
+    include/frontend/pantallaprincipal.h
+    include/frontend/pantallaagregar.h
+    include/frontend/controlador.h
+    include/frontend/pantallabuscarporcategoria.h
+    include/frontend/pantallabuscarpornombre.h
+    include/frontend/pantallabuscarrango.h
+    include/frontend/pantallalistarnombre.h
+    include/frontend/pantallaeliminarproducto.h
+
+    include/frontend/pantallaverarboles.h
+    include/frontend/graphicsviewzoom.h
+
+    include/frontend/pantallaarbolavl.h
+    include/frontend/pantallaarbolb.h
+    include/frontend/pantallaarbolbmas.h
+)
+
+
+set(UI_FILES
 
     ui/mainwindow.ui
     ui/pantallaprincipal.ui
@@ -62,12 +70,40 @@ qt_add_executable(ProyectoNo1-EDD
     ui/pantallaarbolb.ui
     ui/pantallaarbolbmas.ui
 
-    recursos.qrc
+)
 
+set(BACKEND_SOURCES
+
+    src/backend/gestorestructuras.cpp
+    src/backend/listaenlazada.cpp
+    src/backend/nodolista.cpp
+    src/backend/producto.cpp
+)
+
+
+set(BACKEND_HEADERS
+
+    include/backend/gestorestructuras.h
+    include/backend/listaenlazada.h
+    include/backend/nodolista.h
+    include/backend/producto.h
+)
+
+qt_add_executable(ProyectoNo1-EDD
+    WIN32 MACOSX_BUNDLE
+    ${FRONTEND_SOURCES}
+    ${FRONTEND_HEADERS}
+    ${BACKEND_SOURCES}
+    ${BACKEND_HEADERS}
+    ${UI_FILES}
+    recursos.qrc
 
 )
 
-target_include_directories(ProyectoNo1-EDD PRIVATE include)
+target_include_directories(ProyectoNo1-EDD PRIVATE
+    include/frontend
+    include/backend
+)
 
 
 target_link_libraries(ProyectoNo1-EDD

@@ -28,19 +28,19 @@ Producto::~Producto(){
 }
 
 /*Metodos getter de la clase*/
-std::string Producto::getNombre(){
+std::string Producto::getNombre() const{
     return this->nombre;
 }
 
-std::string Producto::getCodigobarra(){
+std::string Producto::getCodigobarra() const{
     return this->codigoBarra;
 }
 
-std::string Producto::getCategoria(){
+std::string Producto::getCategoria() const{
     return this->categoria;
 }
 
-std::string Producto::getFechaExpiracion(){
+std::string Producto::getFechaExpiracion() const{
     return this->fechaExpiracion;
 }
 

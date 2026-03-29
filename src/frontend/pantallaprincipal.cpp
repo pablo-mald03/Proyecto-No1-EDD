@@ -219,3 +219,16 @@ void PantallaPrincipal::on_btnErrores_clicked()
     emit solicitarLogErrores();
 }
 
+
+/*Metodo que permite exportar el archivo*/
+void PantallaPrincipal::on_btnExportar_clicked()
+{
+
+}
+
+/*Metodo que permite cerrar el archivo csv cargado*/
+void PantallaPrincipal::on_btnCerrar_clicked()
+{
+
+}
+

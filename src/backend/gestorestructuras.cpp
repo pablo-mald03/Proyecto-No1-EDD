@@ -2,10 +2,14 @@
 #include "readercsvexception.h"
 #include <ctime>
 
+/*Librerias solo utilizadas como buffers para poder ordenar*/
+#include <vector>
+
 GestorEstructuras::GestorEstructuras():
     listaNoOrdenada(new ListaEnlazada<Producto>()),
     listaOrdenada(new ListaEnlazada<Producto>()),
-    listaErrores(new ListaEnlazada<ErroresLectura>())
+    listaErrores(new ListaEnlazada<ErroresLectura>()),
+    cargoArchivo(false)
 {
 
 }
@@ -30,6 +34,15 @@ GestorEstructuras::~GestorEstructuras(){
 
 
 /*----****------Apartado de metodos setter y setters para poder interactuar con las listas------****---*/
+
+/*Getters y setters de la flag*/
+void GestorEstructuras::setCargoArchivo(bool carga){
+    this->cargoArchivo = carga;
+}
+
+bool GestorEstructuras::getCargoArchivo(){
+    return this->cargoArchivo;
+}
 
 /*Metodo de validacion del csv delegado para validar*/
 void GestorEstructuras::agregarErrorLista(const std::string mensaje, int fila){
@@ -56,7 +69,7 @@ bool GestorEstructuras::existeProductoLista(const std::string &codigo){
     NodoLista<Producto> * actual = this->listaNoOrdenada->getCabeza();
 
     while (actual != nullptr) {
-        if (actual->getDato().codigoBarra == codigo) {
+        if (actual->getDato().getCodigobarra() == codigo) {
             return true;
         }
         actual = actual->getSiguiente();
@@ -153,3 +166,60 @@ QString GestorEstructuras::generarContenidoLog() {
     return log;
 }
 
+
+/*Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/
+
+/*Metodo delegado para poder ordenar a la lista en base a un criterio*/
+/*
+* 1 -> nombre
+* 2 -> categoria
+* 3 -> fecha
+*/
+void GestorEstructuras::generarListaOrdenada(int criterio){
+
+    if(this->listaOrdenada != nullptr){
+        delete this->listaOrdenada;
+    }
+    this->listaOrdenada = new ListaEnlazada<Producto>();
+
+    std::vector<Producto> buffer;
+    NodoLista<Producto>* actual = this->listaNoOrdenada->getCabeza();
+    while (actual != nullptr) {
+        buffer.push_back(actual->getDato());
+        actual = actual->getSiguiente();
+    }
+
+    int n = buffer.size();
+
+    for (int i = 0; i < n - 1; i++) {
+        int indiceMinimo = i;
+        for (int j = i + 1; j < n; j++) {
+
+            bool esMenor = false;
+            if (criterio == 1){
+                esMenor = (buffer[j].getNombre() < buffer[indiceMinimo].getNombre());
+            }
+            else if (criterio == 2){
+                esMenor = (buffer[j].getCategoria() < buffer[indiceMinimo].getCategoria());
+            }
+            else if (criterio == 3){
+                esMenor = (buffer[j].getFechaExpiracion() < buffer[indiceMinimo].getFechaExpiracion());
+            }
+            if (esMenor) {
+                indiceMinimo = j;
+            }
+        }
+
+        /*Clasico*/
+        Producto temp = buffer[i];
+        buffer[i] = buffer[indiceMinimo];
+        buffer[indiceMinimo] = temp;
+    }
+
+    for (const Producto& p : buffer) {
+        this->listaOrdenada->insertarAtras(p);
+    }
+
+}
+
+/*Fin del Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/

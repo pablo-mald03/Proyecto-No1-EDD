@@ -33,6 +33,13 @@ public:
     /*Metodo para saber si tiene errores la lista*/
     bool tieneErrores() const;
 
+    /*Metodo utilizado para poder ordenar las listas acorde a los diferentes parametros*/
+    void generarListaOrdenada(int criterio);
+
+    /*Metodos getter y setter de la flag*/
+    void setCargoArchivo(bool carga);
+    bool getCargoArchivo();
+
 private:
 
     /*Atributos de la clase gestor*/
@@ -41,6 +48,9 @@ private:
 
     /*Lista de errores*/
     ListaEnlazada<ErroresLectura> * listaErrores = nullptr;
+
+    /*Atributo flag de carga de csv para saber si guardar o refrescar*/
+    bool cargoArchivo;
 
     /*Metodo delegado para poder validar la fecha*/
     bool esFechaISO(const QString& fecha);

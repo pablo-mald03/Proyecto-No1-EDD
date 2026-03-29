@@ -20,6 +20,8 @@ private slots:
 
     void on_btnErrores_clicked();
 
+    void on_btnExportar_clicked();
+
 signals:
     void csvCargado(const std::vector<QString>& data);
 

@@ -5,11 +5,8 @@
 
 class Producto
 {
-public:
-    Producto();
-    Producto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
-    ~Producto();
 
+private:
     std::string nombre;
     std::string codigoBarra;
     std::string categoria;
@@ -18,13 +15,17 @@ public:
     double precio;
     int stock;
 
+public:
+    Producto();
+    Producto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
+    ~Producto();
 
     /*Metodos getter */
 
-    std::string getNombre();
-    std::string getCodigobarra();
-    std::string getCategoria();
-    std::string getFechaExpiracion();
+    std::string getNombre() const;
+    std::string getCodigobarra() const;
+    std::string getCategoria()const ;
+    std::string getFechaExpiracion()const ;
     std::string getMarca();
     double getPrecio();
     int getStock();

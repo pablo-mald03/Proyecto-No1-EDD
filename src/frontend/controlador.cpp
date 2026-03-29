@@ -9,8 +9,6 @@ Controlador::Controlador(QObject *parent)
     : QObject{parent}, gestorBackend(new GestorEstructuras())
 {
 
-
-
 }
 
 /*Destructor*/
@@ -81,6 +79,12 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
         emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
         this->verificarErrores();
+
+        /*Orden base*/
+        this->gestorBackend->generarListaOrdenada(1);
+
+        /*Set de carga*/
+        this->gestorBackend->setCargoArchivo(true);
     }
     else {
         emit logCargaCsv("No se inserto nada: Todas las lineas tenian errores.", "yellow");

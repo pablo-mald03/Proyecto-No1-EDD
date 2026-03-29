@@ -1,4 +1,5 @@
 #include "gestorestructuras.h"
+#include "insertexception.h"
 #include "readercsvexception.h"
 #include <ctime>
 
@@ -10,6 +11,7 @@ GestorEstructuras::GestorEstructuras():
     listaNoOrdenada(new ListaEnlazada<Producto>()),
     listaOrdenada(new ListaEnlazada<Producto>()),
     listaErrores(new ListaEnlazada<ErroresLectura>()),
+    arbolAvl(new ArbolAvl()),
     cargoArchivo(false)
 {
 
@@ -17,6 +19,12 @@ GestorEstructuras::GestorEstructuras():
 
 /*Destructor*/
 GestorEstructuras::~GestorEstructuras(){
+
+    if(this->arbolAvl != nullptr){
+        delete this->arbolAvl;
+        this->arbolAvl = nullptr;
+    }
+
     if(this->listaNoOrdenada != nullptr){
         delete this->listaNoOrdenada;
         this->listaNoOrdenada = nullptr;
@@ -104,8 +112,20 @@ bool GestorEstructuras::existeProductoLista(const std::string &codigo){
     return false;
 }
 
-/*Metodo que permite insertar en el arbol Avl*/
 
+/*---****-----Apartado de Metodos que permiten utilizar el arbol AVL-------****---*/
+
+/*Metodo que permite insertar datos en el arbol Avl*/
+void GestorEstructuras::insertarArbolAvl(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+
+    try{
+        this->arbolAvl->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+    }catch (const InsertException& e) {
+        throw InsertException(e.what());
+    }
+}
+
+/*---****-----Fin del Apartado de Metodos que permiten utilizar el arbol AVL-------****---*/
 
 
 /*Metodo que permite insertar los datos en la lista*/

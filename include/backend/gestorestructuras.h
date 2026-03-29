@@ -2,6 +2,7 @@
 #define GESTORESTRUCTURAS_H
 
 //Includes de la clase
+#include "arbolavl.h"
 #include "erroreslectura.h"
 #include"listaenlazada.h"
 #include"producto.h"
@@ -16,6 +17,10 @@ class GestorEstructuras
 public:
     GestorEstructuras();
     ~GestorEstructuras();
+
+    /*Metodo que permite insertar datos en el arbol AVL*/
+    void insertarArbolAvl(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
+
 
     /*Metodos para insertar datos en las estructuras provinientes del csv*/
     void insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
@@ -50,6 +55,9 @@ public:
     std::string serializarListaCsv();
 
 private:
+
+    /*Arbol AVL*/
+    ArbolAvl * arbolAvl = nullptr;
 
     /*Atributos de la clase gestor*/
     ListaEnlazada<Producto> *listaNoOrdenada = nullptr;

@@ -99,12 +99,14 @@ set(EXCEPTIONS_SOURCES
 
     src/exceptions/readercsvexception.cpp
     src/exceptions/insertexception.cpp
+    src/exceptions/deleteexception.cpp
 )
 
 set(EXCEPTIONS_HEADERS
 
     include/exceptions/readercsvexception.h
     include/exceptions/insertexception.h
+    include/exceptions/deleteexception.h
 )
 
 

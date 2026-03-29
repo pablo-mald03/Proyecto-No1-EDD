@@ -28,7 +28,9 @@ public:
 private:
     GestorEstructuras * gestorBackend = nullptr;
 
-    void insertarLista(const std::vector<QString> & data);
+    void insertarListaCsv(const std::vector<QString> & data);
+
+    void insertarArbolAvlCsv(const std::vector<QString> & data);
 
     /*Metodo que permite avisar para determinar si dejar o no descargar el log de errores*/
     void verificarErrores();

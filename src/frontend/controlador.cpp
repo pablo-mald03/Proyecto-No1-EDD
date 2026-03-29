@@ -1,4 +1,5 @@
 #include "controlador.h"
+#include "insertexception.h"
 #include "readercsvexception.h"
 #include<QElapsedTimer>
 
@@ -130,7 +131,8 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
     if (!datosValidados.empty()) {
 
-        this->insertarLista(datosValidados);
+        this->insertarListaCsv(datosValidados);
+        this->insertarArbolAvlCsv(datosValidados);
 
         emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
@@ -150,8 +152,71 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
     }
 }
 
+
+/*Metodo utilizado para insertar los datos dentro del arbol AVL*/
 /*Metodo que permite llenar las listas con el arreglo de entrada del csv*/
-void Controlador::insertarLista(const std::vector<QString> & data){
+void Controlador::insertarArbolAvlCsv(const std::vector<QString> & data){
+
+    QElapsedTimer timer;
+    timer.start();
+
+    int filaActual = 1;
+
+    for(const QString &linea: data){
+
+        QStringList columnas = linea.split(",");
+
+        if (columnas.size() < 7) {
+            this->gestorBackend->agregarErrorLista("Fila con columnas insuficientes", filaActual);
+            emit logArbolAvl("Error: Fila malformada en linea " + QString::number(filaActual), "red");
+            filaActual++;
+            continue;
+        }
+
+        std::string nombre = columnas[0].toStdString();
+        std::string key = columnas[1].toStdString();
+        std::string categoria = columnas[2].toStdString();
+        std::string fechaExp = columnas[3].toStdString();
+        std::string marca = columnas[4].toStdString();
+
+        bool okPrecio;
+        bool okStock;
+
+        double precio = columnas[5].toDouble(&okPrecio);
+        int stock = columnas[6].toInt(&okStock);
+
+        if (!okPrecio || !okStock) {
+            emit logArbolAvl("Error en conversion numerica: " + linea, "red");
+            continue;
+        }
+        try{
+
+            this->gestorBackend->insertarArbolAvl(nombre,key,categoria,fechaExp,marca,precio,stock);
+            emit logArbolAvl("Insertado: " + QString::fromStdString(key), "green");
+        }
+        catch (const InsertException& e) {
+            this->gestorBackend->agregarErrorLista(e.what(), filaActual);
+            emit logArbolAvl("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
+        }
+        catch (const ReaderCsvException& e) {
+
+            this->gestorBackend->agregarErrorLista(e.what(), filaActual);
+            emit logArbolAvl("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
+        }
+        catch (const std::exception& ex) {
+            emit logArbolAvl("Error inesperado: " + QString::fromStdString(ex.what()) + ". Fila: " + QString::number(filaActual) , "red");
+        }
+
+        filaActual++;
+    }
+
+    qint64 tiempo = timer.elapsed();
+    emit tiempoProceso(1, tiempo);
+}
+
+
+/*Metodo que permite llenar las listas con el arreglo de entrada del csv*/
+void Controlador::insertarListaCsv(const std::vector<QString> & data){
 
     QElapsedTimer timer;
     timer.start();

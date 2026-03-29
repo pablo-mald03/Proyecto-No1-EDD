@@ -24,6 +24,15 @@ public:
     /*Metodo para agregar errores al log*/
     void agregarErrorLista(const std::string mensaje, int fila);
 
+    /*Metodo que retorna el contenido del log de errores*/
+    QString generarContenidoLog();
+
+    /*Metodo que permite obtener la lista de errores*/
+    ListaEnlazada<ErroresLectura>* getListaErrores();
+
+    /*Metodo para saber si tiene errores la lista*/
+    bool tieneErrores() const;
+
 private:
 
     /*Atributos de la clase gestor*/

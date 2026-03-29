@@ -1,5 +1,6 @@
 #include "gestorestructuras.h"
 #include "readercsvexception.h"
+#include <ctime>
 
 GestorEstructuras::GestorEstructuras():
     listaNoOrdenada(new ListaEnlazada<Producto>()),
@@ -13,24 +14,38 @@ GestorEstructuras::GestorEstructuras():
 GestorEstructuras::~GestorEstructuras(){
     if(this->listaNoOrdenada != nullptr){
         delete this->listaNoOrdenada;
+        this->listaNoOrdenada = nullptr;
     }
 
     if(this->listaOrdenada != nullptr){
         delete this->listaOrdenada;
+        this->listaOrdenada = nullptr;
     }
 
     if(this->listaErrores != nullptr){
         delete this->listaErrores;
+        this->listaErrores = nullptr;
     }
 }
 
 
-/*----****------Apartado de metodos setter para poder interactuar con las listas------****---*/
+/*----****------Apartado de metodos setter y setters para poder interactuar con las listas------****---*/
 
 /*Metodo de validacion del csv delegado para validar*/
 void GestorEstructuras::agregarErrorLista(const std::string mensaje, int fila){
 
     this->listaErrores->insertarAtras(ErroresLectura(mensaje, fila));
+}
+
+/*Getter de la lista*/
+ListaEnlazada<ErroresLectura>* GestorEstructuras::getListaErrores(){
+
+    return this->listaErrores;
+}
+
+/*Metodo para saber si tiene errores la lista*/
+bool GestorEstructuras::tieneErrores() const {
+    return !this->listaErrores->esVacia();
 }
 
 /*----****------Fin del Apartado de metodos setter para poder interactuar con las listas------****---*/
@@ -40,7 +55,6 @@ void GestorEstructuras::agregarErrorLista(const std::string mensaje, int fila){
 void GestorEstructuras::insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
 
     this->listaNoOrdenada->insertarAtras(Producto(nombre,key,categoria,fecha,marca,precio,stock));
-
 }
 
 
@@ -86,3 +100,37 @@ void GestorEstructuras::validarCsv(const QStringList& columnas, int fila){
 bool GestorEstructuras::esFechaISO(const QString& fecha) {
     return QDate::fromString(fecha, Qt::ISODate).isValid();
 }
+
+
+
+/*Metodo que permite armar el log de errores*/
+QString GestorEstructuras::generarContenidoLog() {
+    QString log;
+    QDateTime current = QDateTime::currentDateTime();
+    QString fechaStr = current.toString("yyyy-MM-dd hh:mm:ss");
+
+    log += "--------------------------------------------------\n";
+    log += "LOG DE ERRORES --- PROCESAMIENTO CSV--- \n";
+    log += "Fecha: " + fechaStr + "\n";
+    log += "--------------------------------------------------\n\n";
+
+    log += "--------------------------------------------------\n";
+    log += "--- SISTEMA DE GESTION DE PRODUCTOS--- \n";
+    log += "--------------------------------------------------\n\n";
+
+    for (int i = 0; i < this->listaErrores->getLongitud(); ++i) {
+
+        ErroresLectura erroresLectura = this->listaErrores->getValor(i);
+        log += "[" + fechaStr + "] [ERROR] ";
+
+        log += "Fila " + QString::number(erroresLectura.getLinea()) + ": ";
+        log += QString::fromStdString(erroresLectura.getMensaje()) + "\n";
+    }
+
+    if (this->listaErrores->getLongitud() == 0) {
+        log += "No se reportaron errores en la ultima carga.\n";
+    }
+
+    return log;
+}
+

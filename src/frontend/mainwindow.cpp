@@ -50,6 +50,12 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(this->controladorCrud, &Controlador::tiempoProceso, this->inicio, &PantallaPrincipal::mostrarTiempo);
 
+    connect(this->inicio, &PantallaPrincipal::solicitarLogErrores, this->controladorCrud, &Controlador::prepararLogParaDescarga);
+
+    connect(this->controladorCrud, &Controlador::logDescargar, this->inicio, &PantallaPrincipal::logListoParaDescargar);
+
+    connect(this->controladorCrud, &Controlador::evaluarErroresLog, this->inicio, &PantallaPrincipal::evaluarErrores);
+
     mostrarInicio();
 
 }

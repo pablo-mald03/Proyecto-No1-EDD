@@ -15,7 +15,10 @@ Controlador::Controlador(QObject *parent)
 
 /*Destructor*/
 Controlador::~Controlador(){
-    delete this->gestorBackend;
+    if(this->gestorBackend != nullptr){
+        delete this->gestorBackend;
+        this->gestorBackend = nullptr;
+    }
 }
 
 /*Metodo que permite comunicar a la ui para poder enviar el csv procesado*/
@@ -26,6 +29,14 @@ Controlador::~Controlador(){
     * 4 -> LISTA
 */
 void Controlador::procesarCsv(const std::vector<QString> & data){
+
+    if(this->gestorBackend != nullptr){
+        delete this->gestorBackend;
+        this->gestorBackend = nullptr;
+    }
+
+    this->gestorBackend = new GestorEstructuras();
+
 
     if (data.empty()) {
         this->gestorBackend->agregarErrorLista("El archivo de entrada esta vacio", 0);
@@ -67,8 +78,9 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
         this->insertarLista(datosValidados);
 
-        emit logCargaCsv("\nProceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
+        emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
+        this->verificarErrores();
     }
     else {
         emit logCargaCsv("No se inserto nada: Todas las lineas tenian errores.", "yellow");
@@ -169,6 +181,18 @@ void Controlador::listarProductos(){
     emit logListarListaOrdenada("Producto listado: ", "green");
     emit logListarListaNoOrdenada("Producto listado: ", "green");
 
+}
+
+/*Metodo que permite obtener los datos para poder descargar el Log de errores*/
+void Controlador::prepararLogParaDescarga(){
+    QString contenido = this->gestorBackend->generarContenidoLog();
+
+    emit logDescargar(contenido);
+}
+
+/*Metodo que verifica si hay errores*/
+void Controlador::verificarErrores(){
+    emit evaluarErroresLog(this->gestorBackend->tieneErrores());
 }
 
 

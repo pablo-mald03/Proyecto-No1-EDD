@@ -23,6 +23,8 @@ private slots:
 signals:
     void csvCargado(const std::vector<QString>& data);
 
+    void solicitarLogErrores();
+
 
 public slots:
 
@@ -36,8 +38,17 @@ public slots:
 
     void mostrarTiempo(int estructura, qint64 milisegundos);
 
+    /*Metodo que permite verificar si hay errores para habilitar la descarga del log*/
+    void evaluarErrores(bool evaluacion);
+
+    /*Metodo que permite solicitar la lista de errores para poder armar el errors.log*/
+    void logListoParaDescargar(const QString &contenido);
+
 private:
     Ui::PantallaPrincipal *ui;
+
+    /*Metodo para descargar el log de errores*/
+    void descargarLogErrores(const QString &contenido);
 };
 
 #endif // PANTALLAPRINCIPAL_H

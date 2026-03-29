@@ -3,6 +3,7 @@
 #include<QFileDialog>
 #include<QFile>
 #include<QTextStream>
+#include<QMessageBox>
 
 PantallaPrincipal::PantallaPrincipal(QWidget *parent)
     : QWidget(parent)
@@ -34,7 +35,7 @@ PantallaPrincipal::~PantallaPrincipal()
 
 /*Metodo que permite seleccionar el archivo csv*/
 void PantallaPrincipal::on_btnCargar_clicked()
-{
+{ 
     QString fileName = QFileDialog::getOpenFileName(
         this,
         "Seleccionar CSV",
@@ -71,6 +72,56 @@ void PantallaPrincipal::on_btnCargar_clicked()
 
 }
 
+/*----Apartado de metodos para verificar el log de errores-----*/
+
+/*Metodo que permite verificar si hay errores para habilitar la descarga del log*/
+void PantallaPrincipal::evaluarErrores(bool evaluacion){
+
+    this->ui->btnErrores->setEnabled(evaluacion);
+}
+
+/*Metodo que permite solicitar la lista de errores para poder armar el errors.log*/
+void PantallaPrincipal::logListoParaDescargar(const QString &contenido){
+    this->descargarLogErrores(contenido);
+}
+
+/*Metodo de la clase que permite desplegar el dialog de descarga*/
+void PantallaPrincipal::descargarLogErrores(const QString &contenido){
+
+    QString fileName = QFileDialog::getSaveFileName(
+        this,
+        "Guardar Log de Errores",
+        "errors.log",
+        "Log Files (*.log);;Text Files (*.txt)"
+        );
+
+    if (fileName.isEmpty()) {
+        return;
+    }
+
+    QFile file(fileName);
+
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QTextStream out(&file);
+        out << contenido;
+        file.close();
+
+        QMessageBox::information(
+            this,
+            "Exportación Exitosa",
+            "El archivo de log se ha guardado correctamente en:\n" + fileName
+            );
+
+    } else {
+        QMessageBox::critical(
+            this,
+            "Error de Archivo",
+            "No se pudo crear el archivo. Verifique los permisos de escritura."
+            );
+    }
+}
+
+/*----Fin del apartado de metodos para verificar el log de errores-----*/
 
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
 
@@ -148,7 +199,6 @@ void PantallaPrincipal::mostrarTiempo(int estructura, qint64 milisegundos){
 //Metodo que permite descargar el log de errores
 void PantallaPrincipal::on_btnErrores_clicked()
 {
-
-
+    emit solicitarLogErrores();
 }
 

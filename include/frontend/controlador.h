@@ -18,6 +18,9 @@ private:
 
     void insertarLista(const std::vector<QString> & data);
 
+    /*Metodo que permite avisar para determinar si dejar o no descargar el log de errores*/
+    void verificarErrores();
+
 public slots:
     void procesarCsv(const std::vector<QString> & data);
 
@@ -35,7 +38,16 @@ public slots:
     void obtenerArbolB();
     void obtenerArbolBMas();
 
+    /*Metodo que permite obtener los datos para poder descargar el Log de errores*/
+    void prepararLogParaDescarga();
+
 signals:
+
+    /*Metodo que da la senial para poder determinar si hay errores*/
+    void evaluarErroresLog(bool estado);
+
+    /*Metodo utilizado para enviar hacia la UI el contenido a procesar para el errors.log*/
+    void logDescargar(const QString &contenido);
 
     /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
     void enviarArbolAvl(int * arbol);

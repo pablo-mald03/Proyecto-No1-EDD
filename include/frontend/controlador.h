@@ -35,6 +35,9 @@ private:
 
 public slots:
 
+    /*---METODO QUE ELIMINA POR COMPLETO TODO EL BACKEND CUANDO SE EXPORTA EL CSV---*/
+    void limpiarDatos();
+
     /*Metodo que permite generar la logica de guardado del csv*/
     void guardarArchivoCsv();
 

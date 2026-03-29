@@ -52,9 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this->inicio, &PantallaPrincipal::solicitarGuardarCsv,this->controladorCrud, &Controlador::guardarArchivoCsv);
     connect(this->controladorCrud, &Controlador::contenidoCsvListo, this->inicio, &PantallaPrincipal::recibirGuardadoCsv);
 
-
+    connect(this->inicio, &PantallaPrincipal::solicitarLimpieza,this->controladorCrud, &Controlador::limpiarDatos);
     mostrarInicio();
-
 }
 
 /*Region de metodos para poder mostrar las diferentes vistas*/

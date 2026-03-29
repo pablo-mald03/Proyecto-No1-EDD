@@ -56,6 +56,8 @@ void PantallaPrincipal::recibirGuardadoCsv(const QString &contenido) {
 
         QMessageBox::information(this, "Exito", "El archivo se ha guardado correctamente en:\n." + nombreArchivo);
         this->limpiarLogs();
+        this->hayCsv = false;
+        emit solicitarLimpieza();
 
     } else {
         QMessageBox::critical(this, "Error", "No se pudo escribir en el archivo.");
@@ -292,6 +294,8 @@ void PantallaPrincipal::on_btnCerrar_clicked()
     }
     else if (respuesta == QMessageBox::No) {
         this->limpiarLogs();
+        this->hayCsv = false;
+        emit solicitarLimpieza();
     }
 }
 

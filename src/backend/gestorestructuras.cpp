@@ -37,9 +37,6 @@ GestorEstructuras::~GestorEstructuras(){
 std::string GestorEstructuras::serializarListaCsv() {
     std::stringstream sStream;
 
-    // Encabezado
-    sStream << "Nombre,CodigoBarra,Categoria,FechaCaducidad,Marca,Precio,Stock\n";
-
     NodoLista<Producto>* actual = this->listaNoOrdenada->getCabeza();
     while (actual != nullptr) {
         const Producto& p = actual->getDato();

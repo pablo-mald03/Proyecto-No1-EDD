@@ -33,6 +33,8 @@ signals:
 
     void solicitarGuardarCsv();
 
+    /*Metodo que permite borrar el estado completo de la carga del archivo de entrada tras cerrar */
+    void solicitarLimpieza();
 
 public slots:
 

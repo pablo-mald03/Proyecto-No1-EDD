@@ -18,6 +18,23 @@ Controlador::~Controlador(){
     }
 }
 
+
+/*---METODO QUE ELIMINA POR COMPLETO TODO EL BACKEND CUANDO SE EXPORTA EL CSV---*/
+void Controlador::limpiarDatos(){
+
+    if(this->gestorBackend != nullptr){
+        delete this->gestorBackend;
+        this->gestorBackend = nullptr;
+    }
+
+    this->gestorBackend = new GestorEstructuras();
+
+    this->verificarErrores();
+    this->evaluarEstadoCerrarCsv();
+
+}
+
+
 /*Signal que permite retornar el csv para poderlo guardar*/
 void Controlador::guardarArchivoCsv(){
 
@@ -260,13 +277,12 @@ void Controlador::evaluarEstadoCerrarCsv(){
 }
 
 
-
 /*Metodo que verifica si hay errores*/
 void Controlador::verificarErrores(){
     emit evaluarErroresLog(this->gestorBackend->tieneErrores());
 }
 
-/*Metodo que verifica si hay errores*/
+/*Metodo que verifica  si se cargo ya un csv*/
 void Controlador::verificarRefrescado(){
     emit refrescarDatos(this->gestorBackend->getCargoArchivo());
 }

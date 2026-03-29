@@ -104,13 +104,16 @@ bool GestorEstructuras::existeProductoLista(const std::string &codigo){
     return false;
 }
 
+/*Metodo que permite insertar en el arbol Avl*/
+
+
 
 /*Metodo que permite insertar los datos en la lista*/
 void GestorEstructuras::insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
 
     if (this->existeProductoLista(key)) {
 
-        throw ReaderCsvException("El Codigo de Barra '" + key + "' ya existe en el sistema.");
+        throw ReaderCsvException("El Codigo de Barra { " + key + " } ya existe para el producto: "+ nombre +" [LISTA ENLAZADA].");
     }
 
     this->listaNoOrdenada->insertarAtras(Producto(nombre,key,categoria,fecha,marca,precio,stock));

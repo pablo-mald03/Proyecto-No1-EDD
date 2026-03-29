@@ -79,6 +79,8 @@ set(BACKEND_SOURCES
     src/backend/nodolista.cpp
     src/backend/producto.cpp
     src/backend/erroreslectura.cpp
+    src/backend/nodoavl.cpp
+    src/backend/arbolavl.cpp
 )
 
 
@@ -89,16 +91,20 @@ set(BACKEND_HEADERS
     include/backend/nodolista.h
     include/backend/producto.h
     include/backend/erroreslectura.h
+    include/backend/nodoavl.h
+    include/backend/arbolavl.h
 )
 
 set(EXCEPTIONS_SOURCES
 
     src/exceptions/readercsvexception.cpp
+    src/exceptions/insertexception.cpp
 )
 
 set(EXCEPTIONS_HEADERS
 
     include/exceptions/readercsvexception.h
+    include/exceptions/insertexception.h
 )
 
 

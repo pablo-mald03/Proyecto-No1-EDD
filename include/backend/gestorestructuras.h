@@ -8,6 +8,9 @@
 #include <QStringList>
 #include <QDate>
 
+/*Arboles*/
+//#include"arbolavl.h"
+
 class GestorEstructuras
 {
 public:

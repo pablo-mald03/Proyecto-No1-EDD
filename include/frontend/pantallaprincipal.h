@@ -22,13 +22,25 @@ private slots:
 
     void on_btnExportar_clicked();
 
+    void on_btnCerrar_clicked();
+
 signals:
     void csvCargado(const std::vector<QString>& data);
 
     void solicitarLogErrores();
 
+    void solicitarRefrescarDatos();
+
+    void solicitarGuardarCsv();
+
 
 public slots:
+
+    /*Metodo que permite guardar el csv*/
+    void recibirGuardadoCsv(const QString &contenido);
+
+    /*Metodo que permite refrescar la pantalla de carga de csv*/
+    void refrescarPantallaCsv(bool estaCargado);
 
     /*Metodos que permiten comunicar las lineas leidas por los arboles o lista enlazada*/
     void appendAvlLog(QString mensaje, QString color);
@@ -46,8 +58,14 @@ public slots:
     /*Metodo que permite solicitar la lista de errores para poder armar el errors.log*/
     void logListoParaDescargar(const QString &contenido);
 
+    /*Metodo utilizado para poder cerrar el csv cargado*/
+    void evaluarCierreCsv(bool evaluacion);
+
 private:
     Ui::PantallaPrincipal *ui;
+
+    /*Atributo que permite saber si ya hay un csv Cargado*/
+    bool hayCsv;
 
     /*Metodo para descargar el log de errores*/
     void descargarLogErrores(const QString &contenido);

@@ -13,6 +13,18 @@ public:
     explicit Controlador(QObject *parent = nullptr);
     ~Controlador();
 
+
+    /*Metodo que permite evaluar el estado del boton para poder cerrar el archivo csv cargado*/
+    void evaluarEstadoCerrarCsv();
+
+    /*Metodo utilizado para poder refrescar los datos directamente de la vista del csv*/
+    void verificarRefrescado();
+
+
+    /*Metodo que permite rellenar los datos actualizados con los de la lista*/
+    void actualizarDatosIngresados();
+
+
 private:
     GestorEstructuras * gestorBackend = nullptr;
 
@@ -22,6 +34,11 @@ private:
     void verificarErrores();
 
 public slots:
+
+    /*Metodo que permite generar la logica de guardado del csv*/
+    void guardarArchivoCsv();
+
+    /*Metodo que permite procesar el csv*/
     void procesarCsv(const std::vector<QString> & data);
 
     /*Metodos que permiten realizar el CRUD de la aplicacion*/
@@ -43,7 +60,16 @@ public slots:
 
 signals:
 
-    /*Metodo que da la senial para poder determinar si hay errores*/
+    /*Metodo que permite enviar al front el contenido para poder ser guardado*/
+    void contenidoCsvListo(QString archivo);
+
+    /*Metodo que permite refrescar los datos de la UI*/
+    void refrescarDatos(bool estado);
+
+    /*Metodo que permite activar o desactivar el boton para poder cerrar el csv*/
+    void evaluarCerrarCsv(bool estado);
+
+    /*Metodo que da la senial para poder determinar si hay errores y para avisar del csv*/
     void evaluarErroresLog(bool estado);
 
     /*Metodo utilizado para enviar hacia la UI el contenido a procesar para el errors.log*/

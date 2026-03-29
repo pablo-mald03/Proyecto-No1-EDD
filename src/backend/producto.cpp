@@ -32,7 +32,7 @@ std::string Producto::getNombre() const{
     return this->nombre;
 }
 
-std::string Producto::getCodigobarra() const{
+std::string Producto::getCodigoBarra() const{
     return this->codigoBarra;
 }
 
@@ -44,14 +44,14 @@ std::string Producto::getFechaExpiracion() const{
     return this->fechaExpiracion;
 }
 
-std::string Producto::getMarca(){
+std::string Producto::getMarca() const{
     return this->marca;
 }
 
-double Producto::getPrecio(){
+double Producto::getPrecio() const{
     return this->precio;
 }
 
-int Producto::getStock(){
+int Producto::getStock() const{
     return this->stock;
 }

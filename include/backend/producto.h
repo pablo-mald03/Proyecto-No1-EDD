@@ -23,12 +23,12 @@ public:
     /*Metodos getter */
 
     std::string getNombre() const;
-    std::string getCodigobarra() const;
+    std::string getCodigoBarra() const;
     std::string getCategoria()const ;
     std::string getFechaExpiracion()const ;
-    std::string getMarca();
-    double getPrecio();
-    int getStock();
+    std::string getMarca() const;
+    double getPrecio() const;
+    int getStock() const;
 
 };
 

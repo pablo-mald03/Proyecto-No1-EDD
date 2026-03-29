@@ -4,6 +4,7 @@
 
 /*Librerias solo utilizadas como buffers para poder ordenar*/
 #include <vector>
+#include <sstream>
 
 GestorEstructuras::GestorEstructuras():
     listaNoOrdenada(new ListaEnlazada<Producto>()),
@@ -32,6 +33,30 @@ GestorEstructuras::~GestorEstructuras(){
     }
 }
 
+/*Metodo que permite exportar el csv*/
+std::string GestorEstructuras::serializarListaCsv() {
+    std::stringstream sStream;
+
+    // Encabezado
+    sStream << "Nombre,CodigoBarra,Categoria,FechaCaducidad,Marca,Precio,Stock\n";
+
+    NodoLista<Producto>* actual = this->listaNoOrdenada->getCabeza();
+    while (actual != nullptr) {
+        const Producto& p = actual->getDato();
+
+        sStream << "\"" << p.getNombre() << "\","
+           << "\"" << p.getCodigoBarra() << "\","
+           << "\"" << p.getCategoria() << "\","
+           << "\"" << p.getFechaExpiracion() << "\","
+           << "\"" << p.getMarca() << "\","
+           << p.getPrecio() << ","
+           << p.getStock() << "\n";
+
+        actual = actual->getSiguiente();
+    }
+    return sStream.str();
+}
+
 
 /*----****------Apartado de metodos setter y setters para poder interactuar con las listas------****---*/
 
@@ -50,10 +75,15 @@ void GestorEstructuras::agregarErrorLista(const std::string mensaje, int fila){
     this->listaErrores->insertarAtras(ErroresLectura(mensaje, fila));
 }
 
-/*Getter de la lista*/
+/*Getter de la lista de errores*/
 ListaEnlazada<ErroresLectura>* GestorEstructuras::getListaErrores(){
 
     return this->listaErrores;
+}
+
+/*Getter de la lista no ordenada*/
+ListaEnlazada<Producto> * GestorEstructuras::getListaNoOrdenada(){
+    return this->listaNoOrdenada;
 }
 
 /*Metodo para saber si tiene errores la lista*/
@@ -69,7 +99,7 @@ bool GestorEstructuras::existeProductoLista(const std::string &codigo){
     NodoLista<Producto> * actual = this->listaNoOrdenada->getCabeza();
 
     while (actual != nullptr) {
-        if (actual->getDato().getCodigobarra() == codigo) {
+        if (actual->getDato().getCodigoBarra() == codigo) {
             return true;
         }
         actual = actual->getSiguiente();

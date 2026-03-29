@@ -8,7 +8,6 @@
 Controlador::Controlador(QObject *parent)
     : QObject{parent}, gestorBackend(new GestorEstructuras())
 {
-
 }
 
 /*Destructor*/
@@ -18,6 +17,46 @@ Controlador::~Controlador(){
         this->gestorBackend = nullptr;
     }
 }
+
+/*Signal que permite retornar el csv para poderlo guardar*/
+void Controlador::guardarArchivoCsv(){
+
+    if (this->gestorBackend == nullptr){
+        return;
+    }
+
+    std::string contenidoRaw = this->gestorBackend->serializarListaCsv();
+
+    emit contenidoCsvListo(QString::fromStdString(contenidoRaw));
+}
+
+
+/*Metodo que permite rellenar los datos actualizados con los de la lista*/
+void Controlador::actualizarDatosIngresados(){
+
+    if (this->gestorBackend == nullptr) return;
+
+    NodoLista<Producto>* actual = this->gestorBackend->getListaNoOrdenada()->getCabeza();
+
+    while (actual != nullptr) {
+        const Producto& p = actual->getDato();
+
+        QString lineaCsv = QString("\"%1\",\"%2\",\"%3\",\"%4\",\"%5\",%6,%7")
+                               .arg(QString::fromStdString(p.getNombre()),
+                                    QString::fromStdString(p.getCodigoBarra()),
+                                    QString::fromStdString(p.getCategoria()),
+                                    QString::fromStdString(p.getFechaExpiracion()),
+                                    QString::fromStdString(p.getMarca()))
+                               .arg(p.getPrecio())
+                               .arg(p.getStock());
+
+        emit logCargaCsv(lineaCsv, "white");
+        actual = actual->getSiguiente();
+    }
+
+    emit logCargaCsv("Vista sincronizada con la lista enlazada.", "green");
+}
+
 
 /*Metodo que permite comunicar a la ui para poder enviar el csv procesado*/
  /*
@@ -78,13 +117,16 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
         emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
-        this->verificarErrores();
-
         /*Orden base*/
         this->gestorBackend->generarListaOrdenada(1);
 
         /*Set de carga*/
         this->gestorBackend->setCargoArchivo(true);
+
+        this->verificarErrores();
+
+        this->evaluarEstadoCerrarCsv();
+
     }
     else {
         emit logCargaCsv("No se inserto nada: Todas las lineas tenian errores.", "yellow");
@@ -211,9 +253,22 @@ void Controlador::prepararLogParaDescarga(){
     emit logDescargar(contenido);
 }
 
+
+/*Metodo que permite evaluar el estado del boton para poder cerrar el archivo csv cargado*/
+void Controlador::evaluarEstadoCerrarCsv(){
+    emit evaluarCerrarCsv(this->gestorBackend->getCargoArchivo());
+}
+
+
+
 /*Metodo que verifica si hay errores*/
 void Controlador::verificarErrores(){
     emit evaluarErroresLog(this->gestorBackend->tieneErrores());
+}
+
+/*Metodo que verifica si hay errores*/
+void Controlador::verificarRefrescado(){
+    emit refrescarDatos(this->gestorBackend->getCargoArchivo());
 }
 
 

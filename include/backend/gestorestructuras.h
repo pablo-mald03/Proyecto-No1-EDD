@@ -40,6 +40,12 @@ public:
     void setCargoArchivo(bool carga);
     bool getCargoArchivo();
 
+    /*Metodo que retorna a la lista No ordenada*/
+    ListaEnlazada<Producto> * getListaNoOrdenada();
+
+    /*Metodo que permite exportar la lista al csv*/
+    std::string serializarListaCsv();
+
 private:
 
     /*Atributos de la clase gestor*/

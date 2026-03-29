@@ -356,7 +356,7 @@ void Controlador::verificarRefrescado(){
 /*Apartado de metodos para poder generar las vistas de los arboles*/
 /*pendiente definir estado real*/
 void Controlador::obtenerArbolAvl(){
-    emit enviarArbolAvl(new int(1));
+    emit enviarArbolAvl(this->gestorBackend->getRaizArbolAvl());
 }
 
 void Controlador::obtenerArbolB(){

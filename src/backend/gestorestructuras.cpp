@@ -63,7 +63,13 @@ std::string GestorEstructuras::serializarListaCsv() {
 }
 
 
-/*----****------Apartado de metodos setter y setters para poder interactuar con las listas------****---*/
+/*----****------Apartado de metodos setter y setters para poder interactuar con las estructuras------****---*/
+
+
+/*Metodo que permite obtener la raiz del arbol avl*/
+NodoAvl * GestorEstructuras::getRaizArbolAvl(){
+    return this->arbolAvl->getRaiz();
+}
 
 /*Getters y setters de la flag*/
 void GestorEstructuras::setCargoArchivo(bool carga){
@@ -96,7 +102,7 @@ bool GestorEstructuras::tieneErrores() const {
     return !this->listaErrores->esVacia();
 }
 
-/*----****------Fin del Apartado de metodos setter para poder interactuar con las listas------****---*/
+/*----****------Fin del Apartado de metodos setter para poder interactuar con las estrcuturas------****---*/
 
 /*Metodo que permite verificar la integridad de la listaEnlazada*/
 bool GestorEstructuras::existeProductoLista(const std::string &codigo){

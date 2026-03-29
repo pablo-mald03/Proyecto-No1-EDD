@@ -54,6 +54,9 @@ public:
     /*Metodo que permite exportar la lista al csv*/
     std::string serializarListaCsv();
 
+    /*Metodo que permite obtener la raiz del arbol avl*/
+    NodoAvl * getRaizArbolAvl();
+
 private:
 
     /*Arbol AVL*/

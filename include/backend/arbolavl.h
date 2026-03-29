@@ -52,6 +52,9 @@ public:
 
     /*Metodo que permite eliminar por codigo*/
     void eliminarPorCodigo(const std::string &codigo);
+
+    /*Metodo que permite retornar la referencia a la raiz*/
+    NodoAvl* getRaiz();
 };
 
 #endif // ARBOLAVL_H

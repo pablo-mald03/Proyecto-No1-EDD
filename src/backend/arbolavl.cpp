@@ -16,6 +16,10 @@ ArbolAvl::~ArbolAvl(){
     this->raiz = nullptr;
 }
 
+/*Metodo que permite retornar la referencia a la raiz*/
+NodoAvl* ArbolAvl::getRaiz(){
+    return this->raiz;
+}
 
 /*Metodo que permite vaciar el arbol por completo. Borra rama por rama*/
 void ArbolAvl::vaciarArbol(NodoAvl* nodo){

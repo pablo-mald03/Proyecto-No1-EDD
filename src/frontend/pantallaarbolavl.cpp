@@ -1,4 +1,8 @@
 #include "pantallaarbolavl.h"
+
+
+/*Includes de la clase*/
+#include "nodoavl.h"
 #include "ui_pantallaarbolavl.h"
 #include"graphicsviewzoom.h"
 
@@ -10,6 +14,8 @@
 #include <QDir>
 #include <QDesktopServices>
 #include <QUrl>
+#include<QGraphicsView>
+#include <QGraphicsTextItem>
 
 PantallaArbolAvl::PantallaArbolAvl(QWidget *parent)
     : QWidget(parent)
@@ -32,65 +38,62 @@ PantallaArbolAvl::PantallaArbolAvl(QWidget *parent)
 /*Destructor*/
 PantallaArbolAvl::~PantallaArbolAvl()
 {
-   // delete raiz;
     delete ui;
 }
 
 /*Metodo delegado para poder cargar la vista al momento de moverse*/
-void PantallaArbolAvl::setArbol(int * _arbol){
+void PantallaArbolAvl::setArbol(NodoAvl * _arbol){
     this->arbol = _arbol;
     actualizarVista();
 }
 
 /*Metodo que permite poder actualizar la vista del arbol*/
-
 void PantallaArbolAvl::actualizarVista(){
 
     this->scene->clear();
 
-    /*pendiente integracion real*/
-    /*NodoAvl* raiz = this.arbol*/
+    if (this->arbol != nullptr) {
+        int alturaTotal = this->arbol->getAltura();
 
-    raiz = crearArbolPrueba();
 
-    dibujarArbol(raiz, 0, 0, 120);
+        int offsetInicial = alturaTotal * 120;
 
-    QRectF bounds = scene->itemsBoundingRect();
-    scene->setSceneRect(bounds.adjusted(-200, -200, 200, 200));
+        dibujarArbol(this->arbol, 0, 0, offsetInicial);
+    }
 
-}
-
-/*ARBOL SIMULADO (SERA REMOVIDO CUANDO SE INTEGRE EL BACKEND)*/
-NodoFake* PantallaArbolAvl::crearArbolPrueba() {
-    NodoFake* raiz = new NodoFake{10, nullptr, nullptr};
-    raiz->izq = new NodoFake{5, nullptr, nullptr};
-    raiz->der = new NodoFake{15, nullptr, nullptr};
-    raiz->izq->izq = new NodoFake{3, nullptr, nullptr};
-    raiz->izq->der = new NodoFake{7, nullptr, nullptr};
-    return raiz;
+    scene->setSceneRect(scene->itemsBoundingRect().adjusted(-500, -200, 500, 500));
 }
 
 /*Metodo utilizado para poder dibujar a la esecena*/
-int PantallaArbolAvl::dibujarNodo(int x, int y, int valor) {
+QRectF PantallaArbolAvl::dibujarNodo(int x, int y, QString texto) {
 
-    int padding = 10;
+    int paddingH = 20;
+    int paddingV = 10;
 
-    QGraphicsTextItem* text = scene->addText(QString::number(valor));
-    QRectF rect = text->boundingRect();
+    if (texto.length() > 25) {
+        texto = texto.left(22) + "...";
+    }
 
-    int ancho = rect.width() + padding * 2;
-    int alto  = rect.height() + padding * 2;
+    QGraphicsTextItem* text = scene->addText(texto);
 
-    int size = std::max(ancho, alto);
+    text->setDefaultTextColor(Qt::white);
+    text->setZValue(10);
 
-    this->scene->addEllipse(x, y, size, size, QPen(Qt::white));
+    QFont font = text->font();
+    font.setPointSize(10);
+    font.setBold(true);
+    text->setFont(font);
 
-    int textX = x + (size - rect.width()) / 2;
-    int textY = y + (size - rect.height()) / 2;
+    QRectF textRect = text->boundingRect();
+    int ancho = std::max((int)textRect.width() + paddingH * 2, 160);
+    int alto  = textRect.height() + paddingV * 2;
+    this->scene->addEllipse(x, y, ancho, alto,
+                            QPen(Qt::white, 2),
+                            QBrush(QColor(30, 30, 35)));
 
-    text->setPos(textX, textY);
+    text->setPos(x + (ancho - textRect.width()) / 2, y + (alto - textRect.height()) / 2);
 
-    return size;
+    return QRectF(x, y, ancho, alto);
 }
 
 /*Metodo que permite dibujar las lineas de trazo*/
@@ -100,45 +103,38 @@ void PantallaArbolAvl::dibujarLinea(int x1, int y1, int x2, int y2) {
     scene->addLine(x1, y1, x2, y2, pen);
 }
 
-void PantallaArbolAvl::dibujarArbol(NodoFake* nodo, int x, int y, int offset) {
+void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
 
     if (!nodo){
         return;
     }
 
-    int size = dibujarNodo(x, y, nodo->valor);
+    QString nombre = QString::fromStdString(nodo->getDato().getNombre());
+    QRectF nodoRect = dibujarNodo(x, y, nombre);
 
-    int centerX = x + size / 2;
-    int bottomY = y + size;
+    int centerX = x + nodoRect.width() / 2;
+    int bottomY = y + nodoRect.height();
 
-    if (nodo->izq) {
+    int distanciaVertical = 180;
 
-        int childX = x - offset;
-        int childY = y + 80;
+    int nuevoOffset = offset * 0.8;
 
-        dibujarLinea(
-            centerX,
-            bottomY,
-            childX + size / 2,
-            childY
-            );
+    if (nuevoOffset < 100) nuevoOffset = 100;
 
-        dibujarArbol(nodo->izq, childX, childY, offset / 2);
+    if (nodo->getIzquierda()) {
+        int childX = centerX - nuevoOffset - nodoRect.width() / 2;
+        int childY = y + distanciaVertical;
+
+        dibujarLinea(centerX, bottomY, childX + nodoRect.width() / 2, childY);
+        dibujarArbol(nodo->getIzquierda(), childX, childY, nuevoOffset);
     }
 
-    if (nodo->der) {
+    if (nodo->getDerecha()) {
+        int childX = centerX + nuevoOffset - nodoRect.width() / 2;
+        int childY = y + distanciaVertical;
 
-        int childX = x + offset;
-        int childY = y + 80;
-
-        dibujarLinea(
-            centerX,
-            bottomY,
-            childX + size / 2,
-            childY
-            );
-
-        dibujarArbol(nodo->der, childX, childY, offset / 2);
+        dibujarLinea(centerX, bottomY, childX + nodoRect.width() / 2, childY);
+        dibujarArbol(nodo->getDerecha(), childX, childY, nuevoOffset);
     }
 }
 

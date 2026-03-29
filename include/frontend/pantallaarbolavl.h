@@ -2,17 +2,10 @@
 #define PANTALLAARBOLAVL_H
 
 #include <QWidget>
-#include<QGraphicsView>
-#include <QWheelEvent>
-#include <QGraphicsTextItem>
 
-/*ARBOL SIMULADO (SERA REMOVIDO CUANDO SE INTEGRE EL BACKEND)*/
-struct NodoFake {
-    int valor;
-    NodoFake* izq;
-    NodoFake* der;
-};
 
+class NodoAvl;
+class QGraphicsScene;
 
 namespace Ui {
 class PantallaArbolAvl;
@@ -26,7 +19,7 @@ public:
     explicit PantallaArbolAvl(QWidget *parent = nullptr);
     ~PantallaArbolAvl();
 
-    void setArbol(int * _arbol);
+    void setArbol(NodoAvl *_arbol);
 
 signals:
     void solicitarArbolAvl();
@@ -39,25 +32,20 @@ private:
 
     QGraphicsScene * scene = nullptr;
 
-    /*TEMPORAL*/
-    NodoFake* raiz = nullptr;
-
     /*Referencia del arbol*/
-    int * arbol = nullptr;
+    NodoAvl * arbol = nullptr;
 
     /*Metodo que actualiza la vista*/
     void actualizarVista();
 
     /*Metodos utilizador para poder dibujar el arbol avl*/
-    int dibujarNodo(int x, int y, int valor);
+    QRectF dibujarNodo(int x, int y, QString texto);
 
     /*Metodo que permite dibujar las lineas de trazo*/
     void dibujarLinea(int x1, int y1, int x2, int y2);
 
     /*Pendiente cambiar*/
-    void dibujarArbol(NodoFake* nodo, int x, int y, int offset) ;
+    void dibujarArbol(NodoAvl* nodo, int x, int y, int offset) ;
 
-    /*Funcion a eliminar SOLO ES SILUMACION SERA REMOVIDO CUANDO SE INTEGRE EL BACKEND REAL*/
-    NodoFake* crearArbolPrueba();
 };
 #endif // PANTALLAARBOLAVL_H

@@ -126,7 +126,7 @@ void PantallaVerArboles::on_btnAnterior_clicked()
 
 /*Metodos que permiten generar las acciones cada vez que se ejecutan las cargas de los arboles*/
 /*Metodo para recibir el arbol AVL*/
-void PantallaVerArboles::recibirArbolAvl(int * arbol){
+void PantallaVerArboles::recibirArbolAvl(NodoAvl * arbol){
 
     if(this->pantallaAvl){
         this->pantallaAvl->setArbol(arbol);

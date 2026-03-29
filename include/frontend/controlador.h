@@ -81,7 +81,7 @@ signals:
     void logDescargar(const QString &contenido);
 
     /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
-    void enviarArbolAvl(int * arbol);
+    void enviarArbolAvl(NodoAvl * arbol);
     void enviarArbolB(int * arbol);
     void enviarArbolBMas(int * arbol);
 

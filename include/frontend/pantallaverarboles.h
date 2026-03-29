@@ -28,7 +28,7 @@ signals:
 
 public slots:
     /*pendiente redefnir tipos*/
-    void recibirArbolAvl(int * arbol);
+    void recibirArbolAvl(NodoAvl * arbol);
     void recibirArbolB(int * arbol);
     void recibirArbolBMas(int * arbol);
 

@@ -49,10 +49,12 @@ template<typename T>
 void ListaEnlazada<T>::insertarAtras(const T& valor)
 {
     NodoLista<T>* nuevo = new NodoLista<T>(valor);
+    nuevo->setSiguiente(nullptr);
 
     if (esVacia())
     {
         this->cabeza = cola = nuevo;
+        nuevo->setAnterior(nullptr);
     }
     else
     {
@@ -69,10 +71,12 @@ template<typename T>
 void ListaEnlazada<T>::insertarFrente(const T& valor){
 
     NodoLista<T>* nuevo = new NodoLista<T>(valor);
+    nuevo->setAnterior(nullptr);
 
     if (esVacia())
     {
         this->cabeza = cola = nuevo;
+        nuevo->setSiguiente(nullptr);
     }
     else
     {

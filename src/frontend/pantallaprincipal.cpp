@@ -32,6 +32,21 @@ PantallaPrincipal::~PantallaPrincipal()
     delete ui;
 }
 
+/*Metodo que permite limpiar los datos por cada vez que se vuelva a cargar un nuevo csv*/
+void PantallaPrincipal::limpiarLogs(){
+
+    this->ui->labelTiempoAvl->setText("Tiempo total: 0 ms");
+    this->ui->labelTiempoB->setText("Tiempo total: 0 ms");
+    this->ui->labelTiempoBMas->setText("Tiempo total: 0 ms");
+    this->ui->labelTiempoLista->setText("Tiempo total: 0 ms");
+
+    this->ui->textEditCsv->clear();
+    this->ui->textEditLista->clear();
+    this->ui->textEditAvl->clear();
+    this->ui->textEditB->clear();
+    this->ui->textEditBMas->clear();
+
+}
 
 /*Metodo que permite seleccionar el archivo csv*/
 void PantallaPrincipal::on_btnCargar_clicked()
@@ -67,6 +82,8 @@ void PantallaPrincipal::on_btnCargar_clicked()
     }
 
     file.close();
+
+    this->limpiarLogs();
 
     emit csvCargado(buffer);
 

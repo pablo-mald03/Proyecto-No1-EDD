@@ -9,7 +9,7 @@ template class NodoLista<Producto>;
 template class NodoLista<ErroresLectura>;
 
 template<typename T>
-NodoLista<T>::NodoLista(const T &producto):dato(producto)
+NodoLista<T>::NodoLista(const T &producto):dato(producto), siguiente(nullptr), anterior(nullptr)
 {
 
 }

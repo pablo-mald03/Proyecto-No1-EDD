@@ -45,6 +45,9 @@ private:
     /*Metodo delegado para poder validar la fecha*/
     bool esFechaISO(const QString& fecha);
 
+    /*Metodo que permite verificar la integridad de la listaEnlazada*/
+    bool existeProductoLista(const std::string &codigo);
+
 };
 
 #endif // GESTORESTRUCTURAS_H

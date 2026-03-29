@@ -93,22 +93,27 @@ void Controlador::insertarLista(const std::vector<QString> & data){
     QElapsedTimer timer;
     timer.start();
 
-    bool okPrecio;
-    bool okStock;
+    int filaActual = 1;
 
     for(const QString &linea: data){
 
         QStringList columnas = linea.split(",");
 
+        if (columnas.size() < 7) {
+            this->gestorBackend->agregarErrorLista("Fila con columnas insuficientes", filaActual);
+            emit logLista("Error: Fila malformada en linea " + QString::number(filaActual), "red");
+            filaActual++;
+            continue;
+        }
+
         std::string nombre = columnas[0].toStdString();
-
         std::string key = columnas[1].toStdString();
-
         std::string categoria = columnas[2].toStdString();
-
         std::string fechaExp = columnas[3].toStdString();
-
         std::string marca = columnas[4].toStdString();
+
+        bool okPrecio;
+        bool okStock;
 
         double precio = columnas[5].toDouble(&okPrecio);
         int stock = columnas[6].toInt(&okStock);
@@ -117,10 +122,22 @@ void Controlador::insertarLista(const std::vector<QString> & data){
             emit logLista("Error en conversion numerica: " + linea, "red");
             continue;
         }
+        try{
 
-        this->gestorBackend->insertarListas(nombre,key,categoria,fechaExp,marca,precio,stock);
+            this->gestorBackend->insertarListas(nombre,key,categoria,fechaExp,marca,precio,stock);
 
-        emit logLista("Insertado: " + QString::fromStdString(key), "green");
+            emit logLista("Insertado: " + QString::fromStdString(key), "green");
+
+        }catch (const ReaderCsvException& e) {
+
+            this->gestorBackend->agregarErrorLista(e.what(), filaActual);
+            emit logLista("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
+        }
+        catch (const std::exception& ex) {
+            emit logLista("Error inesperado: " + QString::fromStdString(ex.what()) + ". Fila: " + QString::number(filaActual) , "red");
+        }
+
+        filaActual++;
     }
 
     qint64 tiempo = timer.elapsed();

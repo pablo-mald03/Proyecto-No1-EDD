@@ -49,6 +49,10 @@ private:
 
     /*Metodo para descargar el log de errores*/
     void descargarLogErrores(const QString &contenido);
+
+    /*Metodo que permite limpiar los datos por cada vez que se vuelva a cargar un nuevo csv*/
+    void limpiarLogs();
+
 };
 
 #endif // PANTALLAPRINCIPAL_H

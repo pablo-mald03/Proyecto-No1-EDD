@@ -4,6 +4,7 @@
 /*Includes de la clase*/
 #include "erroreslectura.h"
 #include "nodob.h"
+#include"nodobmas.h"
 #include"producto.h"
 
 
@@ -11,6 +12,7 @@
 template class ListaEnlazada<Producto>;
 template class ListaEnlazada<ErroresLectura>;
 template class ListaEnlazada<NodoB*>;
+template class ListaEnlazada<NodoBMas*>;
 
 /*Constructor de la lista enlazada*/
 template<typename T>

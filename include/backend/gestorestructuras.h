@@ -4,6 +4,7 @@
 //Includes de la clase
 #include "arbolavl.h"
 #include "arbolb.h"
+#include "arbolbmas.h"
 #include "erroreslectura.h"
 #include"listaenlazada.h"
 #include"producto.h"
@@ -25,6 +26,10 @@ public:
 
     /*Metodo que permite insertar datos en el arbol B*/
     void insertarArbolB(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
+
+
+    /*Metodo que permite insertar datos en el arbol B+*/
+    void insertarArbolBMas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
 
 
     /*Metodos para insertar datos en las estructuras provinientes del csv*/
@@ -78,6 +83,9 @@ private:
 
     /*Arbol B*/
     ArbolB * arbolB = nullptr;
+
+    /*Arbol B+*/
+    ArbolBMas * arbolBMas = nullptr;
 
     /*Atributos de la clase gestor*/
     ListaEnlazada<Producto> *listaNoOrdenada = nullptr;

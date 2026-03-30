@@ -83,6 +83,8 @@ set(BACKEND_SOURCES
     src/backend/arbolavl.cpp
     src/backend/nodob.cpp
     src/backend/arbolb.cpp
+    src/backend/arbolbmas.cpp
+    src/backend/nodobmas.cpp
 )
 
 
@@ -97,6 +99,8 @@ set(BACKEND_HEADERS
     include/backend/arbolavl.h
     include/backend/nodob.h
     include/backend/arbolb.h
+    include/backend/nodobmas.h
+    include/backend/arbolbmas.h
 )
 
 set(EXCEPTIONS_SOURCES

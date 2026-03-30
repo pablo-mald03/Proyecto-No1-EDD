@@ -3,12 +3,14 @@
 /*Includes de la clase*/
 #include "erroreslectura.h"
 #include "nodob.h"
+#include "nodobmas.h"
 #include"producto.h"
 
 
 template class NodoLista<Producto>;
 template class NodoLista<ErroresLectura>;
 template class NodoLista<NodoB*>;
+template class NodoLista<NodoBMas*>;
 
 template<typename T>
 NodoLista<T>::NodoLista(const T &producto):dato(producto), siguiente(nullptr), anterior(nullptr)

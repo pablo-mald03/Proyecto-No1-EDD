@@ -134,6 +134,7 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
         this->insertarListaCsv(datosValidados);
         this->insertarArbolAvlCsv(datosValidados);
         this->insertarArbolBCsv(datosValidados);
+        this->insertarArbolBMasCsv(datosValidados);
 
         emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
@@ -274,6 +275,67 @@ void Controlador::insertarArbolBCsv(const std::vector<QString> & data){
 
     qint64 tiempo = timer.elapsed();
     emit tiempoProceso(2, tiempo);
+}
+
+
+/*Metodo utilizado para insertar los datos dentro del arbol B+*/
+void Controlador::insertarArbolBMasCsv(const std::vector<QString> & data){
+
+    QElapsedTimer timer;
+    timer.start();
+
+    int filaActual = 1;
+
+    for(const QString &linea: data){
+
+        QStringList columnas = linea.split(",");
+
+        if (columnas.size() < 7) {
+            this->gestorBackend->agregarErrorLista("Fila con columnas insuficientes", filaActual);
+            emit logArbolBMas("Error: Fila malformada en linea " + QString::number(filaActual), "red");
+            filaActual++;
+            continue;
+        }
+
+        std::string nombre = columnas[0].toStdString();
+        std::string key = columnas[1].toStdString();
+        std::string categoria = columnas[2].toStdString();
+        std::string fechaExp = columnas[3].toStdString();
+        std::string marca = columnas[4].toStdString();
+
+        bool okPrecio;
+        bool okStock;
+
+        double precio = columnas[5].toDouble(&okPrecio);
+        int stock = columnas[6].toInt(&okStock);
+
+        if (!okPrecio || !okStock) {
+            emit logArbolBMas("Error en conversion numerica: " + linea, "red");
+            continue;
+        }
+        try{
+
+            this->gestorBackend->insertarArbolBMas(nombre,key,categoria,fechaExp,marca,precio,stock);
+            emit logArbolBMas("Insertado: " + QString::fromStdString(key), "green");
+        }
+        catch (const InsertException& e) {
+            this->gestorBackend->agregarErrorLista(e.what(), filaActual);
+            emit logArbolBMas("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
+        }
+        catch (const ReaderCsvException& e) {
+
+            this->gestorBackend->agregarErrorLista(e.what(), filaActual);
+            emit logArbolBMas("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
+        }
+        catch (const std::exception& ex) {
+            emit logArbolBMas("Error inesperado: " + QString::fromStdString(ex.what()) + ". Fila: " + QString::number(filaActual) , "red");
+        }
+
+        filaActual++;
+    }
+
+    qint64 tiempo = timer.elapsed();
+    emit tiempoProceso(3, tiempo);
 }
 
 

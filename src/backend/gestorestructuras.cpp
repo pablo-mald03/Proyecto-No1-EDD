@@ -13,6 +13,7 @@ GestorEstructuras::GestorEstructuras():
     listaErrores(new ListaEnlazada<ErroresLectura>()),
     arbolAvl(new ArbolAvl()),
     arbolB(new ArbolB(5)),
+    arbolBMas(new ArbolBMas(5)),
     cargoArchivo(false)
 {
 }
@@ -28,6 +29,12 @@ GestorEstructuras::~GestorEstructuras(){
     if(this->arbolB != nullptr){
         delete this->arbolB;
         this->arbolB = nullptr;
+    }
+
+
+    if(this->arbolBMas != nullptr){
+        delete this->arbolBMas;
+        this->arbolBMas = nullptr;
     }
 
     if(this->listaNoOrdenada != nullptr){
@@ -166,6 +173,22 @@ void GestorEstructuras::insertarArbolB(std::string nombre, std::string key, std:
 }
 
 /*---****-----Fin del Apartado de Metodos que permiten utilizar el arbol B-------****---*/
+
+
+/*---****-----Apartado de Metodos que permiten utilizar el arbol B+-------****---*/
+
+/*Metodo que permite insertar datos en el arbol Avl*/
+void GestorEstructuras::insertarArbolBMas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+
+    try{
+        this->arbolBMas->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+    }catch (const InsertException& e) {
+        throw InsertException(e.what());
+    }
+}
+
+/*---****-----Fin del Apartado de Metodos que permiten utilizar el arbol B+-------****---*/
+
 
 
 /*Metodo que permite insertar los datos en la lista*/

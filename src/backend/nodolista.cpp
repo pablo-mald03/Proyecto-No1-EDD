@@ -16,6 +16,12 @@ NodoLista<T>::NodoLista(const T &producto):dato(producto), siguiente(nullptr), a
 
 }
 
+template<typename T>
+NodoLista<T>::NodoLista()
+    : dato(T()), siguiente(nullptr), anterior(nullptr)
+{
+}
+
 /*Destructor*/
 template<typename T>
 NodoLista<T>::~NodoLista(){

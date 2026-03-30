@@ -20,6 +20,11 @@ ArbolB::~ArbolB(){
     }
 }
 
+/*Metodo que permite retornar la raiz del arbol B*/
+NodoB * ArbolB::getRaiz(){
+    return this->raiz;
+}
+
 /*Metodo que permite generar el graphviz del arbol B*/
 std::string ArbolB::generarDot(){
 
@@ -335,6 +340,7 @@ void ArbolB::eliminar(const std::string& fecha, const std::string& codigo) {
             this->raiz = this->raiz->getHijos().getValor(0);
         }
 
+        delete temporal;
     }
 }
 

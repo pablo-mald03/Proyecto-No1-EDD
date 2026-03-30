@@ -74,6 +74,9 @@ public:
     /*Metodo que permite generar el graphviz del arbol B*/
     std::string generarDot();
 
+    /*Metodo que permite retornar la raiz del arbol B*/
+    NodoB * getRaiz();
+
 };
 
 #endif // ARBOLB_H

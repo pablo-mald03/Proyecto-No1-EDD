@@ -13,6 +13,7 @@ private:
 
 public:
     NodoLista(const T &producto);
+    NodoLista();
     ~NodoLista();
 
     /*Metodos getters y setters*/

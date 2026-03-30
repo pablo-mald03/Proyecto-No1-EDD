@@ -250,7 +250,9 @@ void  ListaEnlazada<T>::setValor(int posicion, const T& nuevoValor){
 template<typename T>
 T ListaEnlazada<T>::obtenerFrente() const {
     if (esVacia()) {
-        return nullptr;
+        if (esVacia()) {
+            throw std::runtime_error("Intento de obtener frente de una lista vacia");
+        }
     }
     return cabeza->getDato();
 }

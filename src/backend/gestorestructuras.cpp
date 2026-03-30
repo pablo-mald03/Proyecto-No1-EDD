@@ -25,6 +25,11 @@ GestorEstructuras::~GestorEstructuras(){
         this->arbolAvl = nullptr;
     }
 
+    if(this->arbolB != nullptr){
+        delete this->arbolB;
+        this->arbolB = nullptr;
+    }
+
     if(this->listaNoOrdenada != nullptr){
         delete this->listaNoOrdenada;
         this->listaNoOrdenada = nullptr;
@@ -64,6 +69,12 @@ std::string GestorEstructuras::serializarListaCsv() {
 
 
 /*----****------Apartado de metodos setter y setters para poder interactuar con las estructuras------****---*/
+
+/*Metodo que permite obtener la raiz del arbol B*/
+NodoB * GestorEstructuras::getRaizArbolB(){
+    return this->arbolB->getRaiz();
+}
+
 /*Metodo que permite obtener el .dot del arbol AVL*/
 std::string GestorEstructuras::obtenerGraphvizAvl(){
     return this->arbolAvl->generarDot();
@@ -143,7 +154,7 @@ void GestorEstructuras::insertarArbolAvl(std::string nombre, std::string key, st
 void GestorEstructuras::insertarArbolB(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
 
     try{
-        this->arbolAvl->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+        this->arbolB->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
     }catch (const InsertException& e) {
         throw InsertException(e.what());
     }

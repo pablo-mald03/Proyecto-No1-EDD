@@ -92,7 +92,7 @@ signals:
 
     /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
     void enviarArbolAvl(NodoAvl * arbol);
-    void enviarArbolB(int * arbol);
+    void enviarArbolB(NodoB * arbol);
     void enviarArbolBMas(int * arbol);
 
 

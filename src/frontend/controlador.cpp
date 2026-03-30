@@ -133,6 +133,7 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
         this->insertarListaCsv(datosValidados);
         this->insertarArbolAvlCsv(datosValidados);
+        this->insertarArbolBCsv(datosValidados);
 
         emit logCargaCsv("Proceso finalizado. Filas a insertar: " + QString::number(datosValidados.size()), "green");
 
@@ -421,7 +422,7 @@ void Controlador::obtenerArbolAvl(){
 }
 
 void Controlador::obtenerArbolB(){
-    emit enviarArbolB(new int(1));
+    emit enviarArbolB(this->gestorBackend->getRaizArbolB());
 }
 
 void Controlador::obtenerArbolBMas(){

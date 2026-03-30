@@ -146,7 +146,7 @@ void PantallaVerArboles::recibirGrapvizAvl(std::string dot){
 
 
 /*Metodo para recibir el arbol B*/
-void PantallaVerArboles::recibirArbolB(int * arbol){
+void PantallaVerArboles::recibirArbolB(NodoB * arbol){
 
     if(this->pantallaB){
         this->pantallaB->setArbol(arbol);

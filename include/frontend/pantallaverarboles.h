@@ -2,6 +2,8 @@
 #define PANTALLAVERARBOLES_H
 
 #include <QWidget>
+#include "nodob.h"
+#include"nodoavl.h"
 #include"pantallaarbolavl.h"
 #include"pantallaarbolb.h"
 #include"pantallaarbolbmas.h"
@@ -35,7 +37,7 @@ signals:
 public slots:
     /*Metodos que permiten generar la previsualizacion del estado actual de los arboles*/
     void recibirArbolAvl(NodoAvl * arbol);
-    void recibirArbolB(int * arbol);
+    void recibirArbolB(NodoB * arbol);
     void recibirArbolBMas(int * arbol);
 
     /*Metodos que permiten generar el graphviz del estado actual de los arboles*/

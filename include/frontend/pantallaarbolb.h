@@ -6,12 +6,9 @@
 #include <QWheelEvent>
 #include <QGraphicsTextItem>
 
+class NodoB;
+class QGraphicsScene;
 
-/*STRUCT QUEMADO NO TIENE NINGUN CONTEXTO EN LA FASE DE FRONT MAS QUE ESTAR QUEMADO*/
-struct NodoBFake {
-    std::vector<int> claves;
-    std::vector<NodoBFake*> hijos;
-};
 
 namespace Ui {
 class PantallaArbolB;
@@ -24,7 +21,7 @@ class PantallaArbolB : public QWidget
 public:
     explicit PantallaArbolB(QWidget *parent = nullptr);
     ~PantallaArbolB();
-    void setArbol(int * _arbol);
+    void setArbol(NodoB * _arbol);
 
 signals:
     void solicitarArbolB();
@@ -38,19 +35,16 @@ private:
     QGraphicsScene * scene = nullptr;
 
     /*Referencia del arbol*/
-    int * arbol = nullptr;
+    NodoB * raiz = nullptr;
 
     /*Metodo que permite dibujar a los nodos*/
-    int dibujarNodoB(int x, int y, NodoBFake* nodo);
+    int dibujarNodoB(int x, int y, NodoB* nodo);
 
     /*Metodo que permite dibujar a las lineas que unen a los nodos*/
     void dibujarLineaB(int x1, int y1, int x2, int y2);
 
     /*Pendiente reemplazar PENDIENTE LA INTEGRACION REAL*/
-    void dibujarArbolB(NodoBFake* nodo, int x, int y, int offset);
-
-    /*METODO TEMPORAL*/
-    NodoBFake* crearArbolBPrueba();
+    void dibujarArbolB(NodoB* nodo, int x, int y, int offset);
 
     /*Metodo que actualiza la vista*/
     void actualizarVista();

@@ -6,6 +6,8 @@ class ErroresLectura
 {
 public:
     ErroresLectura(const std::string &_mensaje,int _linea);
+    ErroresLectura();
+
     std::string getMensaje();
     int getLinea();
 

@@ -1,4 +1,7 @@
 #include "pantallaarbolb.h"
+
+/*Includes de la clase*/
+#include"nodob.h"
 #include "graphicsviewzoom.h"
 #include "ui_pantallaarbolb.h"
 
@@ -36,8 +39,8 @@ PantallaArbolB::~PantallaArbolB()
 }
 
 /*Metodo delegado para poder cargar la vista al momento de moverse*/
-void PantallaArbolB::setArbol(int * _arbol){
-    this->arbol = _arbol;
+void PantallaArbolB::setArbol(NodoB * _arbol){
+    this->raiz = _arbol;
     actualizarVista();
 }
 
@@ -46,75 +49,59 @@ void PantallaArbolB::actualizarVista(){
 
     this->scene->clear();
 
-    /*pendiente integracion real*/
-    NodoBFake* raiz = crearArbolBPrueba();
-
-    dibujarArbolB(raiz, 0, 0, 150);
+    if (this->raiz != nullptr) {
+        dibujarArbolB(this->raiz, 0, 0, 400);
+    }
 
     QRectF bounds = scene->itemsBoundingRect();
     scene->setSceneRect(bounds.adjusted(-200, -200, 200, 200));
-
 }
 
-
-/*METODO QUEMADO. PENDIENTE LA INTEGRACION REAL (SERA REMOVIDO)*/
-NodoBFake* PantallaArbolB::crearArbolBPrueba() {
-    NodoBFake* raiz = new NodoBFake{{10, 20}, {}};
-
-    NodoBFake* hijo1 = new NodoBFake{{5, 8}, {}};
-    NodoBFake* hijo2 = new NodoBFake{{12, 15}, {}};
-    NodoBFake* hijo3 = new NodoBFake{{25, 30}, {}};
-
-    raiz->hijos = {hijo1, hijo2, hijo3};
-
-    return raiz;
-}
 
 /*Metodo que permite dibujar a los nodos*/
-int PantallaArbolB::dibujarNodoB(int x, int y, NodoBFake* nodo) {
+int PantallaArbolB::dibujarNodoB(int x, int y, NodoB* nodo) {
 
-    int paddingX = 10;
-    int paddingY = 6;
-    int separacion = 5;
-
+    int paddingX = 12;
+    int paddingY = 8;
     int currentX = x;
     int alturaMax = 0;
 
     std::vector<QGraphicsTextItem*> textos;
 
-    for (int valor : nodo->claves) {
+    int nClaves = nodo->getClaves().getLongitud();
 
-        QGraphicsTextItem* text = scene->addText(QString::number(valor));
+    for (int i = 0; i < nClaves; i++) {
+        Producto product = nodo->getClaves().getValor(i);
+        QString etiqueta = QString::fromStdString(product.getFechaExpiracion());
+
+        QGraphicsTextItem* text = scene->addText(etiqueta);
+        text->setDefaultTextColor(Qt::white);
+
         QRectF rect = text->boundingRect();
-
         int ancho = rect.width() + paddingX * 2;
         int alto = rect.height() + paddingY * 2;
 
         alturaMax = std::max(alturaMax, alto);
-
         text->setPos(currentX + paddingX, y + paddingY);
-
         textos.push_back(text);
 
-        currentX += ancho + separacion;
+        currentX += ancho;
     }
 
-    int anchoTotal = currentX - x - separacion;
+    int anchoTotal = currentX - x;
 
-    scene->addRect(x, y, anchoTotal, alturaMax, QPen(Qt::white));
+    scene->addRect(x, y, anchoTotal, alturaMax, QPen(Qt::white), QBrush(QColor(219, 234, 254)));
 
     currentX = x;
-
     for (int i = 0; i < textos.size(); i++) {
-
         QRectF rect = textos[i]->boundingRect();
         int ancho = rect.width() + paddingX * 2;
 
-        if (i > 0) {
-            scene->addLine(currentX, y, currentX, y + alturaMax, QPen(Qt::white));
+        if (i < textos.size() - 1) {
+            scene->addLine(currentX + ancho, y, currentX + ancho, y + alturaMax, QPen(Qt::black));
         }
-
-        currentX += ancho + separacion;
+        currentX += ancho;
+        textos[i]->setDefaultTextColor(Qt::black);
     }
 
     return anchoTotal;
@@ -127,28 +114,36 @@ void PantallaArbolB::dibujarLineaB(int x1, int y1, int x2, int y2) {
     this->scene->addLine(x1, y1, x2, y2, pen);
 }
 
-void PantallaArbolB::dibujarArbolB(NodoBFake* nodo, int x, int y, int offset) {
+/*Metodo que permite dibujar el arbol B*/
+void PantallaArbolB::dibujarArbolB(NodoB* nodo, int x, int y, int offset) {
 
-    if (!nodo) return;
+    if (!nodo){
+        return;
+    }
 
-    int anchoCelda = 30;
     int anchoNodo = dibujarNodoB(x, y, nodo);
 
-    int numHijos = nodo->hijos.size();
+    if (nodo->getEsHoja()) return;
+
+    int numHijos = nodo->getHijos().getLongitud();
+
+    int inicioX = x + (anchoNodo / 2) - ((numHijos - 1) * offset / 2);
 
     for (int i = 0; i < numHijos; i++) {
+        NodoB* hijo = nodo->getHijos().getValor(i);
+        if (!hijo) continue;
 
-        int childX = x - (numHijos - 1) * offset / 2 + i * offset;
-        int childY = y + 80;
+        int childX = inicioX + (i * offset);
+        int childY = y + 100;
 
         dibujarLineaB(
-            x + anchoNodo / 2,
-            y + 40,
+            x + (anchoNodo / numHijos) * i + (anchoNodo / (numHijos * 2)),
+            y + 30,
             childX + 20,
             childY
             );
 
-        dibujarArbolB(nodo->hijos[i], childX, childY, offset / 1.5);
+        dibujarArbolB(hijo, childX, childY, offset / 1.8);
     }
 }
 

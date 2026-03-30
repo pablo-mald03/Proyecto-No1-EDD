@@ -66,6 +66,7 @@ public slots:
 
     /*Metodos que permiten obtener el graphviz de los arboles*/
     void generarGraphArbolAvl();
+    void generarGraphArbolB();
 
     /*Metodo que permite obtener los datos para poder descargar el Log de errores*/
     void prepararLogParaDescarga();
@@ -74,6 +75,7 @@ signals:
 
     /*Metodos que permiten enviar la informacion para poder generar el graphviz los arboles*/
     void enviarGraphvizArbolAvl(std::string arbol);
+    void enviarGraphvizArbolB(std::string arbol);
 
     /*Metodo que permite enviar al front el contenido para poder ser guardado*/
     void contenidoCsvListo(QString archivo);

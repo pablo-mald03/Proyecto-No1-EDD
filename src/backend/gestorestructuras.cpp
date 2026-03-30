@@ -80,6 +80,11 @@ std::string GestorEstructuras::obtenerGraphvizAvl(){
     return this->arbolAvl->generarDot();
 }
 
+/*Metodo que permite obtener el .dot del arbol B*/
+std::string GestorEstructuras::obtenerGraphvizB(){
+    return this->arbolB->generarDot();
+}
+
 /*Metodo que permite obtener la raiz del arbol avl*/
 NodoAvl * GestorEstructuras::getRaizArbolAvl(){
     return this->arbolAvl->getRaiz();

@@ -56,6 +56,7 @@ void PantallaVerArboles::mostrarVistaB(){
 
         //Se conectan las signals para poder interactuar con la pantalla
         connect(this->pantallaB, &PantallaArbolB::solicitarArbolB, this, &PantallaVerArboles::onSolicitarArbolB);
+        connect(this->pantallaB, &PantallaArbolB::solicitarGraphvizB, this, &PantallaVerArboles::onSolicitarGraphvizB);
     }
 
     this->ui->labelArboles->setText("Arbol B");
@@ -154,6 +155,15 @@ void PantallaVerArboles::recibirArbolB(NodoB * arbol){
 
 }
 
+/*Metodo para recibir el graphviz del arbol B*/
+void PantallaVerArboles::recibirGrapvizB(std::string dot){
+
+    if(this->pantallaB){
+        this->pantallaB->generarGraphviz(dot);
+    }
+}
+
+
 /*Metodo para recibir el arbol B+ */
 void PantallaVerArboles::recibirArbolBMas(int * arbol){
 
@@ -167,6 +177,12 @@ void PantallaVerArboles::recibirArbolBMas(int * arbol){
 void PantallaVerArboles::onSolicitarGraphvizAvl(){
     emit solicitarGraphArbolAvl();
 }
+
+/*Metodos para poder solicitar el graphviz del arbol B*/
+void PantallaVerArboles::onSolicitarGraphvizB(){
+    emit solicitarGraphArbolB();
+}
+
 
 /*Metodo que permite solicitar al arbol AVL para poderlo graficar*/
 void PantallaVerArboles::onSolicitarArbolAvl()

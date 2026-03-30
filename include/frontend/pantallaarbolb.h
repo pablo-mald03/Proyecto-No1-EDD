@@ -1,6 +1,7 @@
 #ifndef PANTALLAARBOLB_H
 #define PANTALLAARBOLB_H
 
+#include "graphicsviewzoom.h"
 #include <QWidget>
 #include<QGraphicsView>
 #include <QWheelEvent>
@@ -23,8 +24,12 @@ public:
     ~PantallaArbolB();
     void setArbol(NodoB * _arbol);
 
+    /*Metodo que permite generar el graphviz del arbol B*/
+    void generarGraphviz(std::string graph);
+
 signals:
     void solicitarArbolB();
+    void solicitarGraphvizB();
 
 private slots:
     void on_btnExportar_clicked();
@@ -33,6 +38,8 @@ private:
     Ui::PantallaArbolB *ui;
 
     QGraphicsScene * scene = nullptr;
+
+    GraphicsViewZoom *zoomView = nullptr;
 
     /*Referencia del arbol*/
     NodoB * raiz = nullptr;
@@ -44,10 +51,16 @@ private:
     void dibujarLineaB(int x1, int y1, int x2, int y2);
 
     /*Pendiente reemplazar PENDIENTE LA INTEGRACION REAL*/
-    void dibujarArbolB(NodoB* nodo, int x, int y, int offset);
+    void dibujarArbolB(NodoB* nodo, int x, int y);
 
     /*Metodo que actualiza la vista*/
     void actualizarVista();
+
+    /*Metodo que permite obtener el ancho total de la lista para poder generar una mejor distribucion*/
+    int getAnchoTotal(NodoB* nodo);
+
+    /*Metodo que permite calcular el ancho del nodo real*/
+    int getAnchoNodoReal(NodoB* nodo);
 };
 
 #endif // PANTALLAARBOLB_H

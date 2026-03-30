@@ -300,6 +300,14 @@ void MainWindow::mostrarVerArboles(){
         connect(this->controladorCrud, &Controlador::enviarArbolB,
                 this->pantallaVerArboles, &PantallaVerArboles::recibirArbolB);
 
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarGraphArbolB,
+                this->controladorCrud, &Controlador::generarGraphArbolB);
+
+        connect(this->controladorCrud, &Controlador::enviarGraphvizArbolB,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirGrapvizB);
+
+
+
         connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolBMas,
                 this->controladorCrud, &Controlador::obtenerArbolBMas);
 

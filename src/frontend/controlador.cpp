@@ -437,4 +437,8 @@ void Controlador::generarGraphArbolAvl(){
     emit enviarGraphvizArbolAvl(this->gestorBackend->obtenerGraphvizAvl());
 }
 
+void Controlador::generarGraphArbolB(){
+    emit enviarGraphvizArbolB(this->gestorBackend->obtenerGraphvizB());
+}
+
 /*-----*---Fin del apartado de metodos para poder generar los graphviz de los arboles---*-----*/

@@ -206,7 +206,7 @@ void ListaEnlazada<T>::insertar(int indice, const T& valor)
 template<typename T>
 void ListaEnlazada<T>::eliminar(int indice)
 {
-    if (indice >= this->longitud){
+    if (indice < 0 || indice >= this->longitud){
         throw std::out_of_range("Indice fuera de rango de la lista enlazada");
     }
 
@@ -232,6 +232,19 @@ void ListaEnlazada<T>::eliminar(int indice)
     delete actual;
     this->longitud--;
 }
+
+/*Metodo que permite editar el valor en una posicion*/
+template<typename T>
+void  ListaEnlazada<T>::setValor(int posicion, const T& nuevoValor){
+
+    if (posicion < 0 || posicion >= this->longitud) {
+        throw std::out_of_range("Indice fuera de rango de la lista enlazada");
+    }
+
+    NodoLista<T>* nodoDestino = getNodo(posicion);
+    nodoDestino->setValor(nuevoValor);
+}
+
 
 /*Metodo que permite obtener el frente de la lista*/
 template<typename T>

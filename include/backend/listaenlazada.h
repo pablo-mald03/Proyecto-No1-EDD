@@ -38,6 +38,8 @@ public:
 
     T& getValor(int pos);
 
+    void setValor(int posicion, const T& nuevoValor);
+
     //Metodo para obtener la cabeza
     NodoLista<T>* getCabeza() const;
 

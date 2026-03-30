@@ -2,11 +2,13 @@
 
 /*Includes de la clase*/
 #include "erroreslectura.h"
+#include "nodob.h"
 #include"producto.h"
 
 
 template class NodoLista<Producto>;
 template class NodoLista<ErroresLectura>;
+template class NodoLista<NodoB*>;
 
 template<typename T>
 NodoLista<T>::NodoLista(const T &producto):dato(producto), siguiente(nullptr), anterior(nullptr)
@@ -46,5 +48,11 @@ void NodoLista<T>::setSiguiente(NodoLista<T>* _siguiente){
 template<typename T>
 void NodoLista<T>::setAnterior(NodoLista<T>* _anterior){
     this->anterior = _anterior;
+}
+
+/*Metodo que permite modificar el valor el valor dentro del nodo*/
+template<typename T>
+void NodoLista<T>::setValor(const T& nuevoValor){
+    this->dato = nuevoValor;
 }
 

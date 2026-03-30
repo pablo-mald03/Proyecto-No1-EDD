@@ -24,6 +24,9 @@ public:
     void setSiguiente(NodoLista<T>* _siguiente);
     void setAnterior(NodoLista<T>* _anterior);
 
+    /*Metodo que permite setear el valor dentro del nodo*/
+    void setValor(const T& nuevoValor);
+
 };
 
 #endif // NODOLISTA_H

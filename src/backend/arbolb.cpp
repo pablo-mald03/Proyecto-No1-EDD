@@ -1,4 +1,5 @@
 #include "arbolb.h"
+#include "deleteexception.h"
 #include "insertexception.h"
 
 /*Constructor del arbol se deja el grado minimo del arbol a eleccion*/
@@ -12,6 +13,64 @@ ArbolB::ArbolB(int _t):
 /*Destructor*/
 ArbolB::~ArbolB(){
 
+    /*Limpieza recursiva*/
+    if(this->raiz != nullptr){
+        delete this->raiz;
+        this->raiz = nullptr;
+    }
+}
+
+/*Metodo que permite generar el graphviz del arbol B*/
+std::string ArbolB::generarDot(){
+
+    std::stringstream sStream;
+    sStream << "digraph ArbolB {\n";
+    sStream << "    rankdir=TB;\n";
+    sStream << "    node [shape=record, style=filled, fillcolor=\"#dbeafe\", fontcolor=black, color=black, fontname=\"Arial\"];\n";
+    sStream << "    edge [color=black];\n\n";
+
+    if (this->raiz != nullptr) {
+        generarDotRecursivo(this->raiz, sStream);
+    }
+    else{
+        sStream << "    nodoVacio [label=\" El árbol está vacío \", fillcolor=\"#fee2e2\", shape=note];\n";
+    }
+
+    sStream << "}\n";
+    return sStream.str();
+}
+
+/*Metodo que permite generar el .dot recursivo para el arbol y que se pueda graficar*/
+void ArbolB::generarDotRecursivo(NodoB* nodo, std::stringstream& sStream){
+    if(nodo == nullptr){
+        return;
+    }
+
+    sStream << "    nodo" << nodo << " [label=\"";
+
+    int n = nodo->getClaves().getLongitud();
+    for (int i = 0; i < n; ++i) {
+        sStream << "<f" << i << "> |";
+
+        Producto p = nodo->getClaves().getValor(i);
+        sStream << " " << p.getFechaExpiracion()<< " ";
+
+        sStream << "|";
+    }
+    sStream << "<f" << n << ">\"];\n";
+
+    if (!nodo->getEsHoja()) {
+        for (int i = 0; i <= n; ++i) {
+            if (i < nodo->getHijos().getLongitud()) {
+                NodoB* hijo = nodo->getHijos().getValor(i);
+                if (hijo != nullptr) {
+
+                    sStream << "    \"nodo" << nodo << "\":f" << i << " -> \"nodo" << hijo << "\";\n";
+                    generarDotRecursivo(hijo, sStream);
+                }
+            }
+        }
+    }
 }
 
 
@@ -194,4 +253,288 @@ bool ArbolB::existeCodigo(NodoB* nodo, const std::string &codigo){
 
 
 /*----***---Metodos de busqueda---***----*/
+
+/* Metodo publico que inicializa la busqueda y retorna la lista de productos en el rago de fechas */
+ListaEnlazada<Producto> ArbolB::buscarRango(const std::string& inicio, const std::string& fin) {
+    ListaEnlazada<Producto> resultados;
+    buscarRangoAux(this->raiz, inicio, fin, resultados);
+    return resultados;
+}
+
+/*Metodo auxiliar recursivo que permite buscar los productos en el rango de fechas establecido*/
+/*Es un recorrido inorden*/
+
+void ArbolB::buscarRangoAux(NodoB* nodo, const std::string& inicio, const std::string& fin, ListaEnlazada<Producto>& resultados) {
+    if (nodo == nullptr) {
+        return;
+    }
+
+    int i = 0;
+    int numClaves = nodo->getClaves().getLongitud();
+
+    for (i = 0; i < numClaves; i++) {
+        Producto product = nodo->getClaves().getValor(i);
+
+        /*Evalua si no es hoja y si la fecha es mayor al nodo inicial*/
+        if (!nodo->getEsHoja() && product.getFechaExpiracion() >= inicio) {
+            buscarRangoAux(nodo->getHijos().getValor(i), inicio, fin, resultados);
+        }
+
+        /*Evalua si la clave esta dentro del rango y se agrega */
+        if (product.getFechaExpiracion() >= inicio && product.getFechaExpiracion() <= fin) {
+            resultados.insertarAtras(product);
+        }
+
+        /*Alternativa efectiva*/
+        /*Conciste en cortar la ejecucion si se sale del rango para evitar que se recorra todo el arbol*/
+        if (product.getFechaExpiracion() > fin) {
+            return;
+        }
+    }
+
+    /*si el ciclo termino se revisa el ultimo a la derecha*/
+    if (!nodo->getEsHoja()) {
+        buscarRangoAux(nodo->getHijos().getValor(i), inicio, fin, resultados);
+    }
+
+}
+
+
+/*----***---Fin de los Metodos de busqueda---***----*/
+
+
+/*----*****--METODO DE ELIMINACION TOTAL--*****----*/
+
+/*
+*
+*NOTA IMPORTANTE: Este metodo esta muy recortado ya que la eliminacion de los nodos se delego directamente al Nodo
+*por lo tanto este ya se encarga de llevarse todo por delante
+*
+*/
+
+void ArbolB::eliminar(const std::string& fecha, const std::string& codigo) {
+
+    if (this->raiz == nullptr) {
+        throw DeleteException("El árbol está vacío. [ARBOL B]");
+    }
+
+    /*Llamado al metodo recursivo de eliminacion*/
+
+    this->eliminarAux(this->raiz, fecha, codigo);
+
+    /*Se determina si la lista esta vacia para eliminar el restante*/
+    if (this->raiz->getClaves().getLongitud() == 0) {
+
+        NodoB* temporal = this->raiz;
+
+        /*Caso: raiz hoja*/
+        if (this->raiz->getEsHoja()) {
+            this->raiz = nullptr;
+        }
+        else{
+            this->raiz = this->raiz->getHijos().getValor(0);
+        }
+
+    }
+}
+
+/*----*****--APARTADO DE LOS METODOS DE ELIMINACION--*****----*/
+
+/*Metodo clave. ESTE PERMITE MANTENER EL BALANCE ES DE LOS MAS IMPORTANTES YA QUE MANEJA TODOS LOS CASOS*/
+void ArbolB::eliminarDeNodoInterno(NodoB* nodo, int idx){
+
+    Producto clave = nodo->getClaves().getValor(idx);
+    NodoB* hijoIzq = nodo->getHijos().getValor(idx);
+    NodoB* hijoDer = nodo->getHijos().getValor(idx + 1);
+
+    /*Caso en el que el hijo izquierdo tiene lo suficiente para poder prestar*/
+    if (hijoIzq->getClaves().getLongitud() >= t) {
+        Producto predecesor = getPredecesor(nodo, idx);
+        nodo->getClaves().setValor(idx, predecesor); // Reemplazamos
+        eliminarAux(hijoIzq, predecesor.getFechaExpiracion(), predecesor.getCodigoBarra());
+    }
+    else if (hijoDer->getClaves().getLongitud() >= t) {
+
+        /*Caso en el que el hijo derecho tiene lo necesario para poder prestar*/
+        Producto sucesor = getSucesor(nodo, idx);
+        nodo->getClaves().setValor(idx, sucesor); // Reemplazamos
+        eliminarAux(hijoDer, sucesor.getFechaExpiracion(), sucesor.getCodigoBarra());
+    }
+    else {
+        /*Caso en el que ambos se desbordaron (MOMENTO CRITICO) aca es donde se fusionan los arboles y se genera la accion en cadena*/
+        fusionar(nodo, idx);
+        eliminarAux(hijoIzq, clave.getFechaExpiracion(), clave.getCodigoBarra());
+    }
+
+}
+
+// Encuentra la clave más a la derecha del subárbol izquierdo
+Producto ArbolB::getPredecesor(NodoB* nodo, int idx) {
+    NodoB* actual = nodo->getHijos().getValor(idx);
+    while (!actual->getEsHoja()) {
+        actual = actual->getHijos().getValor(actual->getHijos().getLongitud() - 1);
+    }
+    return actual->getClaves().getValor(actual->getClaves().getLongitud() - 1);
+}
+
+// Encuentra la clave más a la izquierda del subárbol derecho
+Producto ArbolB::getSucesor(NodoB* nodo, int idx) {
+    NodoB* actual = nodo->getHijos().getValor(idx + 1);
+    while (!actual->getEsHoja()) {
+        actual = actual->getHijos().getValor(0);
+    }
+    return actual->getClaves().getValor(0);
+}
+
+
+/*Metodo recursivo principal para poder ir recorriendo el arbol durante la eliminacion*/
+void ArbolB::eliminarAux(NodoB* nodo, const std::string& fecha, const std::string& codigo){
+
+    int idx = buscarClave(nodo, fecha, codigo);
+    int nClaves = nodo->getClaves().getLongitud();
+
+    /*Caso en el que la clave esta en el nodo a buscar*/
+
+    if (idx < nClaves && nodo->getClaves().getValor(idx).getFechaExpiracion() == fecha && nodo->getClaves().getValor(idx).getCodigoBarra() == codigo) {
+
+        /*Caso donde solo es una hoja (nivel bajo)*/
+        if (nodo->getEsHoja()) {
+
+            nodo->getClaves().eliminar(idx);
+        } else {
+            eliminarDeNodoInterno(nodo, idx);
+        }
+
+    }else{
+
+        //La clave no esta en el arbol ultima instancia
+        if (nodo->getEsHoja()) {
+            throw DeleteException("El producto con el codigo de barra {"+codigo+"} no existe. [ARBOL B]");
+        }
+
+        bool esUltimoHijo = (idx == nClaves);
+        NodoB* hijo = nodo->getHijos().getValor(idx);
+
+        /*Caso en el que el hijo tiene el minimo de claves*/
+        if (hijo->getClaves().getLongitud() < t) {
+            llenar(nodo, idx);
+        }
+
+        /*Si al llenar se desborda se propaga un merge*/
+        if (esUltimoHijo && idx > nodo->getClaves().getLongitud()) {
+            eliminarAux(nodo->getHijos().getValor(idx - 1), fecha, codigo);
+        } else {
+            eliminarAux(nodo->getHijos().getValor(idx), fecha, codigo);
+        }
+
+    }
+}
+
+/*Metodo que encuentra el indice de la clave en el nodo evaluado*/
+int ArbolB::buscarClave(NodoB* nodo, const std::string& fecha, const std::string& codigo){
+
+    int indice = 0;
+    int nClave = nodo->getClaves().getLongitud();
+
+    /*Merge de la key y la fecha para poder agilizar la busqueda*/
+    std::string actual = fecha + codigo;
+
+    while (indice < nClave && (nodo->getClaves().getValor(indice).getFechaExpiracion() + nodo->getClaves().getValor(indice).getCodigoBarra()) < actual) {
+        indice++;
+    }
+    return indice;
+}
+
+/*Metodo llamado cuando el hijo por el que se baja tiene t-1 claves y lo lleva a t*/
+void ArbolB::llenar(NodoB* nodo, int indice){
+
+    /*Caso en el que el hermano anterior tiene mas claves. Se presta*/
+    if (indice != 0 && nodo->getHijos().getValor(indice - 1)->getClaves().getLongitud() >= t) {
+        prestarDeAnterior(nodo, indice);
+    }
+    else if (indice != nodo->getClaves().getLongitud() && nodo->getHijos().getValor(indice + 1)->getClaves().getLongitud() >= t) {
+
+        /*Si el hermano siguiente tiene mas de t-1 claves. Se presta*/
+        prestarDeSiguiente(nodo, indice);
+    }
+    else {
+        /*Caso en el que no se puede prestar. Se Suben los arboles para hacer merges*/
+        if (indice != nodo->getClaves().getLongitud()) {
+            fusionar(nodo, indice);
+        } else {
+            fusionar(nodo, indice - 1);
+        }
+    }
+}
+
+/*Metodo que permite prestar desde el anterior (Padre) al hijo CASO 1*/
+void ArbolB::prestarDeAnterior(NodoB* nodo, int indice){
+
+    NodoB* hijo = nodo->getHijos().getValor(indice);
+    NodoB* hermano = nodo->getHijos().getValor(indice - 1);
+
+    /*La clave del padre baja al hijo directamente*/
+    hijo->getClaves().insertar(0, nodo->getClaves().getValor(indice - 1));
+
+    if (!hijo->getEsHoja()) {
+        hijo->getHijos().insertar(0, hermano->getHijos().getValor(hermano->getHijos().getLongitud() - 1));
+        hermano->getHijos().eliminar(hermano->getHijos().getLongitud() - 1);
+    }
+
+    /*La ultima clave del hermano sube al padre*/
+    nodo->getClaves().setValor(indice - 1, hermano->getClaves().getValor(hermano->getClaves().getLongitud() - 1));
+    hermano->getClaves().eliminar(hermano->getClaves().getLongitud() - 1);
+
+}
+
+/*Metodo que permite prestar desde el siguiente al hermano de la par CASO 2*/
+void ArbolB::prestarDeSiguiente(NodoB* nodo, int indice){
+
+    NodoB* hijo = nodo->getHijos().getValor(indice);
+    NodoB* hermano = nodo->getHijos().getValor(indice + 1);
+
+    hijo->getClaves().insertar(hijo->getClaves().getLongitud(), nodo->getClaves().getValor(indice));
+
+    if (!hijo->getEsHoja()) {
+        hijo->getHijos().insertar(hijo->getHijos().getLongitud(), hermano->getHijos().getValor(0));
+        hermano->getHijos().eliminar(0);
+    }
+
+    /*las claves se fusionan del lado derecho desde el hermano de la lista*/
+    nodo->getClaves().setValor(indice, hermano->getClaves().getValor(0));
+    hermano->getClaves().eliminar(0);
+
+}
+
+/*Metodo CASO 3. Donde se desbordan las listas y se tiene que subir y subir haciendo merges*/
+void ArbolB::fusionar(NodoB* nodo, int indice){
+
+    NodoB* hijo = nodo->getHijos().getValor(indice);
+    NodoB* hermano = nodo->getHijos().getValor(indice + 1);
+
+
+    /*Se baja la clave del padre al hijo*/
+    hijo->getClaves().insertar(hijo->getClaves().getLongitud(), nodo->getClaves().getValor(indice));
+
+    /*Pasa todas las claves del hermano al hijo*/
+    for (int i = 0; i < hermano->getClaves().getLongitud(); ++i) {
+        hijo->getClaves().insertar(hijo->getClaves().getLongitud(), hermano->getClaves().getValor(i));
+    }
+
+    /*Pasa los hijos del hermano en el caso de que no sea hoja*/
+    if (!hijo->getEsHoja()) {
+        for (int i = 0; i < hermano->getHijos().getLongitud(); ++i) {
+            hijo->getHijos().insertar(hijo->getHijos().getLongitud(), hermano->getHijos().getValor(i));
+        }
+    }
+
+    /*Eliminar el puntero al hermano del nodo padre*/
+    nodo->getClaves().eliminar(indice);
+    nodo->getHijos().eliminar(indice + 1);
+
+    delete hermano;
+
+}
+
+/*----*****--FIN DEL APARTADO DE LOS METODOS DE ELIMINACION--*****----*/
 

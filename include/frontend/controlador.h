@@ -28,9 +28,13 @@ public:
 private:
     GestorEstructuras * gestorBackend = nullptr;
 
+    /*Metodos para insertar datos desde el csv*/
+
     void insertarListaCsv(const std::vector<QString> & data);
 
     void insertarArbolAvlCsv(const std::vector<QString> & data);
+
+    void insertarArbolBCsv(const std::vector<QString> & data);
 
     /*Metodo que permite avisar para determinar si dejar o no descargar el log de errores*/
     void verificarErrores();
@@ -94,7 +98,7 @@ signals:
 
     /*Signals que permiten comunicarse con la pantalla del csv */
     void logArbolAvl(QString mensaje, QString color);
-    void logArboB(QString mensaje, QString color);
+    void logArbolB(QString mensaje, QString color);
     void logArbolBMas(QString mensaje, QString color);
     void logLista(QString mensaje, QString color);
 

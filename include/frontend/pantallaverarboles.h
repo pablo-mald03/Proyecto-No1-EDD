@@ -34,6 +34,7 @@ signals:
     /*Metodos que permiten solicitar el graphviz de los arboles*/
     void solicitarGraphArbolAvl();
     void solicitarGraphArbolB();
+    void solicitarGraphArbolBMas();
 
 
 public slots:
@@ -45,6 +46,7 @@ public slots:
     /*Metodos que permiten generar el graphviz del estado actual de los arboles*/
     void recibirGrapvizAvl(std::string dot);
     void recibirGrapvizB(std::string dot);
+    void recibirGrapvizBMas(std::string dot);
 
 private slots:
     void on_btnSiguiente_clicked();
@@ -60,6 +62,7 @@ private slots:
     /*Metodos para poder solicitar el graphviz de los arboles*/
     void onSolicitarGraphvizAvl();
     void onSolicitarGraphvizB();
+    void onSolicitarGraphvizBMas();
 
 private:
     Ui::PantallaVerArboles *ui;

@@ -3,6 +3,8 @@
 
 /*Includes de la clase*/
 #include "nodobmas.h"
+#include <sstream>
+#include <string>
 
 class ArbolBMas
 {
@@ -27,6 +29,9 @@ private:
     /*Metodo que permite conservar la integridad del arbol buscando la primary key que es el codigo de barra*/
     bool yaExiste(NodoBMas* nodoRaiz, const Producto &producto);
 
+    /*Metodo que permite generar el .dot recursivo*/
+    void generarDotRecursivo(NodoBMas* nodo, std::stringstream& sStream);
+
 public:
     ArbolBMas(int _orden);
     ~ArbolBMas();
@@ -39,6 +44,9 @@ public:
 
     /*Metodo que permite buscar por categoria (lista de productos por categoria)*/
     ListaEnlazada<Producto> buscarPorCategoria(const std::string &categoriaBuscada);
+
+    /*Metodo que permite generar el graphviz del arbol B+*/
+    std::string generarDot();
 };
 
 #endif // ARBOLBMAS_H

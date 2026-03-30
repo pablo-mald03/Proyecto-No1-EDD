@@ -503,4 +503,8 @@ void Controlador::generarGraphArbolB(){
     emit enviarGraphvizArbolB(this->gestorBackend->obtenerGraphvizB());
 }
 
+void Controlador::generarGraphArbolBMas(){
+    emit enviarGraphvizArbolBMas(this->gestorBackend->obtenerGraphvizBMas());
+}
+
 /*-----*---Fin del apartado de metodos para poder generar los graphviz de los arboles---*-----*/

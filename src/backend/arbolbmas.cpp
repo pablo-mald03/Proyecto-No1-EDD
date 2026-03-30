@@ -16,6 +16,85 @@ ArbolBMas::~ArbolBMas(){
     }
 }
 
+/*Metodo que permite generar el graphviz del arbol B+*/
+std::string ArbolBMas::generarDot(){
+
+    std::stringstream sStream;
+    sStream << "digraph ArbolBMas {\n";
+    sStream << "    rankdir=TB;\n";
+    sStream << "    ranksep=2.5;\n";
+    sStream << "    nodesep=0.5;\n";
+    sStream << "    node [shape=record, style=filled, fillcolor=\"#dbeafe\", fontcolor=black, color=\"#1e40af\", fontname=\"Arial\"];\n";
+    sStream << "    edge [color=\"#1e40af\"];\n\n";
+
+    if (this->raiz != nullptr) {
+        generarDotRecursivo(this->raiz, sStream);
+    } else {
+        sStream << "    nodoVacio [label=\" El arbol esta vacio \", fillcolor=\"#fee2e2\", shape=note];\n";
+    }
+
+    sStream << "}\n";
+    return sStream.str();
+}
+
+/*--****------Apartado de metodos para poder generar el graphviz del arbol B+------****--*/
+/*Metodo que permite generar el .dot recursivo*/
+void ArbolBMas::generarDotRecursivo(NodoBMas* nodo, std::stringstream& sStream){
+
+    if(!nodo){
+        return;
+    }
+
+    sStream << "    \"nodo" << nodo << "\" [label=\"";
+
+    int nClaves = nodo->getClaves().getLongitud();
+
+    for (int i = 0; i < nClaves; i++) {
+        /*Hijo izquierdo*/
+        sStream << "<f" << i << "> | ";
+
+        /*Valor del producto*/
+        sStream << nodo->getClaves().getValor(i).getCategoria();
+        sStream << " | ";
+    }
+
+    sStream << "<f" << nClaves << ">\"";
+
+    /*Permite representar las hojas del arbol*/
+    if (nodo->getEsHoja()) {
+        sStream << ", color=\"#16a34a\", fillcolor=\"#f0fdf4\", penwidth=2";
+    }
+
+    sStream << "];\n"; // Cerramos la configuración del nodo
+
+    /*Se conecta con los hijos o con la siguiente hoja*/
+    if(!nodo->getEsHoja())
+    {
+        for (int i = 0; i < nodo->getHijos().getLongitud(); i++) {
+            NodoBMas* hijo = nodo->getHijos().getValor(i);
+            if (hijo != nullptr) {
+                // Conectamos Padre -> Hijo
+                sStream << "    \"nodo" << nodo << "\":f" << i
+                        << " -> \"nodo" << hijo << "\";\n";
+
+                generarDotRecursivo(hijo, sStream);
+            }
+        }
+    }
+    else
+    {
+        /*Genera el puntero hacia las hojas para la busqueda (el viaje de lado a lado)*/
+        if (nodo->getSiguiente() != nullptr) {
+            sStream << "    \"nodo" << nodo << "\""
+                    << " -> \"nodo" << nodo->getSiguiente() << "\""
+                    << " [color=\"#16a34a\", constraint=false, style=dashed, tailport=e, headport=w];\n";
+        }
+    }
+}
+
+
+/*--****------Apartado de metodos para poder generar el graphviz del arbol B+------****--*/
+
 /*Metodo que permite obtener la raiz del arbol*/
 NodoBMas* ArbolBMas::getRaiz(){
     return this->raiz;

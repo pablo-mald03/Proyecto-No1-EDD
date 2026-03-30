@@ -75,6 +75,7 @@ void PantallaVerArboles::mostrarVistaBMas(){
 
         //Se conectan las signals para poder interactuar con la pantalla
         connect(this->pantallaBMas, &PantallaArbolBMas::solicitarArbolBMas, this, &PantallaVerArboles::onSolicitarArbolBMas);
+        connect(this->pantallaBMas, &PantallaArbolBMas::solicitarGraphvizBMas, this, &PantallaVerArboles::onSolicitarGraphvizBMas);
     }
 
     this->ui->labelArboles->setText("Arbol B+");
@@ -163,6 +164,14 @@ void PantallaVerArboles::recibirGrapvizB(std::string dot){
     }
 }
 
+/*Metodo para recibir el graphviz del arbol B+*/
+void PantallaVerArboles::recibirGrapvizBMas(std::string dot){
+
+    if(this->pantallaBMas){
+        this->pantallaBMas->generarGraphviz(dot);
+    }
+}
+
 
 /*Metodo para recibir el arbol B+ */
 void PantallaVerArboles::recibirArbolBMas(NodoBMas * arbol){
@@ -181,6 +190,11 @@ void PantallaVerArboles::onSolicitarGraphvizAvl(){
 /*Metodos para poder solicitar el graphviz del arbol B*/
 void PantallaVerArboles::onSolicitarGraphvizB(){
     emit solicitarGraphArbolB();
+}
+
+/*Metodos para poder solicitar el graphviz del arbol B+*/
+void PantallaVerArboles::onSolicitarGraphvizBMas(){
+    emit solicitarGraphArbolBMas();
 }
 
 

@@ -313,6 +313,13 @@ void MainWindow::mostrarVerArboles(){
 
         connect(this->controladorCrud, &Controlador::enviarArbolBMas,
                 this->pantallaVerArboles, &PantallaVerArboles::recibirArbolBMas);
+
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarGraphArbolBMas,
+                this->controladorCrud, &Controlador::generarGraphArbolBMas);
+
+        connect(this->controladorCrud, &Controlador::enviarGraphvizArbolBMas,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirGrapvizBMas);
+
     }
 
     this->ui->labelTasks->setText("Visualizar Arboles");

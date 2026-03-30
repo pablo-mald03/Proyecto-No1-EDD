@@ -79,16 +79,14 @@ void PantallaArbolB::generarGraphviz(std::string graph){
         return;
     }
 
-    if (proceso.exitStatus() == QProcess::NormalExit && proceso.exitCode() == 0) {
-
+    if (QFile::exists(ruta)) {
         QMessageBox::information(this, "Exito", "Imagen generada correctamente.");
         QDesktopServices::openUrl(QUrl::fromLocalFile(ruta));
-
     } else {
 
-        QMessageBox::critical(this, "Error", "Fallo la generacion de la imagen.");
+        QString errorDetalle = proceso.readAllStandardError();
+        QMessageBox::critical(this, "Error", "No se creo la imagen.\n" + errorDetalle);
     }
-
 
 }
 

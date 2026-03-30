@@ -79,6 +79,9 @@ public:
     /*Metodo que permite obtener el graphviz del arbol B*/
     std::string obtenerGraphvizB();
 
+    /*Metodo que permite obtener el graphviz del arbol B+*/
+    std::string obtenerGraphvizBMas();
+
 private:
 
     /*Arbol AVL*/

@@ -26,10 +26,15 @@ public:
     explicit PantallaArbolBMas(QWidget *parent = nullptr);
     ~PantallaArbolBMas();
 
+    /*Metodo que permite obtener la raiz del arbol para poder graficarla*/
     void setArbol(NodoBMas * _arbol);
+
+    /*Metodo que permite generar el graphviz del arbol B+*/
+    void generarGraphviz(std::string graph);
 
 signals:
     void solicitarArbolBMas();
+    void solicitarGraphvizBMas();
 
 private slots:
     void on_btnExportar_clicked();

@@ -77,6 +77,11 @@ std::string GestorEstructuras::serializarListaCsv() {
 
 /*----****------Apartado de metodos setter y setters para poder interactuar con las estructuras------****---*/
 
+/*Metodo que permite obtener la raiz del arbol B+*/
+NodoBMas * GestorEstructuras::getRaizArbolBMas(){
+    return this->arbolBMas->getRaiz();
+}
+
 /*Metodo que permite obtener la raiz del arbol B*/
 NodoB * GestorEstructuras::getRaizArbolB(){
     return this->arbolB->getRaiz();

@@ -488,7 +488,7 @@ void Controlador::obtenerArbolB(){
 }
 
 void Controlador::obtenerArbolBMas(){
-    emit enviarArbolBMas(new int(1));
+    emit enviarArbolBMas(this->gestorBackend->getRaizArbolBMas());
 }
 
 /*-----*---Fin del Apartado de metodos para poder generar las vistas de los arboles---*-----*/

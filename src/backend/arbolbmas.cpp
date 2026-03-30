@@ -16,6 +16,75 @@ ArbolBMas::~ArbolBMas(){
     }
 }
 
+/*Metodo que permite obtener la raiz del arbol*/
+NodoBMas* ArbolBMas::getRaiz(){
+    return this->raiz;
+}
+
+/*Metodo que permite buscar por categoria (lista de productos por categoria)*/
+/*
+* La estrategia utilizada es transportarse por las conexiones que este arbol genera hacia los hijos
+* de esta forma se puede bajar demasiado rapido sin recursividad y empezar a subir hasta toparse con algo que no esta
+* ordenado alfabeticamente y rompe
+*/
+ListaEnlazada<Producto>  ArbolBMas::buscarPorCategoria(const std::string &categoriaBuscada){
+    ListaEnlazada<Producto> resultados;
+
+    if (this->raiz == nullptr) {
+        return resultados;
+    }
+
+    NodoBMas* actual = this->raiz;
+
+    /*Fase 1: Busqueda vertical. Directamente se baja por las rutas conectadas*/
+
+    while (!actual->getEsHoja()) {
+        int i = 0;
+        int nClave = actual->getClaves().getLongitud();
+
+        while (i < nClave) {
+            Producto pActual = actual->getClaves().getValor(i);
+
+            /*Se busca solo por la categoria para poder listar*/
+            if (categoriaBuscada < pActual.getCategoria()) {
+                break;
+            }
+
+            i++;
+        }
+
+        actual = actual->getHijos().getValor(i);
+    }
+
+    /*Fase 2: recorrido horizontal. Se va buscando la hoja donde podria estar la categoria*/
+    bool continuarBuscando = true;
+
+    while (actual != nullptr && continuarBuscando) {
+        int nClave = actual->getClaves().getLongitud();
+
+        for (int i = 0; i < nClave; i++) {
+            Producto pActual = actual->getClaves().getValor(i);
+
+            if (pActual.getCategoria() == categoriaBuscada) {
+                resultados.insertar(resultados.getLongitud(), pActual);
+            }
+            else if (pActual.getCategoria() > categoriaBuscada) {
+
+                /*Ya que los datos estan ordenados por categoria alfabeticamente se termina*/
+
+                continuarBuscando = false;
+                break;
+            }
+        }
+
+        if (continuarBuscando) {
+            actual = actual->getSiguiente();
+        }
+    }
+
+    return resultados;
+}
+
 /*Metodo que permite insertar un producto*/
 void ArbolBMas::insertar(const Producto &producto){
 

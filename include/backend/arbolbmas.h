@@ -33,6 +33,12 @@ public:
 
     /*Metodo que permite insertar un nuevo producto*/
     void insertar(const Producto &producto);
+
+    /*Metodo que permite obtener la raiz del arbol*/
+    NodoBMas* getRaiz();
+
+    /*Metodo que permite buscar por categoria (lista de productos por categoria)*/
+    ListaEnlazada<Producto> buscarPorCategoria(const std::string &categoriaBuscada);
 };
 
 #endif // ARBOLBMAS_H

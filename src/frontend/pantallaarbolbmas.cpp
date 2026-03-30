@@ -2,6 +2,7 @@
 #include "ui_pantallaarbolbmas.h"
 #include "graphicsviewzoom.h"
 
+#include"nodobmas.h"
 #include <QFileDialog>
 #include <QProcess>
 #include <QFile>
@@ -20,14 +21,12 @@ PantallaArbolBMas::PantallaArbolBMas(QWidget *parent)
 
     this->scene = new QGraphicsScene(this);
 
-    auto view = new GraphicsViewZoom(this);
-    view->setScene(scene);
+    this->zoomView = new GraphicsViewZoom(this);
+    this->zoomView->setScene(this->scene);
 
-    this->ui->verticalLayout->replaceWidget(ui->graphicsView, view);
+    this->ui->verticalLayout->replaceWidget(ui->graphicsView, this->zoomView);
 
-    delete ui->graphicsView;
-
-    this->ui->graphicsView = view;
+    ui->graphicsView->hide();
 }
 
 /*Destructor*/
@@ -37,8 +36,8 @@ PantallaArbolBMas::~PantallaArbolBMas()
 }
 
 /*Metodo delegado para poder cargar la vista al momento de moverse*/
-void PantallaArbolBMas::setArbol(int * _arbol){
-    this->arbol = _arbol;
+void PantallaArbolBMas::setArbol(NodoBMas * _raiz){
+    this->raiz = _raiz;
     actualizarVista();
 }
 
@@ -47,82 +46,69 @@ void PantallaArbolBMas::actualizarVista(){
 
     this->scene->clear();
 
-    /*pendiente integracion real*/
-    NodoBMasFake* raiz = crearArbolBMasPrueba();
+    if (this->raiz != nullptr) {
 
-    dibujarArbolBMas(raiz, 0, 0, 150);
+
+        dibujarArbolBMas(this->raiz, 0, 0);
+
+        dibujarConexionesHojas(this->raiz);
+    }
 
     QRectF bounds = scene->itemsBoundingRect();
-    scene->setSceneRect(bounds.adjusted(-200, -200, 200, 200));
+    scene->setSceneRect(bounds.adjusted(-500, -200, 500, 500));
 
+    if (this->zoomView && !scene->items().isEmpty()) {
+        this->zoomView->centerOn(0, 0);
+    }
 }
 
 
-/*METODO QUEMADO. PENDIENTE LA INTEGRACION REAL (SERA REMOVIDO)*/
-NodoBMasFake* PantallaArbolBMas::crearArbolBMasPrueba() {
-
-    NodoBMasFake* raiz = new NodoBMasFake{{10, 20}, {}, false};
-
-    NodoBMasFake* h1 = new NodoBMasFake{{5, 8}, {}, true};
-    NodoBMasFake* h2 = new NodoBMasFake{{12, 15}, {}, true};
-    NodoBMasFake* h3 = new NodoBMasFake{{25, 30}, {}, true};
-
-    raiz->hijos = {h1, h2, h3};
-
-    return raiz;
-}
 /*Metodo que permite dibujar a los nodos*/
-int PantallaArbolBMas::dibujarNodoBMas(int x, int y, NodoBMasFake* nodo) {
+int PantallaArbolBMas::dibujarNodoBMas(int x, int y, NodoBMas* nodo) {
 
     int paddingX = 10;
     int paddingY = 6;
     int separacion = 5;
-
     int currentX = x;
     int alturaMax = 0;
 
     std::vector<QGraphicsTextItem*> textos;
 
-    for (int valor : nodo->claves) {
+    int nClaves = nodo->getClaves().getLongitud();
 
-        QGraphicsTextItem* text = scene->addText(QString::number(valor));
+    for (int i = 0; i < nClaves; i++) {
+
+        Producto p = nodo->getClaves().getValor(i);
+
+        QString etiqueta = QString::fromStdString(p.getCodigoBarra());
+
+        QGraphicsTextItem* text = scene->addText(etiqueta);
+        text->setDefaultTextColor(Qt::white);
+
         QRectF rect = text->boundingRect();
-
         int ancho = rect.width() + paddingX * 2;
         int alto = rect.height() + paddingY * 2;
 
         alturaMax = std::max(alturaMax, alto);
-
         text->setPos(currentX + paddingX, y + paddingY);
 
         textos.push_back(text);
-
         currentX += ancho + separacion;
     }
 
     int anchoTotal = currentX - x - separacion;
 
-
-    QPen pen(nodo->esHoja ? Qt::green : Qt::white);
+    QPen pen(nodo->getEsHoja() ? Qt::green : Qt::white);
     this->scene->addRect(x, y, anchoTotal, alturaMax, pen);
 
-    currentX = x;
-
-    for (int i = 0; i < textos.size(); i++) {
-
-        QRectF rect = textos[i]->boundingRect();
-        int ancho = rect.width() + paddingX * 2;
-
-        if (i > 0) {
-            this->scene->addLine(currentX, y, currentX, y + alturaMax, QPen(Qt::white));
-        }
-
-        currentX += ancho + separacion;
+    int lineaX = x;
+    for (int i = 0; i < (int)textos.size() - 1; i++) {
+        lineaX += textos[i]->boundingRect().width() + paddingX * 2 + separacion;
+        this->scene->addLine(lineaX - (separacion/2), y, lineaX - (separacion/2), y + alturaMax, QPen(Qt::white));
     }
 
     return anchoTotal;
 }
-
 /*Metodo que permite dibujar las lineas*/
 void PantallaArbolBMas::dibujarLineaBMas(int x1, int y1, int x2, int y2) {
     QPen pen(Qt::white);
@@ -130,35 +116,132 @@ void PantallaArbolBMas::dibujarLineaBMas(int x1, int y1, int x2, int y2) {
     this->scene->addLine(x1, y1, x2, y2, pen);
 }
 
-void PantallaArbolBMas::dibujarArbolBMas(NodoBMasFake* nodo, int x, int y, int offset) {
+/*Metodo para poder dibujar el arbol B+*/
+void PantallaArbolBMas::dibujarArbolBMas(NodoBMas* nodo, int x, int y) {
+    if (!nodo){
+        return;
+    }
 
-    if (!nodo) return;
+    int anchoSubarbol = getAnchoTotal(nodo);
+    int anchoNodo = getAnchoNodoReal(nodo);
 
-    int anchoCelda = 30;
-    int anchoNodo = dibujarNodoBMas(x, y, nodo);
+    int xNodo = x + (anchoSubarbol / 2) - (anchoNodo / 2);
 
-    int numHijos = nodo->hijos.size();
+    posicionesX[nodo] = xNodo;
+    posicionesY[nodo] = y;
 
-    for (int i = 0; i < numHijos; i++) {
+    std::vector<int> puntosDeUnion;
+    puntosDeUnion.push_back(xNodo);
 
-        int childX = x - (numHijos - 1) * offset / 2 + i * offset;
-        int childY = y + 80;
+    int paddingX = 12, paddingY = 8, currX = xNodo, alturaMax = 0;
+    int nClaves = nodo->getClaves().getLongitud();
 
-        int childWidth = nodo->hijos[i]->claves.size() * 30;
+    for (int i = 0; i < nClaves; i++) {
+        Producto p = nodo->getClaves().getValor(i);
 
-        dibujarLineaBMas(
-            x + anchoNodo / 2,
-            y + 40,
-            childX + childWidth / 2,
-            childY
-            );
 
-        dibujarArbolBMas(nodo->hijos[i], childX, childY, offset / 1.5);
+        QGraphicsTextItem* text = scene->addText(QString::fromStdString(p.getCategoria()));
+        text->setDefaultTextColor(Qt::white);
+        text->setPos(currX + paddingX, y + paddingY);
+
+        int anchoCelda = text->boundingRect().width() + (paddingX * 2);
+        alturaMax = std::max(alturaMax, (int)text->boundingRect().height() + (paddingY * 2));
+
+        currX += anchoCelda;
+        puntosDeUnion.push_back(currX);
+    }
+
+    QPen penNodo(nodo->getEsHoja() ? Qt::green : Qt::white);
+    scene->addRect(xNodo, y, anchoNodo, alturaMax, penNodo, Qt::NoBrush);
+
+
+    for(size_t i = 1; i < puntosDeUnion.size() - 1; i++) {
+        scene->addLine(puntosDeUnion[i], y, puntosDeUnion[i], y + alturaMax, QPen(Qt::white));
+    }
+
+    if (nodo->getEsHoja()) return;
+
+    int yHijos = y + 300;
+    int nHijos = nodo->getHijos().getLongitud();
+    int xHijoActual = x;
+
+    for (int i = 0; i < nHijos; i++) {
+        NodoBMas* hijo = nodo->getHijos().getValor(i);
+        int anchoSubHijo = getAnchoTotal(hijo);
+        int xCentroHijo = xHijoActual + (anchoSubHijo / 2);
+
+        dibujarLineaBMas(puntosDeUnion[i], y + alturaMax, xCentroHijo, yHijos);
+
+        dibujarArbolBMas(hijo, xHijoActual, yHijos);
+        xHijoActual += anchoSubHijo;
     }
 }
 
 
-/*Metodo delegado para dar mensajes en pantallas*/
+/* Método que recorre la lista enlazada y dibuja la flecha verde */
+void PantallaArbolBMas::dibujarConexionesHojas(NodoBMas* nodoRaiz) {
+    if (!nodoRaiz) return;
+
+    NodoBMas* actual = nodoRaiz;
+    while (!actual->getEsHoja()) {
+        actual = actual->getHijos().getValor(0); // Caer a la primera hoja
+    }
+
+    QPen penVerde(Qt::green);
+    penVerde.setWidth(2);
+
+    while (actual != nullptr && actual->getSiguiente() != nullptr) {
+        NodoBMas* siguiente = actual->getSiguiente();
+
+        int xInicio = posicionesX[actual] + getAnchoNodoReal(actual);
+        int yInicio = posicionesY[actual] + 15;
+
+        int xFin = posicionesX[siguiente];
+        int yFin = posicionesY[siguiente] + 15;
+
+        this->scene->addLine(xInicio, yInicio, xFin, yFin, penVerde);
+
+        this->scene->addLine(xFin - 5, yFin - 5, xFin, yFin, penVerde);
+        this->scene->addLine(xFin - 5, yFin + 5, xFin, yFin, penVerde);
+
+        actual = siguiente;
+    }
+}
+
+/*Metodo que permite calcular el ancho del nodo real*/
+int PantallaArbolBMas::getAnchoNodoReal(NodoBMas* nodo) {
+    if (!nodo) return 0;
+    int paddingX = 12;
+    int anchoTotal = 0;
+
+    int nClaves = nodo->getClaves().getLongitud();
+
+    for (int i = 0; i < nClaves; i++) {
+        Producto p = nodo->getClaves().getValor(i);
+        QGraphicsTextItem temp(QString::fromStdString(p.getFechaExpiracion()));
+        anchoTotal += temp.boundingRect().width() + (paddingX * 2);
+    }
+    return anchoTotal;
+}
+
+
+/*Metodo que permite obtener el ancho total de la lista para poder generar una mejor distribucion*/
+int PantallaArbolBMas::getAnchoTotal(NodoBMas* nodo) {
+    if (!nodo) {
+        return 0;
+    }
+
+    int anchoPropio = getAnchoNodoReal(nodo);
+    if (nodo->getEsHoja()) return anchoPropio + 50;
+
+    int anchoHijos = 0;
+    int nHijos = nodo->getHijos().getLongitud();
+    for (int i = 0; i < nHijos; i++) {
+        anchoHijos += getAnchoTotal(nodo->getHijos().getValor(i));
+    }
+    return std::max(anchoPropio, anchoHijos) + 20;
+}
+
 
 
 /*Metodo que permite exportar el arbol B+*/

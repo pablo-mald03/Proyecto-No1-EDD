@@ -67,8 +67,11 @@ public:
     /*Metodo que permite obtener la raiz del arbol AVL*/
     NodoAvl * getRaizArbolAvl();
 
-    /*Metodo que permite obtener la raiz del arbol b*/
+    /*Metodo que permite obtener la raiz del arbol B*/
     NodoB * getRaizArbolB();
+
+    /*Metodo que permite obtener la raiz del arbol B+*/
+    NodoBMas * getRaizArbolBMas();
 
     /*Metodo que permite obtener el graphviz del arbol AVL*/
     std::string obtenerGraphvizAvl();

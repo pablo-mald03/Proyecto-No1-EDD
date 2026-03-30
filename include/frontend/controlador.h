@@ -97,7 +97,7 @@ signals:
     /*Metodos que permiten enviar la informacion para poder graficar los arboles*/
     void enviarArbolAvl(NodoAvl * arbol);
     void enviarArbolB(NodoB * arbol);
-    void enviarArbolBMas(int * arbol);
+    void enviarArbolBMas(NodoBMas * arbol);
 
 
     /*Signals que permiten comunicarse con la pantalla del csv */

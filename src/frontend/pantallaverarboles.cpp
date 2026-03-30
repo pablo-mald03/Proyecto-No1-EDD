@@ -165,7 +165,7 @@ void PantallaVerArboles::recibirGrapvizB(std::string dot){
 
 
 /*Metodo para recibir el arbol B+ */
-void PantallaVerArboles::recibirArbolBMas(int * arbol){
+void PantallaVerArboles::recibirArbolBMas(NodoBMas * arbol){
 
     if(this->pantallaBMas){
         this->pantallaBMas->setArbol(arbol);

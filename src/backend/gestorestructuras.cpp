@@ -64,7 +64,10 @@ std::string GestorEstructuras::serializarListaCsv() {
 
 
 /*----****------Apartado de metodos setter y setters para poder interactuar con las estructuras------****---*/
-
+/*Metodo que permite obtener el .dot del arbol AVL*/
+std::string GestorEstructuras::obtenerGraphvizAvl(){
+    return this->arbolAvl->generarDot();
+}
 
 /*Metodo que permite obtener la raiz del arbol avl*/
 NodoAvl * GestorEstructuras::getRaizArbolAvl(){

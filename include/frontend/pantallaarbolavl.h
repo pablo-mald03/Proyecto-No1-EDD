@@ -21,8 +21,12 @@ public:
 
     void setArbol(NodoAvl *_arbol);
 
+    /*Metodo que permite generar el graphviz del arbol*/
+    void generarGraphviz(std::string graph);
+
 signals:
     void solicitarArbolAvl();
+    void solicitarGraphvizAvl();
 
 private slots:
     void on_btnExportar_clicked();

@@ -353,8 +353,8 @@ void Controlador::verificarRefrescado(){
 }
 
 
-/*Apartado de metodos para poder generar las vistas de los arboles*/
-/*pendiente definir estado real*/
+/*-----*---Apartado de metodos para poder generar las vistas de los arboles---*-----*/
+
 void Controlador::obtenerArbolAvl(){
     emit enviarArbolAvl(this->gestorBackend->getRaizArbolAvl());
 }
@@ -366,3 +366,13 @@ void Controlador::obtenerArbolB(){
 void Controlador::obtenerArbolBMas(){
     emit enviarArbolBMas(new int(1));
 }
+
+/*-----*---Fin del Apartado de metodos para poder generar las vistas de los arboles---*-----*/
+
+
+/*-----*---Apartado de metodos para poder generar los graphviz de los arboles---*-----*/
+void Controlador::generarGraphArbolAvl(){
+    emit enviarGraphvizArbolAvl(this->gestorBackend->obtenerGraphvizAvl());
+}
+
+/*-----*---Fin del apartado de metodos para poder generar los graphviz de los arboles---*-----*/

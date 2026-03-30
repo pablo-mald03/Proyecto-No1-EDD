@@ -20,6 +20,7 @@ PantallaVerArboles::PantallaVerArboles(QWidget *parent)
 
     /*Connect principal para mostrar la vista del arbol AVL*/
     connect(this->pantallaAvl, &PantallaArbolAvl::solicitarArbolAvl, this, &PantallaVerArboles::onSolicitarArbolAvl);
+    connect(this->pantallaAvl, &PantallaArbolAvl::solicitarGraphvizAvl, this, &PantallaVerArboles::onSolicitarGraphvizAvl);
 
     this->mostrarVistaAvl();
 
@@ -134,6 +135,16 @@ void PantallaVerArboles::recibirArbolAvl(NodoAvl * arbol){
 
 }
 
+
+/*Metodo para recibir el graphviz del arbol AVL*/
+void PantallaVerArboles::recibirGrapvizAvl(std::string dot){
+
+    if(this->pantallaAvl){
+        this->pantallaAvl->generarGraphviz(dot);
+    }
+}
+
+
 /*Metodo para recibir el arbol B*/
 void PantallaVerArboles::recibirArbolB(int * arbol){
 
@@ -151,6 +162,11 @@ void PantallaVerArboles::recibirArbolBMas(int * arbol){
     }
 }
 
+
+/*Metodos para poder solicitar el graphviz del arbol AVL*/
+void PantallaVerArboles::onSolicitarGraphvizAvl(){
+    emit solicitarGraphArbolAvl();
+}
 
 /*Metodo que permite solicitar al arbol AVL para poderlo graficar*/
 void PantallaVerArboles::onSolicitarArbolAvl()

@@ -5,6 +5,8 @@
 #include "listaenlazada.h"
 #include"producto.h"
 #include"nodoavl.h"
+#include <sstream>
+#include <string>
 
 class ArbolAvl
 {
@@ -34,6 +36,9 @@ private:
     /*Metodo recursivo para poder eliminar los nodos del arbol*/
     NodoAvl* eliminarRecursivo(NodoAvl* nodo, const std::string &nombre, const std::string& codigo);
 
+    /*Metodo que permite generar el .dot recursivo para el arbol y que se pueda graficar*/
+    void generarDotRecursivo(NodoAvl* nodo, std::stringstream& sStream);
+
 public:
     ArbolAvl();
     ~ArbolAvl();
@@ -55,6 +60,9 @@ public:
 
     /*Metodo que permite retornar la referencia a la raiz*/
     NodoAvl* getRaiz();
+
+    /*Metodo que retorna el .dot generado por el arbol*/
+    std::string generarDot();
 };
 
 #endif // ARBOLAVL_H

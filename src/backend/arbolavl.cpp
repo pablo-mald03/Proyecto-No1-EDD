@@ -352,5 +352,61 @@ NodoAvl* ArbolAvl::eliminarRecursivo(NodoAvl* nodo, const std::string &nombre, c
 /*---****----Fin del Apartado de metodos utilizados para poder eliminar nodos del arbol---****---*/
 
 
+/*---****----Apartado de metodos utilizados para poder generar el .dot del arbol AVL---****---*/
+
+/*Metodo que retorna el .dot generado por el arbol*/
+std::string ArbolAvl::generarDot(){
+    std::stringstream sStream;
+
+    sStream << "digraph ArbolAVL {\n";
+
+    sStream << "    ratio=auto;\n";
+    sStream << "    nodesep=0.4;\n";
+    sStream << "    ranksep=0.6;\n";
+    sStream << "    overlap=false;\n";
+    sStream << "    splines=line;\n";
+
+    sStream << "    node [shape=circle, style=filled, fillcolor=\"#dbeafe\", fontcolor=black, color=black, fixedsize=false, width=1];\n";
+    sStream << "    edge [color=black];\n\n";
+
+    if (this->raiz != nullptr) {
+        generarDotRecursivo(this->raiz, sStream);
+    } else {
+        sStream << "    vacio [label=\"Arbol Vacio\"];\n";
+    }
+
+    sStream << "}\n";
+    return sStream.str();
+}
+
+
+/*Metodo que permite generar el .dot recursivo para el arbol y que se pueda graficar*/
+/*Recorrido Preorden*/
+void ArbolAvl::generarDotRecursivo(NodoAvl* nodo, std::stringstream& sStream){
+
+    if(!nodo){
+        return;
+    }
+
+    std::string nombre = nodo->getDato().getNombre();
+    sStream << "    \"n" << nodo << "\" [label=\"" << nombre << "\"];\n";
+
+    if (nodo->getIzquierda()) {
+        sStream << "    \"n" << nodo << "\" -> \"n" << nodo->getIzquierda() << "\";\n";
+        generarDotRecursivo(nodo->getIzquierda(), sStream);
+    }
+
+    if (nodo->getDerecha()) {
+        sStream << "    \"n" << nodo << "\" -> \"n" << nodo->getDerecha() << "\";\n";
+        generarDotRecursivo(nodo->getDerecha(), sStream);
+    }
+
+}
+
+
+/*---****----Fin del Apartado de metodos utilizados para poder generar el .dot del arbol AVL---****---*/
+
+
+
 
 

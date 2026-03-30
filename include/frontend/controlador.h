@@ -60,10 +60,16 @@ public slots:
     void obtenerArbolB();
     void obtenerArbolBMas();
 
+    /*Metodos que permiten obtener el graphviz de los arboles*/
+    void generarGraphArbolAvl();
+
     /*Metodo que permite obtener los datos para poder descargar el Log de errores*/
     void prepararLogParaDescarga();
 
 signals:
+
+    /*Metodos que permiten enviar la informacion para poder generar el graphviz los arboles*/
+    void enviarGraphvizArbolAvl(std::string arbol);
 
     /*Metodo que permite enviar al front el contenido para poder ser guardado*/
     void contenidoCsvListo(QString archivo);

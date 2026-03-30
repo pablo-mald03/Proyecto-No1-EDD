@@ -22,15 +22,24 @@ public:
     void reestablecerVistas();
 
 signals:
+
+    /*Metodos para solicitar la grafica de los arboles*/
     void solicitarArbolAvl();
     void solicitarArbolB();
     void solicitarArbolBMas();
 
+    /*Metodos que permiten solicitar el graphviz de los arboles*/
+    void solicitarGraphArbolAvl();
+
+
 public slots:
-    /*pendiente redefnir tipos*/
+    /*Metodos que permiten generar la previsualizacion del estado actual de los arboles*/
     void recibirArbolAvl(NodoAvl * arbol);
     void recibirArbolB(int * arbol);
     void recibirArbolBMas(int * arbol);
+
+    /*Metodos que permiten generar el graphviz del estado actual de los arboles*/
+    void recibirGrapvizAvl(std::string dot);
 
 private slots:
     void on_btnSiguiente_clicked();
@@ -42,6 +51,9 @@ private slots:
     void onSolicitarArbolAvl();
     void onSolicitarArbolB();
     void onSolicitarArbolBMas();
+
+    /*Metodos para poder solicitar el graphviz de los arboles*/
+    void onSolicitarGraphvizAvl();
 
 private:
     Ui::PantallaVerArboles *ui;

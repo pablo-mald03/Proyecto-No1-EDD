@@ -279,12 +279,21 @@ void MainWindow::mostrarVerArboles(){
 
         ui->stackedWidget->addWidget(this->pantallaVerArboles);
 
+        /*Signals del arbol AVL*/
         connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolAvl,
                 this->controladorCrud, &Controlador::obtenerArbolAvl);
 
         connect(this->controladorCrud, &Controlador::enviarArbolAvl,
                 this->pantallaVerArboles, &PantallaVerArboles::recibirArbolAvl);
 
+        connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarGraphArbolAvl,
+                this->controladorCrud, &Controlador::generarGraphArbolAvl);
+
+        connect(this->controladorCrud, &Controlador::enviarGraphvizArbolAvl,
+                this->pantallaVerArboles, &PantallaVerArboles::recibirGrapvizAvl);
+
+
+        /*Signals del arbol B*/
         connect(this->pantallaVerArboles, &PantallaVerArboles::solicitarArbolB,
                 this->controladorCrud, &Controlador::obtenerArbolB);
 

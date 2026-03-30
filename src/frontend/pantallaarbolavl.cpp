@@ -41,6 +41,64 @@ PantallaArbolAvl::~PantallaArbolAvl()
     delete ui;
 }
 
+/*Metodo que permite generar el graphviz del arbol*/
+void PantallaArbolAvl::generarGraphviz(std::string graph){
+
+    QString ruta = QFileDialog::getSaveFileName(
+        this,
+        "Guardar arbol B como imagen",
+        "",
+        "Imagen PNG (*.png)"
+        );
+
+    if (ruta.isEmpty()) return;
+
+    QString dotPath = QDir::tempPath() + "/arbol_avl.dot";
+
+    QFile file(dotPath);
+
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::critical(this, "Error", "No se pudo crear el archivo temporal.");
+        return;
+    }
+
+    QTextStream out(&file);
+
+    std::string codigoDot = graph;
+
+    out << QString::fromStdString(codigoDot);
+
+    file.close();
+
+
+#ifdef Q_OS_WIN
+    QString programa = "C:/Program Files/Graphviz/bin/dot.exe";
+#else
+    QString programa = "dot";
+#endif
+
+    QProcess proceso;
+    QStringList argumentos;
+    argumentos << "-Tpng" << dotPath << "-o" << ruta;
+
+    proceso.start(programa, argumentos);
+
+    if (!proceso.waitForFinished()) {
+        QMessageBox::critical(this, "Error", "No se pudo ejecutar Graphviz.");
+        return;
+    }
+
+    if (proceso.exitStatus() == QProcess::NormalExit && proceso.exitCode() == 0) {
+
+        QMessageBox::information(this, "Exito", "Imagen generada correctamente.");
+        QDesktopServices::openUrl(QUrl::fromLocalFile(ruta));
+
+    } else {
+
+        QMessageBox::critical(this, "Error", "Fallo la generacion de la imagen.");
+    }
+}
+
 /*Metodo delegado para poder cargar la vista al momento de moverse*/
 void PantallaArbolAvl::setArbol(NodoAvl * _arbol){
     this->arbol = _arbol;
@@ -56,11 +114,10 @@ void PantallaArbolAvl::actualizarVista(){
         int alturaTotal = this->arbol->getAltura();
 
 
-        int offsetInicial = alturaTotal * 120;
+        int offsetInicial = alturaTotal * 1000;
 
         dibujarArbol(this->arbol, 0, 0, offsetInicial);
     }
-
     scene->setSceneRect(scene->itemsBoundingRect().adjusted(-500, -200, 500, 500));
 }
 
@@ -103,6 +160,7 @@ void PantallaArbolAvl::dibujarLinea(int x1, int y1, int x2, int y2) {
     scene->addLine(x1, y1, x2, y2, pen);
 }
 
+/*Metodo que permite dibujar el arbol con sus n odos dandole el estilo de arbol descendente*/
 void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
 
     if (!nodo){
@@ -115,16 +173,19 @@ void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
     int centerX = x + nodoRect.width() / 2;
     int bottomY = y + nodoRect.height();
 
-    int distanciaVertical = 180;
+    int distanciaVertical = 400;
 
-    int nuevoOffset = offset * 0.8;
+    float factor = 0.5 + (nodo->getAltura() * 0.04);
+    if (factor > 0.8) factor = 0.8;
 
-    if (nuevoOffset < 100) nuevoOffset = 100;
+    int nuevoOffset = offset * factor;
+
+    if (nuevoOffset < 110) nuevoOffset = 110;
+
 
     if (nodo->getIzquierda()) {
         int childX = centerX - nuevoOffset - nodoRect.width() / 2;
         int childY = y + distanciaVertical;
-
         dibujarLinea(centerX, bottomY, childX + nodoRect.width() / 2, childY);
         dibujarArbol(nodo->getIzquierda(), childX, childY, nuevoOffset);
     }
@@ -132,7 +193,6 @@ void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
     if (nodo->getDerecha()) {
         int childX = centerX + nuevoOffset - nodoRect.width() / 2;
         int childY = y + distanciaVertical;
-
         dibujarLinea(centerX, bottomY, childX + nodoRect.width() / 2, childY);
         dibujarArbol(nodo->getDerecha(), childX, childY, nuevoOffset);
     }
@@ -141,76 +201,6 @@ void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
 /*Metodo que permite exportar el .dot*/
 void PantallaArbolAvl::on_btnExportar_clicked()
 {
-
-    QString ruta = QFileDialog::getSaveFileName(
-        this,
-        "Guardar arbol B como imagen",
-        "",
-        "Imagen PNG (*.png)"
-        );
-
-    if (ruta.isEmpty()) return;
-
-    QString dotPath = QDir::tempPath() + "/arbol_avl.dot";
-
-    QFile file(dotPath);
-
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, "Error", "No se pudo crear el archivo temporal.");
-        return;
-    }
-
-    QTextStream out(&file);
-
-    /*CODIGO HARDOCDEADO DE MOMENTO. A LA ESPERA DEL CODIGO REAL PARA PODER GENERAR EL GRAPHVIZ RESPECTIVO*/
-    out << "digraph G {\n";
-
-    out << "node [shape=circle, style=filled, fillcolor=lightblue];\n";
-
-    // nodos
-    out << "n10 [label=\"10\"];\n";
-    out << "n5  [label=\"5\"];\n";
-    out << "n15 [label=\"15\"];\n";
-    out << "n3  [label=\"3\"];\n";
-    out << "n7  [label=\"7\"];\n";
-
-    // conexiones
-    out << "n10 -> n5;\n";
-    out << "n10 -> n15;\n";
-    out << "n5 -> n3;\n";
-    out << "n5 -> n7;\n";
-
-    out << "}\n";
-
-    file.close();
-
-
-#ifdef Q_OS_WIN
-    QString programa = "C:/Program Files/Graphviz/bin/dot.exe";
-#else
-    QString programa = "dot";
-#endif
-
-    QProcess proceso;
-    QStringList argumentos;
-    argumentos << "-Tpng" << dotPath << "-o" << ruta;
-
-    proceso.start(programa, argumentos);
-
-    if (!proceso.waitForFinished()) {
-        QMessageBox::critical(this, "Error", "No se pudo ejecutar Graphviz.");
-        return;
-    }
-
-    if (proceso.exitStatus() == QProcess::NormalExit && proceso.exitCode() == 0) {
-
-        QMessageBox::information(this, "Exito", "Imagen generada correctamente.");
-        QDesktopServices::openUrl(QUrl::fromLocalFile(ruta));
-
-    } else {
-
-        QMessageBox::critical(this, "Error", "Fallo la generacion de la imagen.");
-    }
-
+    emit solicitarGraphvizAvl();
 }
 

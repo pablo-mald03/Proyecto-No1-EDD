@@ -3,12 +3,14 @@
 
 /*Includes de la clase*/
 #include "erroreslectura.h"
+#include "nodob.h"
 #include"producto.h"
 
 
 //instancia posible de lista
 template class ListaEnlazada<Producto>;
 template class ListaEnlazada<ErroresLectura>;
+template class ListaEnlazada<NodoB*>;
 
 /*Constructor de la lista enlazada*/
 template<typename T>
@@ -229,6 +231,15 @@ void ListaEnlazada<T>::eliminar(int indice)
 
     delete actual;
     this->longitud--;
+}
+
+/*Metodo que permite obtener el frente de la lista*/
+template<typename T>
+T ListaEnlazada<T>::obtenerFrente() const {
+    if (esVacia()) {
+        return nullptr;
+    }
+    return cabeza->getDato();
 }
 
 //Metodo que permite obtener un valor por posicion

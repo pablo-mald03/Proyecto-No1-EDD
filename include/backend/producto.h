@@ -18,10 +18,8 @@ private:
 public:
     Producto();
     Producto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
-    ~Producto();
 
     /*Metodos getter */
-
     std::string getNombre() const;
     std::string getCodigoBarra() const;
     std::string getCategoria()const ;

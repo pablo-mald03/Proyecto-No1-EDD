@@ -5,11 +5,6 @@ ErroresLectura::ErroresLectura(const std::string &_mensaje,int _linea):mensaje(_
 
 }
 
-/*Destructor*/
-ErroresLectura::~ErroresLectura(){
-
-}
-
 /*Metodos getter para poder obtener la informacion para armar el log*/
 std::string ErroresLectura::getMensaje(){
     return this->mensaje;

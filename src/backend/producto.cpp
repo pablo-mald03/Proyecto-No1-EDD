@@ -22,11 +22,6 @@ Producto::Producto(const std::string &_nombre,const std::string &_codigoBarra, c
     stock(_stock)
 {}
 
-/*Destructor*/
-Producto::~Producto(){
-
-}
-
 /*Metodos getter de la clase*/
 std::string Producto::getNombre() const{
     return this->nombre;

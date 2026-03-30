@@ -41,6 +41,8 @@ public:
     //Metodo para obtener la cabeza
     NodoLista<T>* getCabeza() const;
 
+    T obtenerFrente() const;
+
 
 };
 

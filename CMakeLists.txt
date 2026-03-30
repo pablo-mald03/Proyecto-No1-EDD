@@ -81,6 +81,8 @@ set(BACKEND_SOURCES
     src/backend/erroreslectura.cpp
     src/backend/nodoavl.cpp
     src/backend/arbolavl.cpp
+    src/backend/nodob.cpp
+    src/backend/arbolb.cpp
 )
 
 
@@ -93,6 +95,8 @@ set(BACKEND_HEADERS
     include/backend/erroreslectura.h
     include/backend/nodoavl.h
     include/backend/arbolavl.h
+    include/backend/nodob.h
+    include/backend/arbolb.h
 )
 
 set(EXCEPTIONS_SOURCES
@@ -120,6 +124,7 @@ qt_add_executable(ProyectoNo1-EDD
     ${EXCEPTIONS_HEADERS}
     ${UI_FILES}
     recursos.qrc
+
 )
 
 target_include_directories(ProyectoNo1-EDD PRIVATE

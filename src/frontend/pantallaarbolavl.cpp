@@ -122,33 +122,39 @@ void PantallaArbolAvl::actualizarVista(){
 }
 
 /*Metodo utilizado para poder dibujar a la esecena*/
-QRectF PantallaArbolAvl::dibujarNodo(int x, int y, QString texto) {
+QRectF PantallaArbolAvl::dibujarNodo(int x, int y, QString texto, int altura) {
 
     int paddingH = 20;
-    int paddingV = 10;
+    int paddingV = 15;
 
-    if (texto.length() > 25) {
-        texto = texto.left(22) + "...";
-    }
+    if (texto.length() > 25) texto = texto.left(22) + "...";
 
     QGraphicsTextItem* text = scene->addText(texto);
-
     text->setDefaultTextColor(Qt::white);
     text->setZValue(10);
-
     QFont font = text->font();
     font.setPointSize(10);
     font.setBold(true);
     text->setFont(font);
 
-    QRectF textRect = text->boundingRect();
-    int ancho = std::max((int)textRect.width() + paddingH * 2, 160);
-    int alto  = textRect.height() + paddingV * 2;
-    this->scene->addEllipse(x, y, ancho, alto,
-                            QPen(Qt::white, 2),
-                            QBrush(QColor(30, 30, 35)));
+    QGraphicsTextItem* heightText = scene->addText(QString("Alt: %1").arg(altura));
+    heightText->setDefaultTextColor(QColor(161, 161, 170));
+    heightText->setZValue(10);
+    QFont hFont = heightText->font();
+    hFont.setPointSize(8);
+    heightText->setFont(hFont);
 
-    text->setPos(x + (ancho - textRect.width()) / 2, y + (alto - textRect.height()) / 2);
+    QRectF textRect = text->boundingRect();
+    QRectF hRect = heightText->boundingRect();
+
+    int ancho = std::max({(int)textRect.width() + paddingH * 2, (int)hRect.width() + paddingH * 2, 160});
+    int alto = textRect.height() + hRect.height() + paddingV;
+
+    this->scene->addEllipse(x, y, ancho, alto, QPen(Qt::white, 2), QBrush(QColor(30, 30, 35)));
+
+    text->setPos(x + (ancho - textRect.width()) / 2, y + (alto / 2) - textRect.height() + 5);
+
+    heightText->setPos(x + (ancho - hRect.width()) / 2, text->y() + textRect.height() - 5);
 
     return QRectF(x, y, ancho, alto);
 }
@@ -168,7 +174,7 @@ void PantallaArbolAvl::dibujarArbol(NodoAvl* nodo, int x, int y, int offset) {
     }
 
     QString nombre = QString::fromStdString(nodo->getDato().getNombre());
-    QRectF nodoRect = dibujarNodo(x, y, nombre);
+    QRectF nodoRect = dibujarNodo(x, y, nombre,nodo->getAltura());
 
     int centerX = x + nodoRect.width() / 2;
     int bottomY = y + nodoRect.height();

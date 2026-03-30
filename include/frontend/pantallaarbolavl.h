@@ -43,7 +43,7 @@ private:
     void actualizarVista();
 
     /*Metodos utilizador para poder dibujar el arbol avl*/
-    QRectF dibujarNodo(int x, int y, QString texto);
+    QRectF dibujarNodo(int x, int y, QString texto, int altura);
 
     /*Metodo que permite dibujar las lineas de trazo*/
     void dibujarLinea(int x1, int y1, int x2, int y2);

@@ -31,6 +31,8 @@ std::string ArbolB::generarDot(){
     std::stringstream sStream;
     sStream << "digraph ArbolB {\n";
     sStream << "    rankdir=TB;\n";
+    sStream << "    ranksep=2.5;\n";
+    sStream << "    nodesep=0.8;\n";
     sStream << "    node [shape=record, style=filled, fillcolor=\"#dbeafe\", fontcolor=black, color=black, fontname=\"Arial\"];\n";
     sStream << "    edge [color=black];\n\n";
 

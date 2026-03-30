@@ -389,7 +389,12 @@ void ArbolAvl::generarDotRecursivo(NodoAvl* nodo, std::stringstream& sStream){
     }
 
     std::string nombre = nodo->getDato().getNombre();
-    sStream << "    \"n" << nodo << "\" [label=\"" << nombre << "\"];\n";
+    int altura = nodo->getAltura();
+
+    sStream << "    \"n" << nodo << "\" [label=<";
+    sStream << "<FONT POINT-SIZE=\"12\">" << nombre << "</FONT><BR/>";
+    sStream << "<FONT POINT-SIZE=\"8\" COLOR=\"#555555\">Altura: " << altura << "</FONT>";
+    sStream << ">];\n";
 
     if (nodo->getIzquierda()) {
         sStream << "    \"n" << nodo << "\" -> \"n" << nodo->getIzquierda() << "\";\n";
@@ -400,7 +405,6 @@ void ArbolAvl::generarDotRecursivo(NodoAvl* nodo, std::stringstream& sStream){
         sStream << "    \"n" << nodo << "\" -> \"n" << nodo->getDerecha() << "\";\n";
         generarDotRecursivo(nodo->getDerecha(), sStream);
     }
-
 }
 
 

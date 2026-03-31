@@ -968,15 +968,135 @@ void Controlador::eliminarProducto(std::string codigo){
     emit logEliminarListaNoOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
 }
 
+/*------APARTADO DE METODOS QUE PERMITEN LISTAR EN ORDEN ALFABETICO LOS PRODUCTOS------*/
 
 /*Metodo que permite listar los productos*/
 void Controlador::listarProductos(){
+    try{
+        this->listarAlfabeticoAvl();
+        this->listarAlfabeticoListas();
+    }catch (const std::exception& ex) {
+        emit logListarArbolAvl("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logListarListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logListarListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
+}
 
-    /*Pendiente*/
-    emit logListarArbolAvl("Producto listado: ", "green");
-    emit logListarListaOrdenada("Producto listado: ", "green");
-    emit logListarListaNoOrdenada("Producto listado: ", "green");
+/*Metodo que permite listar el producto nombre en orden alfabetico en base a los resultados del arbol AVL*/
+void Controlador::listarAlfabeticoAvl(){
 
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> lista = this->gestorBackend->listarProductosAvl();
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(lista.esVacia()){
+        emit logListarArbolAvl("El arbol AVL esta vacio.", "yellow");
+        emit tiempoProcesoListarNombre(1,tiempo);
+        return;
+    }
+
+    QString cantidad = "==========================================\n"
+                       "Productos listados:   " + QString::number(lista.getLongitud()) + "\n" +
+                       "==========================================\n\n";
+
+    emit logListarArbolAvl(cantidad.replace("\n", "<br>"), "yellow");
+
+    for(int i = 0; i < lista.getLongitud(); i++) {
+        Producto product = lista.getValor(i);
+
+        QString logMensaje = "------------------------------------------\n"
+                             "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                             "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                             "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                             "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                             "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                             "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                             "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                             "------------------------------------------\n";
+
+        emit logListarArbolAvl(logMensaje.replace("\n", "<br>"), "cyan");
+    }
+
+    emit tiempoProcesoListarNombre(1, tiempo);
+}
+
+/*Metodo que permite listar el producto nombre en orden alfabetico en base a los resultados de las listas enlazadas*/
+void Controlador::listarAlfabeticoListas(){
+
+    QElapsedTimer timerOrdenada;
+    timerOrdenada.start();
+    ListaEnlazada<Producto> listaOrdenada = this->gestorBackend->listarProductosOrdenados();
+
+    double tiempoOrdenado = timerOrdenada.nsecsElapsed() / 1000000.0;
+
+    if(listaOrdenada.esVacia()){
+        emit logListarListaOrdenada("La lista Ordenada esta vacia", "yellow");
+        emit tiempoProcesoListarNombre(2,tiempoOrdenado);
+    }else{
+
+        QString cantidad = "==========================================\n"
+                           "Productos listados:   " + QString::number(listaOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logListarListaOrdenada(cantidad.replace("\n", "<br>"), "yellow");
+
+        for(int i = 0; i < listaOrdenada.getLongitud(); i++) {
+            Producto product = listaOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logListarListaOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoListarNombre(2, tiempoOrdenado);
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> listaNoOrdenada = this->gestorBackend->listarProductosNoOrdenados();
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(listaNoOrdenada.esVacia()){
+        emit logListarListaNoOrdenada("La lista No Ordenada esta vacia", "yellow");
+        emit tiempoProcesoListarNombre(3,tiempo);
+
+    }else{
+
+        QString cantidadLista = "==========================================\n"
+                                "Productos listados:   " + QString::number(listaNoOrdenada.getLongitud()) + "\n" +
+                                "==========================================\n\n";
+
+        emit logListarListaNoOrdenada(cantidadLista.replace("\n", "<br>"), "yellow");
+
+        for(int i = 0; i < listaNoOrdenada.getLongitud(); i++) {
+            Producto product = listaNoOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logListarListaNoOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoListarNombre(3, tiempo);
+    }
 }
 
 /*Metodo que permite obtener los datos para poder descargar el Log de errores*/

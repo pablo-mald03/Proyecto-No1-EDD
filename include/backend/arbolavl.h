@@ -42,6 +42,9 @@ private:
     /*Metodo que permite generar la busqueda binaria completa en el arbol AVL*/
     void buscarProductoRecursivo(NodoAvl* nodo, const std::string& nombre, ListaEnlazada<Producto>& lista);
 
+    /*Metodo que permite listar en orden alfabetico el arbol*/
+    void listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>& lista);
+
 public:
     ArbolAvl();
     ~ArbolAvl();
@@ -49,8 +52,8 @@ public:
     /*Metodo que permite insertar un producto al arbol*/
     void insertar(Producto producto);
 
-    /*Metodo que permite listar en orden alfabetico el arbol*/
-    void listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>* lista);
+    /*Metodo que permite retornar la lista de los productos en orden alfabetico*/
+    ListaEnlazada<Producto> obtenerProductosOrdenados();
 
     /*Metodo que permite generar la busqueda del producto por nombre*/
     ListaEnlazada<Producto> buscarProducto(const std::string& nombre);

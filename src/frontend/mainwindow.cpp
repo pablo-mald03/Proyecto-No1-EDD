@@ -267,6 +267,7 @@ void MainWindow::mostrarListarNombre(){
     }
 
     emit this->limpiarListar();
+    this->controladorCrud->ordenarListado(1);
     this->ui->labelTasks->setText("Listar por nombre");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaListarNombre);
 

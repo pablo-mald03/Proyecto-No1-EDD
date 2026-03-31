@@ -622,3 +622,61 @@ ListaEnlazada<Producto> GestorEstructuras::buscarProductoFechasListaNoOrdenada(c
 
 
 
+/*Metodos que permiten listar en orden alfabetico los productos*/
+ListaEnlazada<Producto> GestorEstructuras::listarProductosAvl(){
+    return this->arbolAvl->obtenerProductosOrdenados();
+}
+
+/*Metodos que permiten retornar la lista de los productos en orden alfabetico*/
+ListaEnlazada<Producto> GestorEstructuras::listarProductosOrdenados(){
+
+    ListaEnlazada<Producto> resultados;
+    int longitud = this->listaOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        resultados.insertarAtras(this->listaOrdenada->getValor(i));
+    }
+
+    return resultados;
+}
+
+/*Metodo que retorna la lista no ordenada, pero la ordena temporalmente por nombre a lo clasico*/
+ListaEnlazada<Producto> GestorEstructuras::listarProductosNoOrdenados(){
+
+    ListaEnlazada<Producto> resultados;
+    int longitud = this->listaNoOrdenada->getLongitud();
+
+    if (longitud == 0) {
+        return resultados;
+    }
+
+    std::vector<Producto> buffer;
+    for (int i = 0; i < longitud; i++) {
+        buffer.push_back(this->listaNoOrdenada->getValor(i));
+    }
+
+    int nSize = buffer.size();
+
+    for (int i = 0; i < nSize - 1; i++) {
+        int indiceMinimo = i;
+
+        for (int j = i + 1; j < nSize; j++) {
+            if (buffer[j].getNombre() < buffer[indiceMinimo].getNombre()) {
+                indiceMinimo = j;
+            }
+        }
+
+        if (indiceMinimo != i) {
+            Producto temp = buffer[i];
+            buffer[i] = buffer[indiceMinimo];
+            buffer[indiceMinimo] = temp;
+        }
+    }
+
+    for (int i = 0; i < nSize; i++) {
+        resultados.insertarAtras(buffer[i]);
+    }
+    return resultados;
+}
+
+

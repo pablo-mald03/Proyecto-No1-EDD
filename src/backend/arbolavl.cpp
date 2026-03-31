@@ -166,11 +166,19 @@ bool ArbolAvl::existeCodigoBarra(NodoAvl* nodo, const std::string& codigo){
            existeCodigoBarra(nodo->getDerecha(), codigo);
 }
 
+
+/*Metodo que permite listar en orden alfabetico los datos del arbol*/
+ListaEnlazada<Producto> ArbolAvl::obtenerProductosOrdenados() {
+    ListaEnlazada<Producto> listaOrdenada;
+    listarProductosInOrden(this->raiz, listaOrdenada);
+    return listaOrdenada;
+}
+
 /*Metodo que permite listar en orden alfabetico el arbol*/
 /*
-*   Permite recorrer lo mas a la izquierda posible que es donde estan los primeros alfabeticamente
+*   Permite recorrer lo mas a la izquierda posible que es donde estan los primeros alfabeticamente In-Orden
 */
-void ArbolAvl::listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>* lista){
+void ArbolAvl::listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>& lista){
 
     if(nodo == nullptr){
         return;
@@ -178,7 +186,7 @@ void ArbolAvl::listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>* li
 
     listarProductosInOrden(nodo->getIzquierda(),lista);
 
-    lista->insertarAtras(nodo->getDato());
+    lista.insertarAtras(nodo->getDato());
 
     listarProductosInOrden(nodo->getDerecha(),lista);
 }

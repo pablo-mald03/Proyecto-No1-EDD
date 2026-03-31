@@ -62,6 +62,12 @@ private:
     void buscarBFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
     void buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
 
+    /*Metodos que permiten eliminar un producto*/
+
+    /*Metodos que permiten listar los productos en orden alfabetico*/
+    void listarAlfabeticoListas();
+    void listarAlfabeticoAvl();
+
 
 public slots:
 
@@ -202,7 +208,7 @@ signals:
     void logListarListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProcesoListarNombre (int estructura, qint64 milisegundos);
+    void tiempoProcesoListarNombre (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de listai productos */
 

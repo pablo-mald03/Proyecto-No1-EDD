@@ -112,6 +112,11 @@ public:
     ListaEnlazada<Producto> buscarProductoFechasListaNoOrdenada(const std::string &limiteInferior, const std::string &limiteSuperior);
 
 
+    /*Metodo que permite listar en orden alfabetico los productos almacenados en el arbol AVL*/
+    ListaEnlazada<Producto> listarProductosAvl();
+    ListaEnlazada<Producto> listarProductosOrdenados();
+    ListaEnlazada<Producto> listarProductosNoOrdenados();
+
 private:
 
     /*Arbol AVL*/

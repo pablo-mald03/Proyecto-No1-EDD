@@ -30,22 +30,28 @@ PantallaListarNombre::~PantallaListarNombre()
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
 void PantallaListarNombre::appendAvlLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textArbolAvl->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaListarNombre::appendListOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaListarNombre::appendListNoOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaNoOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
@@ -60,20 +66,22 @@ void PantallaListarNombre::appendListNoOrdenadaLog(QString mensaje, QString colo
 * 3 -> LISTA NO ORDENADA
 *
 */
-void PantallaListarNombre::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaListarNombre::mostrarTiempo(int estructura, double milisegundos){
+
+    QString tiempoTexto = "Tiempo transcurrido: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoAvl->setText("Tiempo transcurrido: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoAvl->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoOrdenada->setText("Tiempo transcurrido: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoOrdenada->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoNoOrdenada->setText("Tiempo transcurrido: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoNoOrdenada->setText(tiempoTexto);
         break;
     }
 

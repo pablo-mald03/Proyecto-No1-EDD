@@ -200,7 +200,7 @@ QLineEdit#textBarra:disabled {
     padding: 10px 25px;
 }
 
-QPushButton#btnAgregar:hover {
+QPushButton#btnEliminar:hover {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgba(41, 128, 185, 255), 
                         stop:1 rgba(142, 68, 173, 255));
@@ -208,7 +208,7 @@ QPushButton#btnAgregar:hover {
 }
 
 
-QPushButton#btnAgregar:pressed {
+QPushButton#btnEliminar:pressed {
     background-color: #2c3e50;
     padding-top: 12px;
     padding-left: 27px;

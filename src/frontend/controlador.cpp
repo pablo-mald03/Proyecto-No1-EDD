@@ -1,4 +1,5 @@
 #include "controlador.h"
+#include "deleteexception.h"
 #include "insertexception.h"
 #include "readercsvexception.h"
 #include<QElapsedTimer>
@@ -445,6 +446,7 @@ void Controlador::insercionProducto(const std::string &_nombre,const std::string
 }
 
 /*-------Apartado de metodos de insercion de datos (Rollback)-------*/
+/*Metodo que permite insertar en las listas*/
 void Controlador::insertarEnListas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
 
     try{
@@ -477,6 +479,7 @@ void Controlador::insertarEnListas(const std::string &_nombre,const std::string 
 
 }
 
+/*Metodo que permite insertar en el arbol AVL*/
 void Controlador::insertarEnArbolAvl(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
 
     try{
@@ -498,6 +501,7 @@ void Controlador::insertarEnArbolAvl(const std::string &_nombre,const std::strin
     }
 }
 
+/*Metodo que permite insertar en el arbol B*/
 void Controlador::insertarEnArbolB(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
 
     try{
@@ -520,6 +524,7 @@ void Controlador::insertarEnArbolB(const std::string &_nombre,const std::string 
     }
 }
 
+/*Metodo que permite insertar en el arbol B+*/
 void Controlador::insertarEnArbolBMas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
 
     try{
@@ -958,15 +963,152 @@ void Controlador::buscarListasFecha(const std::string &limiteInferior, const std
 
 
 /*Metodo que permite eliminar un producto por codigo*/
-void Controlador::eliminarProducto(std::string codigo){
+void Controlador::eliminarProducto(const std::string &codigo){
 
-    /*Pendiente*/
-    emit logEliminarArbolAvl("Producto eliminado: "+ QString::fromStdString(codigo), "green");
-    emit logEliminarArbolB("Producto eliminado: "+ QString::fromStdString(codigo), "green");
-    emit logEliminarArbolBMas("Producto eliminado: "+ QString::fromStdString(codigo), "green");
-    emit logEliminarListaOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
-    emit logEliminarListaNoOrdenada("Producto eliminado: "+ QString::fromStdString(codigo), "green");
+    try{
+
+        this->eliminarEnListas(codigo);
+        qDebug()<<"Eliminaron las listas";
+        this->eliminarEnArbolAvl(codigo);
+        qDebug()<<"Elimino el AVL";
+        this->eliminarEnArbolB(codigo);
+        qDebug()<<"Elimino el B";
+        this->eliminarEnArbolBMas(codigo);
+        qDebug()<<"Elimino el BMas";
+
+        /*Ordenar lista despues de medir tiempos*/
+        this->gestorBackend->ordenarLista(1);
+
+    }catch (const InsertException& e) {
+        emit logEliminarListaOrdenada( QString::fromStdString(e.what()), "red");
+        emit logEliminarListaNoOrdenada( QString::fromStdString(e.what()), "red");
+        emit logEliminarArbolAvl( QString::fromStdString(e.what()), "red");
+        emit logEliminarArbolB( QString::fromStdString(e.what()), "red");
+        emit logEliminarArbolBMas( QString::fromStdString(e.what()), "red");
+    }
+    catch (const DeleteException& ex) {
+        emit logEliminarListaOrdenada( QString::fromStdString(ex.what()), "red");
+        emit logEliminarListaNoOrdenada( QString::fromStdString(ex.what()), "red");
+        emit logEliminarArbolAvl( QString::fromStdString(ex.what()), "red");
+        emit logEliminarArbolB( QString::fromStdString(ex.what()), "red");
+        emit logEliminarArbolBMas( QString::fromStdString(ex.what()), "red");
+    }
+    catch (const std::exception& ex) {
+        emit logEliminarListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logEliminarListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logEliminarArbolAvl("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logEliminarArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logEliminarArbolBMas("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
 }
+
+
+/*------APARTADO DE AUXILIARES QUE PERMITEN ELIMINAR LOS PRODUCTOS------*/
+/*Metodo que permite insertar en las listas*/
+void Controlador::eliminarEnListas(const std::string &_codigoBarra){
+
+    try{
+
+        QElapsedTimer timer1;
+        timer1.start();
+
+        this->gestorBackend->eliminarListaNoOrdenada(_codigoBarra);
+        emit logEliminarListaNoOrdenada("Producto eliminado correctamente con el codigo: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
+        double tiempo1 = timer1.nsecsElapsed() / 1000000.0;
+        emit tiempoEliminarProceso(5, tiempo1);
+
+
+        QElapsedTimer timer2;
+        timer2.start();
+
+        this->gestorBackend->eliminarListaOrdenada(_codigoBarra);
+        emit logEliminarListaOrdenada("Producto eliminado correctamente con el codigo: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
+
+        double tiempo2 = timer2.nsecsElapsed() / 1000000.0;
+
+        emit tiempoEliminarProceso(4, tiempo2);
+
+    }catch (const DeleteException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw DeleteException("Error inesperado en listas: " + std::string(ex.what()));
+    }
+
+}
+
+/*Metodo que permite eliminar en el arbol AVL*/
+void Controlador::eliminarEnArbolAvl(const std::string &_codigoBarra){
+
+    try{
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->eliminarArbolAvl(_codigoBarra);
+
+        emit logEliminarArbolAvl("Producto eliminado correctamente con el codigo: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+        emit tiempoEliminarProceso(1, tiempo);
+
+    }catch (const DeleteException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw DeleteException("Error inesperado en el arbol AVL: " + std::string(ex.what()));
+    }
+}
+
+/*Metodo que permite eliminar en el arbol B*/
+void Controlador::eliminarEnArbolB(const std::string &_codigoBarra){
+
+    try{
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->eliminarArbolB(_codigoBarra);
+
+        emit logEliminarArbolB("Producto eliminado correctamente con el codigo: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+        emit tiempoEliminarProceso(2, tiempo);
+
+    }catch (const DeleteException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw DeleteException("Error inesperado en el arbol B: " + std::string(ex.what()));
+    }
+}
+
+/*Metodo que permite eliminar en el arbol B+*/
+void Controlador::eliminarEnArbolBMas(const std::string &_codigoBarra){
+
+    try{
+
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->eliminarArbolBMas(_codigoBarra);
+
+        emit logEliminarArbolBMas("Producto eliminado correctamente con el codigo: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+        emit tiempoEliminarProceso(3, tiempo);
+
+    }catch (const DeleteException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw DeleteException("Error inesperado en el arbol B+: " + std::string(ex.what()));
+    }
+}
+
+/*------FIN DEL APARTADO DE AUXILIARES QUE PERMITEN ELIMINAR LOS PRODUCTOS------*/
+
 
 /*------APARTADO DE METODOS QUE PERMITEN LISTAR EN ORDEN ALFABETICO LOS PRODUCTOS------*/
 

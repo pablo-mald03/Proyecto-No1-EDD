@@ -1,4 +1,5 @@
 #include "gestorestructuras.h"
+#include "deleteexception.h"
 #include "insertexception.h"
 #include "readercsvexception.h"
 #include <ctime>
@@ -172,11 +173,21 @@ bool GestorEstructuras::existeProductoListaOrdenada(const std::string &codigo){
 
 /*---****-----Apartado de Metodos que permiten utilizar el arbol AVL-------****---*/
 
-/*Metodo que permite insertar datos en el arbol Avl*/
-void GestorEstructuras::insertarArbolAvl(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+/*Metodo que permite insertar datos en el arbol AVL*/
+void GestorEstructuras::insertarArbolAvl(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
 
     try{
         this->arbolAvl->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+    }catch (const InsertException& e) {
+        throw InsertException(e.what());
+    }
+}
+
+/*Metodo que permite insertar datos en el arbol AVL*/
+void GestorEstructuras::eliminarArbolAvl(const std::string &key){
+
+    try{
+        this->arbolAvl->eliminarPorCodigo(key);
     }catch (const InsertException& e) {
         throw InsertException(e.what());
     }
@@ -187,8 +198,8 @@ void GestorEstructuras::insertarArbolAvl(std::string nombre, std::string key, st
 
 /*---****-----Apartado de Metodos que permiten utilizar el arbol B-------****---*/
 
-/*Metodo que permite insertar datos en el arbol Avl*/
-void GestorEstructuras::insertarArbolB(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+/*Metodo que permite insertar datos en el arbol B*/
+void GestorEstructuras::insertarArbolB(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
 
     try{
         this->arbolB->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
@@ -197,18 +208,78 @@ void GestorEstructuras::insertarArbolB(std::string nombre, std::string key, std:
     }
 }
 
+/*Metodo que permite eliminar datos en el arbol B*/
+void GestorEstructuras::eliminarArbolB(const std::string &key){
+
+    try{
+       this->arbolB->eliminar(key);
+    }catch (const DeleteException& e) {
+        throw DeleteException(e.what());
+    }
+}
+
 /*---****-----Fin del Apartado de Metodos que permiten utilizar el arbol B-------****---*/
 
 
 /*---****-----Apartado de Metodos que permiten utilizar el arbol B+-------****---*/
 
-/*Metodo que permite insertar datos en el arbol Avl*/
-void GestorEstructuras::insertarArbolBMas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+/*Metodo que permite insertar datos en el arbol B+*/
+void GestorEstructuras::insertarArbolBMas(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
 
     try{
         this->arbolBMas->insertar(Producto(nombre,key,categoria,fecha,marca,precio,stock));
     }catch (const InsertException& e) {
         throw InsertException(e.what());
+    }
+}
+
+
+/*Metodo que permite eliminar datos en el arbol B+*/
+void GestorEstructuras::eliminarArbolBMas(const std::string &key){
+
+    try{
+        this->arbolBMas->eliminar(key);
+    }catch (const InsertException& e) {
+        throw InsertException(e.what());
+    }
+}
+
+
+/*Metodo que permite eliminar datos en la lista no ordenada*/
+void GestorEstructuras::eliminarListaNoOrdenada(const std::string &key){
+
+    if (!this->existeProductoListaNoOrdenada(key)) {
+        throw DeleteException("El Producto con el codigo de Barra { " + key + " } no existe en los registros. [LISTA NO ORDENADA].");
+    }
+
+    int longitud = this->listaNoOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        if (this->listaNoOrdenada->getValor(i).getCodigoBarra() == key) {
+
+            /*Al encontrarlo rompe el ciclo*/
+            this->listaNoOrdenada->eliminar(i);
+            break;
+        }
+    }
+}
+
+/*Metodo que permite eliminar datos en la lista ordenada*/
+void GestorEstructuras::eliminarListaOrdenada(const std::string &key){
+
+    if (!this->existeProductoListaOrdenada(key)) {
+        throw DeleteException("El Producto con el codigo de Barra { " + key + " } no existe en los registros. [LISTA ORDENADA].");
+    }
+
+    int longitud = this->listaOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        if (this->listaOrdenada->getValor(i).getCodigoBarra() == key) {
+
+            /*Al encontrarlo rompe el ciclo*/
+            this->listaOrdenada->eliminar(i);
+            break;
+        }
     }
 }
 
@@ -426,6 +497,7 @@ void GestorEstructuras::generarListaOrdenada(int criterio){
 * 1 -> nombre
 * 2 -> categoria
 * 3 -> fecha
+* 4 -> codigo de barra (Especial para la eliminacion)
 */
 void GestorEstructuras::ordenarLista(int criterio){
 
@@ -433,20 +505,25 @@ void GestorEstructuras::ordenarLista(int criterio){
         return;
     }
 
-    std::vector<Producto> buffer;
-    NodoLista<Producto>* actual = this->listaOrdenada->getCabeza();
-    while (actual != nullptr) {
-        buffer.push_back(actual->getDato());
-        actual = actual->getSiguiente();
-    }
+    int n = this->listaOrdenada->getLongitud();
 
-    int n = buffer.size();
+    Producto* buffer = new Producto[n];
+
+    NodoLista<Producto>* actual = this->listaOrdenada->getCabeza();
+    int index = 0;
+
+    while (actual != nullptr) {
+        buffer[index] = actual->getDato();
+        actual = actual->getSiguiente();
+        index++;
+    }
 
     for (int i = 0; i < n - 1; i++) {
         int indiceMinimo = i;
-        for (int j = i + 1; j < n; j++) {
 
+        for (int j = i + 1; j < n; j++) {
             bool esMenor = false;
+
             if (criterio == 1){
                 esMenor = (buffer[j].getNombre() < buffer[indiceMinimo].getNombre());
             }
@@ -456,22 +533,29 @@ void GestorEstructuras::ordenarLista(int criterio){
             else if (criterio == 3){
                 esMenor = (buffer[j].getFechaExpiracion() < buffer[indiceMinimo].getFechaExpiracion());
             }
+            else if (criterio == 4){
+                esMenor = (buffer[j].getCodigoBarra() < buffer[indiceMinimo].getCodigoBarra());
+            }
+
             if (esMenor) {
                 indiceMinimo = j;
             }
         }
 
-        /*Clasico*/
-        Producto temp = buffer[i];
-        buffer[i] = buffer[indiceMinimo];
-        buffer[indiceMinimo] = temp;
+        if (indiceMinimo != i) {
+            Producto temp = buffer[i];
+            buffer[i] = buffer[indiceMinimo];
+            buffer[indiceMinimo] = temp;
+        }
     }
 
     this->listaOrdenada->limpiar();
 
-    for (const Producto& p : buffer) {
-        this->listaOrdenada->insertarAtras(p);
+    for (int i = 0; i < n; i++) {
+        this->listaOrdenada->insertarAtras(buffer[i]);
     }
+
+    delete[] buffer;
 }
 /*Fin del Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/
 
@@ -650,17 +734,17 @@ ListaEnlazada<Producto> GestorEstructuras::listarProductosNoOrdenados(){
         return resultados;
     }
 
-    std::vector<Producto> buffer;
+    /*Buffer clasico*/
+    Producto* buffer = new Producto[longitud];
+
     for (int i = 0; i < longitud; i++) {
-        buffer.push_back(this->listaNoOrdenada->getValor(i));
+        buffer[i] = this->listaNoOrdenada->getValor(i);
     }
 
-    int nSize = buffer.size();
-
-    for (int i = 0; i < nSize - 1; i++) {
+    for (int i = 0; i < longitud - 1; i++) {
         int indiceMinimo = i;
 
-        for (int j = i + 1; j < nSize; j++) {
+        for (int j = i + 1; j < longitud; j++) {
             if (buffer[j].getNombre() < buffer[indiceMinimo].getNombre()) {
                 indiceMinimo = j;
             }
@@ -673,9 +757,12 @@ ListaEnlazada<Producto> GestorEstructuras::listarProductosNoOrdenados(){
         }
     }
 
-    for (int i = 0; i < nSize; i++) {
+    for (int i = 0; i < longitud; i++) {
         resultados.insertarAtras(buffer[i]);
     }
+
+    delete[] buffer;
+
     return resultados;
 }
 

@@ -63,6 +63,11 @@ private:
     void buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
 
     /*Metodos que permiten eliminar un producto*/
+    void eliminarEnListas(const std::string &_codigoBarra);
+    void eliminarEnArbolAvl(const std::string &_codigoBarra);
+    void eliminarEnArbolB(const std::string &_codigoBarra);
+    void eliminarEnArbolBMas(const std::string &_codigoBarra);
+
 
     /*Metodos que permiten listar los productos en orden alfabetico*/
     void listarAlfabeticoListas();
@@ -85,7 +90,7 @@ public slots:
     void buscarPorNombre(const std::string &nombre);
     void buscarPorCategoria(std::string categoria);
     void buscarPorFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
-    void eliminarProducto(std::string codigo);
+    void eliminarProducto(const std::string &codigo);
     void listarProductos();
 
 
@@ -198,7 +203,7 @@ signals:
     void logEliminarListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoEliminarProceso(int estructura, qint64 milisegundos);
+    void tiempoEliminarProceso(int estructura, double milisegundos);
 
     /*Fin de los Signals que permiten comunicarse con la pantalla de listar productos */
 

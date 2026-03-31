@@ -318,33 +318,86 @@ void ArbolB::buscarRangoAux(NodoB* nodo, const std::string& inicio, const std::s
 *por lo tanto este ya se encarga de llevarse todo por delante
 *
 */
-
-void ArbolB::eliminar(const std::string& fecha, const std::string& codigo) {
+void ArbolB::eliminar(const std::string& codigo) {
 
     if (this->raiz == nullptr) {
-        throw DeleteException("El árbol está vacío. [ARBOL B]");
+        throw DeleteException("El arbol esta vacio. [ARBOL B]");
     }
 
-    /*Llamado al metodo recursivo de eliminacion*/
+    /*Fase de buscar el producto completo para obtener su fecha para poder generar los rebalanceos */
+    bool encontrado = false;
+    Producto productoAEliminar = buscarPorCodigoExhaustivo(this->raiz, codigo, encontrado);
 
-    this->eliminarAux(this->raiz, fecha, codigo);
+    if (!encontrado) {
+        throw DeleteException("El producto con el codigo de barra {" + codigo + "} no existe. [ARBOL B]");
+    }
 
-    /*Se determina si la lista esta vacia para eliminar el restante*/
+    /*Se extrae la fecha del producto encontrado para poder generar el rebalanceo*/
+    std::string fechaEncontrada = productoAEliminar.getFechaExpiracion();
+
+    /* Se hace el llamado al metodo recursivo de eliminacion para evitar tocar la logica del parametro de orden*/
+    this->eliminarAux(this->raiz, fechaEncontrada, codigo);
+
+    /* Se evalua si la raiz se quedo vacia tras el rebalanceo para eliminar el nodo restante */
     if (this->raiz->getClaves().getLongitud() == 0) {
 
         NodoB* temporal = this->raiz;
 
-        /*Caso: raiz hoja*/
+        /*Caso en el que la raiz es hoja*/
         if (this->raiz->getEsHoja()) {
             this->raiz = nullptr;
         }
         else{
+
+            /*Caso en el que el hijo sera la nueva raiz*/
+
             this->raiz = this->raiz->getHijos().getValor(0);
+
+            /*Elimina a el hijo y lo remueve para que el destructor no lo encuentre*/
+            temporal->getHijos().eliminar(0);
         }
 
+        /*El destructor borra el nodo vacio*/
         delete temporal;
     }
 }
+
+
+/*Metodo auxiliar que permite buscar la clave del producto que se va a eliminar en base a su llave primaria de integridad*/
+Producto ArbolB::buscarPorCodigoExhaustivo(NodoB* nodo, const std::string& codigo, bool& encontrado) {
+
+    /*Retorna un producto vacio si no hay nada en el nodo*/
+
+    if (nodo == nullptr) {
+        return Producto();
+    }
+
+    int nClaves = nodo->getClaves().getLongitud();
+
+    //Caso 1: e busca en las claves principales del arbol
+    for (int i = 0; i < nClaves; i++) {
+        if (nodo->getClaves().getValor(i).getCodigoBarra() == codigo) {
+            encontrado = true;
+            return nodo->getClaves().getValor(i);
+        }
+    }
+
+    //Caso 2: Si el nodo no es hoja y no se encontro en las claves. Se empieza a buscar en los hijos
+    if (!nodo->getEsHoja()) {
+        for (int i = 0; i <= nClaves; i++) {
+            Producto product = buscarPorCodigoExhaustivo(nodo->getHijos().getValor(i), codigo, encontrado);
+            if (encontrado) {
+
+                /*Si lo encontro en algun hijo,se retorna hacia arriba.*/
+                return product;
+            }
+        }
+    }
+
+    /*Caso en el que no se encontro*/
+    return Producto();
+}
+
 
 /*----*****--APARTADO DE LOS METODOS DE ELIMINACION--*****----*/
 
@@ -540,6 +593,12 @@ void ArbolB::fusionar(NodoB* nodo, int indice){
     nodo->getClaves().eliminar(indice);
     nodo->getHijos().eliminar(indice + 1);
 
+    /*Se vacia la lista de los hijos para que este no los mate al momento de eliminarse y evitar desbordes de RAM*/
+    while (!hermano->getHijos().esVacia()) {
+        hermano->getHijos().removerFrente();
+    }
+
+    /*Se borra el nodo pero los demas ya estan en el padre*/
     delete hermano;
 
 }

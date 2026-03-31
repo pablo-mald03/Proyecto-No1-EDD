@@ -98,7 +98,6 @@ void PantallaBuscarRango::limpiarPantalla(){
 */
 void PantallaBuscarRango::mostrarTiempo(int estructura, double milisegundos){
 
-
     QString tiempoTexto = "Tiempo de busqueda: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){

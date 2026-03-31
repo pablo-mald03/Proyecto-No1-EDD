@@ -584,7 +584,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
                      </property>
                      <property name="text">
-                      <string>Tiempo de eliminacion:</string>
+                      <string>Tiempo de eliminacion: 0 ms</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -706,7 +706,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
                      </property>
                      <property name="text">
-                      <string>Tiempo de eliminacion:</string>
+                      <string>Tiempo de eliminacion: 0 ms</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -862,7 +862,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de eliminacion:</string>
+               <string>Tiempo de eliminacion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -990,7 +990,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de eliminacion:</string>
+               <string>Tiempo de eliminacion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1118,7 +1118,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de eliminacion:</string>
+               <string>Tiempo de eliminacion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>

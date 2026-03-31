@@ -24,13 +24,29 @@ public:
     void insertarListasCsv(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
 
     /*Metodo que permite insertar datos en el arbol AVL*/
-    void insertarArbolAvl(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
+    void insertarArbolAvl(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
 
     /*Metodo que permite insertar datos en el arbol B*/
-    void insertarArbolB(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
+    void insertarArbolB(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
 
     /*Metodo que permite insertar datos en el arbol B+*/
-    void insertarArbolBMas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
+    void insertarArbolBMas(const std::string &nombre, const std::string &key, const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
+
+
+    /*Metodo que permite eliminar datos en el arbol AVL*/
+    void eliminarArbolAvl(const std::string &key);
+
+    /*Metodo que permite eliminar datos en el arbol B*/
+    void eliminarArbolB(const std::string &key);
+
+    /*Metodo que permite eliminar datos en el arbol B+*/
+    void eliminarArbolBMas(const std::string &key);
+
+    /*Metodo que permite eliminar los datos en la lista ordenada*/
+    void eliminarListaOrdenada(const std::string &key);
+
+    /*Metodo que permite eliminar los datos en la lista no ordenada*/
+    void eliminarListaNoOrdenada(const std::string &key);
 
     /*Metodo para insertar en lista no ordenada*/
     void insertarListaNoOrdenada(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);

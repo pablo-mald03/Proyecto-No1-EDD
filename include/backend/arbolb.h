@@ -57,6 +57,9 @@ private:
     /*Metodo que permite generar el .dot recursivo para el arbol y que se pueda graficar*/
     void generarDotRecursivo(NodoB* nodo, std::stringstream& sStream);
 
+    /*Metodo que permite buscar en el arbol el producto con el codigo de barra*/
+    Producto buscarPorCodigoExhaustivo(NodoB* nodo, const std::string& codigo, bool& encontrado);
+
 public:
     ArbolB(int _t);
     ~ArbolB();
@@ -69,7 +72,7 @@ public:
     ListaEnlazada<Producto> buscarRango(const std::string& inicio, const std::string& fin);
 
     /*Metodo que permite eliminar por completo un nodo*/
-    void eliminar(const std::string& fecha, const std::string& codigo);
+    void eliminar(const std::string& codigo);
 
     /*Metodo que permite generar el graphviz del arbol B*/
     std::string generarDot();

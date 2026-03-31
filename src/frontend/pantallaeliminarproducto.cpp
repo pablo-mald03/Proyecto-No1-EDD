@@ -79,27 +79,29 @@ void PantallaEliminarProducto::appendListNoOrdenadaLog(QString mensaje, QString 
 * 5 -> LISTA NO ORDENADA
 *
 */
-void PantallaEliminarProducto::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaEliminarProducto::mostrarTiempo(int estructura, double milisegundos){
+
+    QString tiempoTexto = "Tiempo de eliminacion: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoAvl->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoAvl->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoB->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoB->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoBMas->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoBMas->setText(tiempoTexto);
         break;
 
     case 4:
-        this->ui->labelTiempoListOrdenada->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoListOrdenada->setText(tiempoTexto);
         break;
     case 5:
-        this->ui->labelTiempoListNoOrdenada->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoListNoOrdenada->setText(tiempoTexto);
         break;
     }
 
@@ -128,11 +130,11 @@ void PantallaEliminarProducto::limpiarLogs(){
     this->ui->textEditListNoOrdenada->clear();
     this->ui->textEditListOrdenada->clear();
 
-    this->ui->labelTiempoListNoOrdenada->setText("Tiempo de eliminacion:");
-    this->ui->labelTiempoListOrdenada->setText("Tiempo de eliminacion:");
-    this->ui->labelTiempoAvl->setText("Tiempo de eliminacion:");
-    this->ui->labelTiempoB->setText("Tiempo de eliminacion:");
-    this->ui->labelTiempoBMas->setText("Tiempo de eliminacion:");
+    this->ui->labelTiempoListNoOrdenada->setText("Tiempo de eliminacion: 0 ms");
+    this->ui->labelTiempoListOrdenada->setText("Tiempo de eliminacion: 0 ms");
+    this->ui->labelTiempoAvl->setText("Tiempo de eliminacion: 0 ms");
+    this->ui->labelTiempoB->setText("Tiempo de eliminacion: 0 ms");
+    this->ui->labelTiempoBMas->setText("Tiempo de eliminacion: 0 ms");
 }
 
 
@@ -146,7 +148,7 @@ void PantallaEliminarProducto::on_btnEliminar_clicked()
         QMessageBox::warning(
             this,
             "Campo requerido",
-            "Ingrese un codigo de barras válido"
+            "Ingrese un codigo de barras valido"
             );
         return;
     }
@@ -156,7 +158,7 @@ void PantallaEliminarProducto::on_btnEliminar_clicked()
 
     respuesta = QMessageBox::question(
         this,
-        "Confirmar eliminación",
+        "Confirmar eliminacion",
         "¿Está seguro que desea eliminar el producto con codigo:\n" + codigo + "?",
         QMessageBox::Yes | QMessageBox::No
         );
@@ -165,7 +167,7 @@ void PantallaEliminarProducto::on_btnEliminar_clicked()
         return;
     }
 
-    emit eliminarProducto(codigo.toStdString());
+    emit eliminarProducto(codigo.trimmed().toStdString());
 }
 
 

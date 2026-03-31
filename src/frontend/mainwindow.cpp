@@ -235,6 +235,7 @@ void MainWindow::mostrarEliminar(){
     }
 
     emit this->limpiarEliminar();
+    this->controladorCrud->ordenarListado(4);
     this->ui->labelTasks->setText("Eliminar productos");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaEliminar);
 

@@ -122,6 +122,8 @@ void PantallaPrincipal::on_btnCargar_clicked()
 
     while (!in.atEnd()) {
         QString line = in.readLine();
+        line.remove('"');
+        line = line.trimmed();
         buffer.push_back(line);
     }
 

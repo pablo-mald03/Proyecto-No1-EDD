@@ -968,13 +968,9 @@ void Controlador::eliminarProducto(const std::string &codigo){
     try{
 
         this->eliminarEnListas(codigo);
-        qDebug()<<"Eliminaron las listas";
         this->eliminarEnArbolAvl(codigo);
-        qDebug()<<"Elimino el AVL";
         this->eliminarEnArbolB(codigo);
-        qDebug()<<"Elimino el B";
         this->eliminarEnArbolBMas(codigo);
-        qDebug()<<"Elimino el BMas";
 
         /*Ordenar lista despues de medir tiempos*/
         this->gestorBackend->ordenarLista(1);

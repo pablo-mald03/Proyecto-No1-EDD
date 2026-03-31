@@ -34,7 +34,7 @@ void PantallaBuscarPorCategoria::appendBMasLog(QString mensaje, QString color){
     QString htmlMensaje = mensaje.replace("\n", "<br>");
 
     this->ui->textArbolBMas->append(
-        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
+        "<span style='color:" + color + ";'>" + mensaje + "</span>"
         );
 }
 
@@ -88,7 +88,6 @@ void PantallaBuscarPorCategoria::limpiarLogs(){
 */
 void PantallaBuscarPorCategoria::mostrarTiempo(int estructura, double milisegundos){
 
-
     QString tiempoTexto = "Tiempo de busqueda: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
@@ -113,7 +112,6 @@ void PantallaBuscarPorCategoria::mostrarTiempo(int estructura, double milisegund
 /*Metodo que permite buscar por categoria*/
 void PantallaBuscarPorCategoria::on_btnBuscar_clicked()
 {
-
     this->limpiarLogs();
 
     QString nombreOriginal = ui->textCategoria->text();

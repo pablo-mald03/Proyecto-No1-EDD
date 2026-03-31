@@ -687,7 +687,6 @@ void Controlador::buscarListasNombre(const std::string &nombre){
 /*Metodo que permite buscar los productos por categoria*/
 void Controlador::buscarPorCategoria(std::string categoria){
 
-
     try{
 
         this->buscarBMasCategoria(categoria);
@@ -740,7 +739,7 @@ void Controlador::buscarBMasCategoria(const std::string &categoria){
     emit tiempoProcesoBusquedaCategoria(1, tiempo);
 }
 
-/*Permite listar por nombre*/
+/*Permite listar por categoria*/
 void Controlador::buscarListasCategoria(const std::string &categoria){
 
     QElapsedTimer timerOrdenada;
@@ -819,14 +818,144 @@ void Controlador::buscarListasCategoria(const std::string &categoria){
 
 /*-------Fin del apartado de Metodos que permiten buscar los productos por categoria-------*/
 
-/*Metodo que permite buscar los productos por fechas*/
-void Controlador::buscarPorFecha(std::string limiteInferior, std::string limiteSuperior){
 
-    /*Pendiente*/
-    emit logBusquedaFechasArbolB("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
-    emit logBusquedaFechasListaOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
-    emit logBusquedaFechasListaNoOrdenada("Fecha buscado: "+ QString::fromStdString(limiteInferior), "green");
+/*-------Apartado de Metodos que permiten buscar los productos por fechas-------*/
+
+/*Metodo que permite buscar los productos por fechas*/
+void Controlador::buscarPorFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    try{
+
+        this->buscarBFecha(limiteInferior, limiteSuperior);
+        this->buscarListasFecha(limiteInferior, limiteSuperior);
+
+    }catch (const std::exception& ex) {
+        emit logBusquedaFechasArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
+
 }
+
+
+/*Metodos auxiliares que permiten generar las busquedas en la lista ordenada, la lista no ordenada y el arbol AVL*/
+void Controlador::buscarBFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> lista = this->gestorBackend->buscarProductoB(limiteInferior, limiteSuperior);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(lista.esVacia()){
+        emit logBusquedaFechasArbolB("No se han encontrado productos en el intervalo: "+ QString::fromStdString(limiteInferior)+" - " + QString::fromStdString(limiteSuperior), "yellow");
+        emit tiempoProcesoBusquedaFechas(1,tiempo);
+        return;
+    }
+
+    QString cantidad = "==========================================\n"
+                       "Productos encontrados:   " + QString::number(lista.getLongitud()) + "\n" +
+                       "==========================================\n\n";
+
+    emit logBusquedaFechasArbolB(cantidad.replace("\n", "<br>"), "cyan");
+
+    for(int i = 0; i < lista.getLongitud(); i++) {
+        Producto product = lista.getValor(i);
+
+        QString logMensaje = "------------------------------------------\n"
+                             "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                             "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                             "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                             "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                             "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                             "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                             "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                             "------------------------------------------\n";
+
+        emit logBusquedaFechasArbolB(logMensaje.replace("\n", "<br>"), "cyan");
+    }
+
+    emit tiempoProcesoBusquedaFechas(1, tiempo);
+}
+
+/*Permite listar por rango de fechas*/
+void Controlador::buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    QElapsedTimer timerOrdenada;
+    timerOrdenada.start();
+    ListaEnlazada<Producto> listaOrdenada = this->gestorBackend->buscarProductoFechasListaOrdenada(limiteInferior, limiteSuperior);
+
+    double tiempoOrdenado = timerOrdenada.nsecsElapsed() / 1000000.0;
+
+    if(listaOrdenada.esVacia()){
+        emit logBusquedaFechasListaOrdenada("No se han encontrado productos en el intervalo: "+ QString::fromStdString(limiteInferior)+" - " + QString::fromStdString(limiteSuperior), "yellow");
+        emit tiempoProcesoBusquedaFechas(2,tiempoOrdenado);
+    }else{
+
+        QString cantidad = "==========================================\n"
+                           "Productos encontrados:   " + QString::number(listaOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logBusquedaFechasListaOrdenada(cantidad.replace("\n", "<br>"), "cyan");
+
+        for(int i = 0; i < listaOrdenada.getLongitud(); i++) {
+            Producto product = listaOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaFechasListaOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaFechas(2, tiempoOrdenado);
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> listaNoOrdenada = this->gestorBackend->buscarProductoFechasListaNoOrdenada(limiteInferior, limiteSuperior);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(listaNoOrdenada.esVacia()){
+        emit logBusquedaFechasListaNoOrdenada("No se han encontrado productos en el intervalo: "+ QString::fromStdString(limiteInferior)+" - " + QString::fromStdString(limiteSuperior), "yellow");
+        emit tiempoProcesoBusquedaFechas(3,tiempo);
+
+    }else{
+
+        QString cantidadLista = "==========================================\n"
+                                "Productos encontrados:   " + QString::number(listaNoOrdenada.getLongitud()) + "\n" +
+                                "==========================================\n\n";
+
+        emit logBusquedaFechasListaNoOrdenada(cantidadLista.replace("\n", "<br>"), "cyan");
+
+        for(int i = 0; i < listaNoOrdenada.getLongitud(); i++) {
+            Producto product = listaNoOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Fecha Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaFechasListaNoOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaFechas(3, tiempo);
+    }
+}
+
+
 
 /*Metodo que permite eliminar un producto por codigo*/
 void Controlador::eliminarProducto(std::string codigo){

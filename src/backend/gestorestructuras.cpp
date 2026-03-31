@@ -526,7 +526,7 @@ ListaEnlazada<Producto> GestorEstructuras::buscarProductoListaNoOrdenada(const s
 
 /*-*----Metodos de busqueda por categoria----*--*/
 
-/*Busqueda en arbol AVL*/
+/*Busqueda en arbol B+*/
 ListaEnlazada<Producto> GestorEstructuras::buscarProductoBMas(const std::string& categoria){
     return this->arbolBMas->buscarPorCategoria(categoria);
 }
@@ -564,6 +564,55 @@ ListaEnlazada<Producto> GestorEstructuras::buscarProductoCategoriaListaNoOrdenad
         Producto product = this->listaNoOrdenada->getValor(i);
 
         if (product.getCategoria() == categoria) {
+            resultados.insertarAtras(product);
+        }
+    }
+
+    return resultados;
+}
+
+
+
+
+/*-*----Metodos de busqueda por categoria----*--*/
+
+/*Busqueda en arbol B*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoB(const std::string &limiteInferior, const std::string &limiteSuperior){
+    return this->arbolB->buscarRango(limiteInferior, limiteSuperior);
+}
+
+/*Busqueda en lista ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoFechasListaOrdenada(const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaOrdenada->getValor(i);
+        std::string fecha = product.getFechaExpiracion();
+
+        if (fecha >= limiteInferior && fecha <= limiteSuperior) {
+            resultados.insertarAtras(product);
+        }
+    }
+
+    return resultados;
+
+}
+
+/*Busqueda en lista no ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoFechasListaNoOrdenada(const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaNoOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaNoOrdenada->getValor(i);
+        std::string fecha = product.getFechaExpiracion();
+
+        if (fecha >= limiteInferior && fecha <= limiteSuperior) {
             resultados.insertarAtras(product);
         }
     }

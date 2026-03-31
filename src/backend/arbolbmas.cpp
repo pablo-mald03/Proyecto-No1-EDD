@@ -126,7 +126,7 @@ ListaEnlazada<Producto>  ArbolBMas::buscarPorCategoria(const std::string &catego
             Producto pActual = actual->getClaves().getValor(i);
 
             /*Se busca solo por la categoria para poder listar*/
-            if (categoriaBuscada < pActual.getCategoria()) {
+            if (categoriaBuscada <= pActual.getCategoria()) {
                 break;
             }
 

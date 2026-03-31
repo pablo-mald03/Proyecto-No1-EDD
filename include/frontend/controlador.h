@@ -58,6 +58,10 @@ private:
     void buscarListasCategoria(const std::string &categoria);
     void buscarBMasCategoria(const std::string &categoria);
 
+    /*Metodos que permiten buscar datos por fecha*/
+    void buscarBFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
+    void buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
+
 
 public slots:
 
@@ -74,7 +78,7 @@ public slots:
     void insercionProducto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, const std::string &_precio, const std::string &_stock);
     void buscarPorNombre(const std::string &nombre);
     void buscarPorCategoria(std::string categoria);
-    void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);
+    void buscarPorFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
     void eliminarProducto(std::string codigo);
     void listarProductos();
 
@@ -174,7 +178,7 @@ signals:
     void logBusquedaFechasListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProcesoBusquedaFechas (int estructura, qint64 milisegundos);
+    void tiempoProcesoBusquedaFechas (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombre */
 

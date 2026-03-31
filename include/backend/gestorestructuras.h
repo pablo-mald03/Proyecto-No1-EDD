@@ -106,6 +106,12 @@ public:
     ListaEnlazada<Producto> buscarProductoCategoriaListaOrdenada(const std::string& categoria);
     ListaEnlazada<Producto> buscarProductoCategoriaListaNoOrdenada(const std::string& categoria);
 
+    /*Metodos de busqueda de datos por fecha*/
+    ListaEnlazada<Producto> buscarProductoB(const std::string &limiteInferior, const std::string &limiteSuperior);
+    ListaEnlazada<Producto> buscarProductoFechasListaOrdenada(const std::string &limiteInferior, const std::string &limiteSuperior);
+    ListaEnlazada<Producto> buscarProductoFechasListaNoOrdenada(const std::string &limiteInferior, const std::string &limiteSuperior);
+
+
 private:
 
     /*Arbol AVL*/

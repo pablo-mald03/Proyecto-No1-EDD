@@ -35,6 +35,8 @@ PantallaBuscarRango::~PantallaBuscarRango()
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
 void PantallaBuscarRango::appendBLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textArbolB->append(
         "<span style='color:" + color + ";'>" + mensaje + "</span>"
         );
@@ -42,15 +44,19 @@ void PantallaBuscarRango::appendBLog(QString mensaje, QString color){
 
 void PantallaBuscarRango::appendListOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaBuscarRango::appendListNoOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaNoOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
@@ -68,9 +74,9 @@ void PantallaBuscarRango::limpiarLogs(){
     this->ui->textListaNoOrdenada->clear();
     this->ui->textListaOrdenada->clear();
 
-    this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda:");
-    this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda:");
-    this->ui->labelTiempoB->setText("Tiempo de busqueda:");
+    this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: 0 ms");
+    this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: 0 ms");
+    this->ui->labelTiempoB->setText("Tiempo de busqueda: 0 ms");
 }
 
 /*Metodo signal que permite limpiar los datos de una pantalla*/
@@ -90,20 +96,23 @@ void PantallaBuscarRango::limpiarPantalla(){
 * 3 -> LISTA NO ORDENADA
 *
 */
-void PantallaBuscarRango::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaBuscarRango::mostrarTiempo(int estructura, double milisegundos){
+
+
+    QString tiempoTexto = "Tiempo de busqueda: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoB->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoB->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoOrdenada->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoNoOrdenada->setText(tiempoTexto);
         break;
     }
 
@@ -136,8 +145,8 @@ void PantallaBuscarRango::on_btnBuscar_clicked()
         return;
     }
 
-    std::string fechaInferior = fechaInf.toString("yyyy-MM-dd").toStdString();
-    std::string fechaSuperior = fechaSup.toString("yyyy-MM-dd").toStdString();
+    std::string fechaInferior = fechaInf.toString("yyyy-MM-dd").trimmed().toStdString();
+    std::string fechaSuperior = fechaSup.toString("yyyy-MM-dd").trimmed().toStdString();
 
     emit buscarPorFechas(fechaInferior, fechaSuperior);
 

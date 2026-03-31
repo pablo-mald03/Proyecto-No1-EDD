@@ -1,4 +1,5 @@
 #include "arbolbmas.h"
+#include "deleteexception.h"
 #include "insertexception.h"
 
 /*Constructor del arbol B+*/
@@ -379,3 +380,226 @@ bool ArbolBMas::yaExiste(NodoBMas* nodoRaiz, const Producto &producto){
 }
 
 /*--****----Fin del Apartado de metodos que permiten insertar en el arbol B+---****--*/
+
+
+
+/*--****----Apartado de metodos que permiten eliminar en el arbol B+---****--*/
+
+/*----Metodo que permite eliminar un dato del arbol-----*/
+void ArbolBMas::eliminar(const std::string& codigoBarra){
+
+    if (this->raiz == nullptr) {
+        throw DeleteException("El arbol esta vacio. No hay datos para eliminar.");
+    }
+
+    /*Es el producto a ubicar para poderlo ubicar*/
+    Producto productoAEliminar;
+    bool encontrado = false;
+
+
+    NodoBMas* actual = this->raiz;
+
+
+    /* Bajamos en linea recta hasta la primera hoja (extremo izquierdo) */
+    while (!actual->getEsHoja()) {
+        actual = actual->getHijos().getValor(0);
+    }
+
+    /* Recorremos las hojas horizontalmente buscando el codigo de barras */
+    while (actual != nullptr && !encontrado) {
+        int nClaves = actual->getClaves().getLongitud();
+        for (int i = 0; i < nClaves; i++) {
+            if (actual->getClaves().getValor(i).getCodigoBarra() == codigoBarra) {
+                productoAEliminar = actual->getClaves().getValor(i);
+                encontrado = true;
+                break;
+            }
+        }
+        if (!encontrado) {
+            actual = actual->getSiguiente();
+        }
+    }
+
+    /* Si terminamos de buscar y no estaba, lanzamos la excepcion */
+    if (!encontrado) {
+        throw DeleteException("El producto con el codigo de barra {" + codigoBarra + "} no existe. [ARBOL B+]");
+    }
+
+    /* Ahora con el producto completo se determina por donde bajar */
+    eliminarRecursivo(this->raiz, nullptr, -1, productoAEliminar);
+
+    /*Caso especial: En el que la raiz se queda sin claves despues de rebalancear/
+
+    /*Este aco ocurre si no es una hoja. Asi su hijo unico se convierte en la nueva raiz*/
+
+    if (this->raiz->getClaves().getLongitud() == 0 && !this->raiz->getEsHoja()) {
+        NodoBMas* viejaRaiz = this->raiz;
+
+        /* Se rescata al ultimo hijo para mantener las referencias activas */
+        this->raiz = viejaRaiz->getHijos().getValor(0);
+
+        /*Se desvincula al hijo de la lista de la vieja raiz.
+        *
+        * Este problema surge por mi forma de eliminar los nodos ya que estos borran recursivamente los nodos
+        * por lo tanto estoy obligando a eliminar antes todo
+        */
+        viejaRaiz->getHijos().eliminar(0);
+
+        delete viejaRaiz;
+    }
+
+}
+
+/*Metodo que ptermie eliminar de forma recursiva. Propagando hacia arriba el rebalanceo del arbol*/
+bool ArbolBMas::eliminarRecursivo(NodoBMas* nodo, NodoBMas* padre, int indiceEnPadre, const Producto& producto) {
+
+    int nClaves = nodo->getClaves().getLongitud();
+    int i = 0;
+
+    /*Se busca el indice a eliminar*/
+    while (i < nClaves) {
+        Producto actual = nodo->getClaves().getValor(i);
+        if (producto.getCategoria() < actual.getCategoria() ||
+            (producto.getCategoria() == actual.getCategoria() && producto.getCodigoBarra() < actual.getCodigoBarra())) {
+            break;
+        }
+        i++;
+    }
+
+    /*Caso 1: se esta en una hoja*/
+    if (nodo->getEsHoja()) {
+
+        /*Verificacion si el producto esta en las hojas*/
+        for (int j = 0; j < nClaves; j++) {
+            if (nodo->getClaves().getValor(j).getCodigoBarra() == producto.getCodigoBarra()) {
+                nodo->getClaves().eliminar(j);
+                break;
+            }
+        }
+
+        /*Al regresar el padre revisara si la hoja necesita rebalanceo*/
+        return false;
+    }
+
+    /*En el caso de no ser hoja se sigue bajando por el hijo*/
+    /*Verificacion de desbordamiento tras eliminar (recursion)*/
+    NodoBMas* hijo = nodo->getHijos().getValor(i);
+
+    /*Se captura lo que esta hasta abajo*/
+    bool eliminadoAbajo = eliminarRecursivo(hijo, nodo, i, producto);
+
+    /*Solo se intenta rebalancear si se elimino algo realmente*/
+    if (eliminadoAbajo) {
+        int minimoClaves = orden / 2;
+        if (hijo->getClaves().getLongitud() < minimoClaves) {
+            balancearNodo(nodo, hijo, i);
+        }
+    }
+
+    /*Se pasa el mensaje hacia arriba para que el padre sepa y se propague*/
+    return eliminadoAbajo;
+}
+
+/*Metodo que maneja la forma en prestar y fusiones cuando un nodo se queda sin el minimo de claves*/
+void ArbolBMas::balancearNodo(NodoBMas* padre, NodoBMas* hijo, int indiceHijo){
+
+    /*Localizacion de los hermanos*/
+    int minimoClaves = orden / 2;
+
+    NodoBMas* hermanoIzquierdo = (indiceHijo > 0) ? padre->getHijos().getValor(indiceHijo - 1) : nullptr;
+    NodoBMas* hermanoDerecho = (indiceHijo < padre->getHijos().getLongitud() - 1) ? padre->getHijos().getValor(indiceHijo + 1) : nullptr;
+
+    /*Caso 1: Intento de prestar del hermano izquierdo*/
+    if (hermanoIzquierdo != nullptr && hermanoIzquierdo->getClaves().getLongitud() > minimoClaves) {
+
+        /*Se toma la ultima clave de izquierdo*/
+        int ultimaPosicion = hermanoIzquierdo->getClaves().getLongitud() - 1;
+        Producto prestado = hermanoIzquierdo->getClaves().getValor(ultimaPosicion);
+        hermanoIzquierdo->getClaves().eliminar(ultimaPosicion);
+
+        /*Se busca al principio del hijo que tiene desborde*/
+        hijo->getClaves().insertar(0, prestado);
+
+        /*En el dado caso de que no sean hojas se le pasa el hijo correspondiente*/
+        if (!hijo->getEsHoja()) {
+            NodoBMas* hijoPrestado = hermanoIzquierdo->getHijos().getValor(hermanoIzquierdo->getHijos().getLongitud() - 1);
+            hermanoIzquierdo->getHijos().eliminar(hermanoIzquierdo->getHijos().getLongitud() - 1);
+            hijo->getHijos().insertar(0, hijoPrestado);
+        }
+
+        /*Se actualiza la clave del padre que se divide en dos*/
+        padre->getClaves().insertar(indiceHijo - 1, hijo->getClaves().getValor(0));
+        padre->getClaves().eliminar(indiceHijo);
+        return;
+    }
+
+    /*Caso 2: En el que se intenta prestar al hermano derecho*/
+    if (hermanoDerecho != nullptr && hermanoDerecho->getClaves().getLongitud() > minimoClaves) {
+
+        /*Se toma la primera clave del derecho*/
+        Producto prestado = hermanoDerecho->getClaves().getValor(0);
+        hermanoDerecho->getClaves().eliminar(0);
+
+        /*Se inserta al final del hijo*/
+        hijo->getClaves().insertar(hijo->getClaves().getLongitud(), prestado);
+
+        if (!hijo->getEsHoja()) {
+            NodoBMas* hijoPrestado = hermanoDerecho->getHijos().getValor(0);
+            hermanoDerecho->getHijos().eliminar(0);
+            hijo->getHijos().insertar(hijo->getHijos().getLongitud(), hijoPrestado);
+        }
+
+        /*Se actualiza la clave del padre*/
+        padre->getClaves().insertar(indiceHijo, hermanoDerecho->getClaves().getValor(0));
+        padre->getClaves().eliminar(indiceHijo + 1);
+        return;
+    }
+
+    /*Caso 3: Si nadie puede prestar se opta por fusionar*/
+    /*Camino elegido de primero es intentar fusionar el hermano izquierdo*/
+    if (hermanoIzquierdo != nullptr) {
+        fusionarNodos(padre, indiceHijo - 1, hermanoIzquierdo, hijo);
+    } else if (hermanoDerecho != nullptr) {
+        fusionarNodos(padre, indiceHijo, hijo, hermanoDerecho);
+    }
+}
+
+/*---Metodo que permite unir dos nodos hermanos y eliminar la clave separadora del padre---*/
+void ArbolBMas::fusionarNodos(NodoBMas* padre, int indiceSeparador, NodoBMas* izquierdo, NodoBMas* derecho) {
+
+    /*Si no son hojas se baja a la clave del padre*/
+    if (!izquierdo->getEsHoja()) {
+        Producto clavePadre = padre->getClaves().getValor(indiceSeparador);
+        izquierdo->getClaves().insertar(izquierdo->getClaves().getLongitud(), clavePadre);
+    }
+
+    /*Se pasan todas las claves del nodo derecho al izquierdo*/
+    int nClavesDerecho = derecho->getClaves().getLongitud();
+    for (int i = 0; i < nClavesDerecho; i++) {
+        izquierdo->getClaves().insertar(izquierdo->getClaves().getLongitud(), derecho->getClaves().getValor(0));
+        derecho->getClaves().eliminar(0);
+    }
+
+    /*Si no son hijos, se pasan los hijos tambien*/
+    if (!izquierdo->getEsHoja()) {
+
+        int nHijosDerecho = derecho->getHijos().getLongitud();
+        for (int i = 0; i < nHijosDerecho; i++) {
+            izquierdo->getHijos().insertar(izquierdo->getHijos().getLongitud(), derecho->getHijos().getValor(0));
+            derecho->getHijos().eliminar(0);
+        }
+
+    } else {
+        izquierdo->setSiguiente(derecho->getSiguiente());
+    }
+
+    /*Se elimina la clave separada del padre al puntero del nodo derecho*/
+    padre->getClaves().eliminar(indiceSeparador);
+    padre->getHijos().eliminar(indiceSeparador + 1);
+
+    delete derecho;
+}
+
+
+/*--****----Fin del Apartado de metodos que permiten eliminar en el arbol B+---****--*/
+

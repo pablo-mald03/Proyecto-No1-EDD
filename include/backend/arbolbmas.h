@@ -32,12 +32,24 @@ private:
     /*Metodo que permite generar el .dot recursivo*/
     void generarDotRecursivo(NodoBMas* nodo, std::stringstream& sStream);
 
+    /*Metodo que permite recorrer el arbol y propagar el rabalanceo hacia arriba*/
+    bool eliminarRecursivo(NodoBMas* nodo, NodoBMas* padre, int indiceEnPadre, const Producto& producto);
+
+    /*Metodo que maneja la forma en prestar y fusiones cuando un nodo se queda sin el minimo de claves*/
+    void balancearNodo(NodoBMas* padre, NodoBMas* hijo, int indiceHijo);
+
+    /*Metodo que permite unir dos nodos hermanos y eliminar la clave separadora del padre*/
+    void fusionarNodos(NodoBMas* padre, int indiceSeparador, NodoBMas* izquierdo, NodoBMas* derecho);
+
 public:
     ArbolBMas(int _orden);
     ~ArbolBMas();
 
     /*Metodo que permite insertar un nuevo producto*/
     void insertar(const Producto &producto);
+
+    /*Metodo que permite eliminar un producto del arbol*/
+    void eliminar(const std::string& codigoBarra);
 
     /*Metodo que permite obtener la raiz del arbol*/
     NodoBMas* getRaiz();

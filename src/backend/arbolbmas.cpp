@@ -428,7 +428,7 @@ void ArbolBMas::eliminar(const std::string& codigoBarra){
     /* Ahora con el producto completo se determina por donde bajar */
     eliminarRecursivo(this->raiz, nullptr, -1, productoAEliminar);
 
-    /*Caso especial: En el que la raiz se queda sin claves despues de rebalancear/
+    /*Caso especial: En el que la raiz se queda sin claves despues de rebalancear*/
 
     /*Este aco ocurre si no es una hoja. Asi su hijo unico se convierte en la nueva raiz*/
 

@@ -39,6 +39,9 @@ private:
     /*Metodo que permite generar el .dot recursivo para el arbol y que se pueda graficar*/
     void generarDotRecursivo(NodoAvl* nodo, std::stringstream& sStream);
 
+    /*Metodo que permite generar la busqueda binaria completa en el arbol AVL*/
+    void buscarProductoRecursivo(NodoAvl* nodo, const std::string& nombre, ListaEnlazada<Producto>& lista);
+
 public:
     ArbolAvl();
     ~ArbolAvl();
@@ -50,7 +53,7 @@ public:
     void listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>* lista);
 
     /*Metodo que permite generar la busqueda del producto por nombre*/
-    Producto* buscarProducto(NodoAvl* nodo, const std::string& nombre);
+    ListaEnlazada<Producto> buscarProducto(const std::string& nombre);
 
     /*Metodo que permite vaciar el arbol por completo*/
     void vaciarArbol(NodoAvl* nodo);

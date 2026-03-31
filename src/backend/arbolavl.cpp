@@ -188,23 +188,41 @@ void ArbolAvl::listarProductosInOrden(NodoAvl* nodo, ListaEnlazada<Producto>* li
 /*
 * Genera una busqueda binaria
 */
-Producto* ArbolAvl::buscarProducto(NodoAvl* nodo, const std::string& nombre){
+ListaEnlazada<Producto> ArbolAvl::buscarProducto(const std::string& nombre){
 
-    if(nodo == nullptr){
-        return nullptr;
+    ListaEnlazada<Producto> resultados;
+    buscarProductoRecursivo(this->raiz, nombre, resultados);
+    return resultados;
+}
+
+
+
+
+/*Metodo que permite generar la busqueda binaria del producto por nombre*/
+/*
+* Este metodo gracias a mi decision de enviar todo hacia la derecha independientemente si hay duplicados entonces se podra buscar
+* mas facilmente media vez generando un match ya sabemos que todo se ira a la derecha
+*/
+void ArbolAvl::buscarProductoRecursivo(NodoAvl* nodo, const std::string& nombre, ListaEnlazada<Producto>& lista) {
+
+    if (nodo == nullptr) {
+        return;
     }
 
-    if(nombre == nodo->getDato().getNombre()){
-        return &(nodo->getDato());
-    }
+    /* Si el nombre es menor se bifurca decidiendo ir por la izquierda */
+    if (nombre < nodo->getDato().getNombre()) {
 
-    if(nombre < nodo->getDato().getNombre()){
-        return buscarProducto(nodo->getIzquierda(),nombre);
+        buscarProductoRecursivo(nodo->getIzquierda(), nombre, lista);
     }
-    else{
-        return buscarProducto(nodo->getDerecha(),nombre);
+    else if (nombre > nodo->getDato().getNombre()) {
+         /* Si el nombre es menor se bifurca decidiendo ir por la izquierda */
+        buscarProductoRecursivo(nodo->getDerecha(), nombre, lista);
     }
-
+    else {
+        /* Si se hace match se agrega a la lista*/
+        lista.insertarAtras(nodo->getDato());
+        buscarProductoRecursivo(nodo->getDerecha(), nombre, lista);
+    }
 }
 
 /*---****----Apartado de metodos utilizados para poder eliminar nodos del arbol---****---*/

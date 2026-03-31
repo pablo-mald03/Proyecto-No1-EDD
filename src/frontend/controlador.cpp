@@ -376,7 +376,7 @@ void Controlador::insertarListaCsv(const std::vector<QString> & data){
         }
         try{
 
-            this->gestorBackend->insertarListas(nombre,key,categoria,fechaExp,marca,precio,stock);
+            this->gestorBackend->insertarListasCsv(nombre,key,categoria,fechaExp,marca,precio,stock);
 
             emit logLista("Insertado: " + QString::fromStdString(key), "green");
 
@@ -396,11 +396,151 @@ void Controlador::insertarListaCsv(const std::vector<QString> & data){
     emit tiempoProceso(4, tiempo);
 }
 
-/*Metodo que permite insertar los productos*/
-void Controlador::insercionProducto(){
+/*Metodo que permite insertar los productos
+*
+* 1 -> AVL
+* 2 -> B
+* 3 -> B+
+* 4 -> LISTA ORDENADA
+* 5 -> LISTA NO ORDENADA
+*
+*/
+void Controlador::insercionProducto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, const std::string &_precio, const std::string &_stock){
 
-    emit logInsertArbolAvl("Error: clave negativa", "red");
+    try{
+        this->gestorBackend->validarInsercion(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+
+        bool okPrecio;
+        bool okStock;
+
+        double precio = QString::fromStdString(_precio).toDouble(&okPrecio);
+        int stock = QString::fromStdString(_stock).toInt(&okStock);
+
+        if (!okPrecio || !okStock) {
+            throw InsertException("Error de formato: Precio o Stock no son numericos.");
+        }
+
+        this->insertarEnListas(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,precio,stock);
+        this->insertarEnArbolAvl(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,precio,stock);
+        this->insertarEnArbolB(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,precio,stock);
+        this->insertarEnArbolBMas(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,precio,stock);
+
+        /*Ordenar lista despues de medir tiempos*/
+        this->gestorBackend->ordenarLista(1);
+
+    }catch (const InsertException& e) {
+        emit logInsertListaOrdenada( QString::fromStdString(e.what()), "red");
+        emit logInsertListaNoOrdenada( QString::fromStdString(e.what()), "red");
+        emit logInsertArbolAvl( QString::fromStdString(e.what()), "red");
+        emit logInsertArbolB( QString::fromStdString(e.what()), "red");
+        emit logInsertArbolBMas( QString::fromStdString(e.what()), "red");
+    }
+    catch (const std::exception& ex) {
+        emit logInsertListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logInsertListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logInsertArbolAvl("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logInsertArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logInsertArbolBMas("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
+
 }
+
+/*-------Apartado de metodos de insercion de datos (Rollback)-------*/
+void Controlador::insertarEnListas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
+
+    try{
+
+        QElapsedTimer timer1;
+        timer1.start();
+
+        this->gestorBackend->insertarListaNoOrdenada(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+        emit logInsertListaNoOrdenada("Producto insertaro correctamente: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
+        qint64 tiempo1 = timer1.elapsed();
+        emit tiempoProcesoInsert(5, tiempo1);
+
+
+        QElapsedTimer timer2;
+        timer2.start();
+
+        this->gestorBackend->insertarListaOrdenada(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+        emit logInsertListaOrdenada("Producto insertaro correctamente: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
+
+        qint64 tiempo2 = timer2.elapsed();
+        emit tiempoProcesoInsert(4, tiempo2);
+
+    }catch (const InsertException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw InsertException("Error inesperado en listas: " + std::string(ex.what()));
+    }
+
+}
+
+void Controlador::insertarEnArbolAvl(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
+
+    try{
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->insertarArbolAvl(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+        emit logInsertArbolAvl("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        qint64 tiempo = timer.elapsed();
+        emit tiempoProcesoInsert(1, tiempo);
+
+    }catch (const InsertException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw InsertException("Error inesperado en el arbol AVL: " + std::string(ex.what()));
+    }
+}
+
+void Controlador::insertarEnArbolB(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
+
+    try{
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->insertarArbolB(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+
+        emit logInsertArbolB("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        qint64 tiempo = timer.elapsed();
+        emit tiempoProcesoInsert(2, tiempo);
+
+    }catch (const InsertException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw InsertException("Error inesperado en el arbol B: " + std::string(ex.what()));
+    }
+}
+
+void Controlador::insertarEnArbolBMas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock){
+
+    try{
+
+        QElapsedTimer timer;
+        timer.start();
+
+        this->gestorBackend->insertarArbolBMas(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
+
+        emit logInsertArbolBMas("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
+
+        qint64 tiempo = timer.elapsed();
+        emit tiempoProcesoInsert(3, tiempo);
+    }catch (const InsertException& e) {
+        throw;
+    }
+    catch (const std::exception& ex) {
+        throw InsertException("Error inesperado en el arbol B+: " + std::string(ex.what()));
+    }
+}
+
+/*-------Apartado de metodos de insercion de datos (Rollback)-------*/
+
 
 /*Metodo que permite buscar los productos por nombre*/
 void Controlador::buscarPorNombre(std::string nombre){

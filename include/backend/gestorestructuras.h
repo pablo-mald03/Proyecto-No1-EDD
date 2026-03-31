@@ -20,21 +20,23 @@ public:
     GestorEstructuras();
     ~GestorEstructuras();
 
+    /*Metodos para insertar datos en las estructuras provinientes del csv*/
+    void insertarListasCsv(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
+
     /*Metodo que permite insertar datos en el arbol AVL*/
     void insertarArbolAvl(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
-
 
     /*Metodo que permite insertar datos en el arbol B*/
     void insertarArbolB(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
 
-
     /*Metodo que permite insertar datos en el arbol B+*/
     void insertarArbolBMas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
 
+    /*Metodo para insertar en lista no ordenada*/
+    void insertarListaNoOrdenada(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
 
-    /*Metodos para insertar datos en las estructuras provinientes del csv*/
-    void insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock);
-
+    /*Metodo para insertar en lista no ordenada*/
+    void insertarListaOrdenada(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock);
 
     /*Metodo de validacion del csv delegado para validar*/
     void validarCsv(const QStringList& columnas, int fila);
@@ -53,6 +55,9 @@ public:
 
     /*Metodo utilizado para poder ordenar las listas acorde a los diferentes parametros*/
     void generarListaOrdenada(int criterio);
+
+    /*Metodo que permite ordenar la lista acorde a un parametro (solo orden)*/
+    void ordenarLista(int criterio);
 
     /*Metodos getter y setter de la flag*/
     void setCargoArchivo(bool carga);
@@ -82,6 +87,14 @@ public:
     /*Metodo que permite obtener el graphviz del arbol B+*/
     std::string obtenerGraphvizBMas();
 
+    /*Metodo que permite validar la insercion*/
+    void validarInsercion(const std::string &_nombre,
+                          const std::string &_codigoBarra,
+                          const std::string &_categoria,
+                          const std::string &_fechaExpiracion,
+                          const std::string &_marca, const std::string &_precio,
+                          const std::string &_stock);
+
 private:
 
     /*Arbol AVL*/
@@ -106,8 +119,11 @@ private:
     /*Metodo delegado para poder validar la fecha*/
     bool esFechaISO(const QString& fecha);
 
-    /*Metodo que permite verificar la integridad de la listaEnlazada*/
-    bool existeProductoLista(const std::string &codigo);
+    /*Metodo que permite verificar la integridad de la listaEnlazada no ordenada*/
+    bool existeProductoListaNoOrdenada(const std::string &codigo);
+
+    /*Metodo que permite verificar la integridad de la listaEnlazada ordenada*/
+    bool existeProductoListaOrdenada(const std::string &codigo);
 
 };
 

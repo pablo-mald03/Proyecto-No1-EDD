@@ -22,9 +22,12 @@ private:
 
     void limpiarLogs();
 
+    /*Metodo validador de entradas*/
+    bool validarCampos();
+
 signals:
-    /*Pendiente insertar*/
-    void insertarProducto();
+    /*Metodo que permite insertar*/
+    void insertarProducto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, const std::string &_precio, const std::string &_stock);
     /*Metodo que permite viajar a mostrar los arboles*/
     void verArboles();
 
@@ -45,6 +48,7 @@ private slots:
     void on_btnAgregar_clicked();
     void on_btnVerArboles_clicked();
     void on_btnLimpiar_clicked();
+    void on_btnLimpiarLogs_clicked();
 };
 
 #endif // PANTALLAAGREGAR_H

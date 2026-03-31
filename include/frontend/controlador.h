@@ -41,6 +41,13 @@ private:
     /*Metodo que permite avisar para determinar si dejar o no descargar el log de errores*/
     void verificarErrores();
 
+    /*Apartado de metodos auxiliares para poder insertar datos*/
+    void insertarEnListas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
+    void insertarEnArbolAvl(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
+    void insertarEnArbolB(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
+    void insertarEnArbolBMas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
+
+
 public slots:
 
     /*---METODO QUE ELIMINA POR COMPLETO TODO EL BACKEND CUANDO SE EXPORTA EL CSV---*/
@@ -53,7 +60,7 @@ public slots:
     void procesarCsv(const std::vector<QString> & data);
 
     /*Metodos que permiten realizar el CRUD de la aplicacion*/
-    void insercionProducto();
+    void insercionProducto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, const std::string &_precio, const std::string &_stock);
     void buscarPorNombre(std::string nombre);
     void buscarPorCategoria(std::string categoria);
     void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);

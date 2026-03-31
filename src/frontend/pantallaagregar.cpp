@@ -1,5 +1,6 @@
 #include "pantallaagregar.h"
 #include "ui_pantallaagregar.h"
+#include<QMessageBox>
 
 PantallaAgregar::PantallaAgregar(QWidget *parent)
     : QWidget(parent)
@@ -107,6 +108,33 @@ void PantallaAgregar::mostrarTiempo(int estructura, qint64 milisegundos){
 
 }
 
+/*Metodo utilizado para poder validar los datos*/
+bool PantallaAgregar::validarCampos() {
+    struct Campo {
+        QLineEdit* widget;
+        QString nombre;
+    };
+
+    QList<Campo> campos = {
+        {ui->textNombre, "Nombre"},
+        {ui->textBarra, "Codigo de Barras"},
+        {ui->textCategoria, "Categoría"},
+        {ui->textMarca, "Marca"},
+        {ui->textPrecio, "Precio"},
+        {ui->textStock, "Stock"}
+    };
+
+    for (const auto& campo : campos) {
+        if (campo.widget->text().trimmed().isEmpty()) {
+            QMessageBox::warning(this, "Campo Obligatorio",
+                                 "El campo <b>" + campo.nombre + "</b> no puede estar vacio.");
+            campo.widget->setFocus();
+            return false;
+        }
+    }
+
+    return true;
+}
 
 
 /*Metodo que permite insertar un producto nuevo en todas las estructuras*/
@@ -114,9 +142,19 @@ void PantallaAgregar::on_btnAgregar_clicked()
 {
     this->limpiarLogs();
 
-    std::string fecha = ui->dateExpiracion->date().toString("yyyy-MM-dd").toStdString();
-    /*Pendiente*/
-    emit insertarProducto();
+    if (!validarCampos()) {
+        return;
+    }
+
+    std::string nombre = this->ui->textNombre->text().trimmed().toStdString();
+    std::string barra = this->ui->textBarra->text().trimmed().toStdString();
+    std::string categoria = this->ui->textCategoria->text().trimmed().toStdString();
+    std::string marca = this->ui->textMarca->text().trimmed().toStdString();
+    std::string precio = this->ui->textPrecio->text().trimmed().toStdString();
+    std::string stock = this->ui->textStock->text().trimmed().toStdString();
+    std::string fecha = this->ui->dateExpiracion->date().toString("yyyy-MM-dd").toStdString();
+
+    emit insertarProducto(nombre, barra, categoria,fecha,marca,precio,stock);
 }
 
 /*Metodo que permite ir a ver el estado de los arboles*/
@@ -140,6 +178,7 @@ void PantallaAgregar::limpiarDatos(){
     this->ui->textMarca->clear();
     this->ui->textStock->clear();
     this->ui->textCategoria->clear();
+    this->ui->textPrecio->clear();
     this->ui->dateExpiracion->setDate(QDate::currentDate());
 }
 
@@ -152,11 +191,11 @@ void PantallaAgregar::limpiarLogs(){
     this->ui->textEditListNoOrdenada->clear();
     this->ui->textEditListOrdenada->clear();
 
-    this->ui->labelTiempoListNoOrdenada->setText("Tiempo de insercion:");
-    this->ui->labelTiempoListOrdenada->setText("Tiempo de insercion:");
-    this->ui->labelTiempoAvl->setText("Tiempo de insercion:");
-    this->ui->labelTiempoB->setText("Tiempo de insercion:");
-    this->ui->labelTiempoBMas->setText("Tiempo de insercion:");
+    this->ui->labelTiempoListNoOrdenada->setText("Tiempo de insercion: 0 ms");
+    this->ui->labelTiempoListOrdenada->setText("Tiempo de insercion: 0 ms");
+    this->ui->labelTiempoAvl->setText("Tiempo de insercion: 0 ms");
+    this->ui->labelTiempoB->setText("Tiempo de insercion: 0 ms");
+    this->ui->labelTiempoBMas->setText("Tiempo de insercion: 0 ms");
 }
 
 /*Metodo del boton para limpiar*/
@@ -165,5 +204,9 @@ void PantallaAgregar::on_btnLimpiar_clicked()
     this->limpiarDatos();
 }
 
-
+/*Metodo que permite limpiar los logs*/
+void PantallaAgregar::on_btnLimpiarLogs_clicked()
+{
+    this->limpiarLogs();
+}
 

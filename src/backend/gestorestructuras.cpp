@@ -141,9 +141,24 @@ bool GestorEstructuras::tieneErrores() const {
 /*----****------Fin del Apartado de metodos setter para poder interactuar con las estrcuturas------****---*/
 
 /*Metodo que permite verificar la integridad de la listaEnlazada*/
-bool GestorEstructuras::existeProductoLista(const std::string &codigo){
+bool GestorEstructuras::existeProductoListaNoOrdenada(const std::string &codigo){
 
     NodoLista<Producto> * actual = this->listaNoOrdenada->getCabeza();
+
+    while (actual != nullptr) {
+        if (actual->getDato().getCodigoBarra() == codigo) {
+            return true;
+        }
+        actual = actual->getSiguiente();
+    }
+    return false;
+}
+
+
+/*Metodo que permite verificar la integridad de la listaEnlazada*/
+bool GestorEstructuras::existeProductoListaOrdenada(const std::string &codigo){
+
+    NodoLista<Producto> * actual = this->listaOrdenada->getCabeza();
 
     while (actual != nullptr) {
         if (actual->getDato().getCodigoBarra() == codigo) {
@@ -202,14 +217,34 @@ void GestorEstructuras::insertarArbolBMas(std::string nombre, std::string key, s
 
 
 /*Metodo que permite insertar los datos en la lista*/
-void GestorEstructuras::insertarListas(std::string nombre, std::string key, std::string categoria, std::string fecha, std::string marca, double precio, int stock){
+void GestorEstructuras::insertarListasCsv(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
 
-    if (this->existeProductoLista(key)) {
+    if (this->existeProductoListaNoOrdenada(key)) {
 
         throw ReaderCsvException("El Codigo de Barra { " + key + " } ya existe para el producto: "+ nombre +" [LISTA ENLAZADA].");
     }
 
     this->listaNoOrdenada->insertarAtras(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+}
+
+/*Metodo que permite insertar datos en la lista no ordenada*/
+void GestorEstructuras::insertarListaNoOrdenada(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
+
+    if (this->existeProductoListaNoOrdenada(key)) {
+        throw InsertException("El Codigo de Barra { " + key + " } ya existe para el producto: "+ nombre +" [LISTA NO ORDENADA].");
+    }
+
+    this->listaNoOrdenada->insertarAtras(Producto(nombre,key,categoria,fecha,marca,precio,stock));
+}
+
+/*Metodo que permite insertar datos en la lista ordenada*/
+void GestorEstructuras::insertarListaOrdenada(const std::string &nombre,const std::string &key,const std::string &categoria, const std::string &fecha, const std::string &marca, double precio, int stock){
+
+    if (this->existeProductoListaOrdenada(key)) {
+        throw InsertException("El Codigo de Barra { " + key + " } ya existe para el producto: "+ nombre +" [LISTA ORDENADA].");
+    }
+
+    this->listaOrdenada->insertarAtras(Producto(nombre,key,categoria,fecha,marca,precio,stock));
 }
 
 
@@ -256,6 +291,45 @@ bool GestorEstructuras::esFechaISO(const QString& fecha) {
     return QDate::fromString(fecha, Qt::ISODate).isValid();
 }
 
+/*Metodo que permite validar las entradas antes de insertar*/
+void GestorEstructuras::validarInsercion(const std::string &_nombre, const std::string &_codigoBarra,
+                                    const std::string &_categoria, const std::string &_fechaExpiracion,
+                                    const std::string &_marca, const std::string &_precio,
+                                    const std::string &_stock)
+{
+
+    QString nombre = QString::fromStdString(_nombre).trimmed();
+    QString barra = QString::fromStdString(_codigoBarra).trimmed();
+    QString categoria = QString::fromStdString(_categoria).trimmed();
+    QString fecha = QString::fromStdString(_fechaExpiracion).trimmed();
+    QString marca = QString::fromStdString(_marca).trimmed();
+    QString precioStr = QString::fromStdString(_precio).trimmed();
+    QString stockStr = QString::fromStdString(_stock).trimmed();
+
+    if (nombre.isEmpty() || barra.isEmpty() || categoria.isEmpty() ||
+        fecha.isEmpty() || marca.isEmpty() || precioStr.isEmpty() || stockStr.isEmpty()) {
+        throw InsertException("Error: Todos los campos son obligatorios.");
+    }
+
+    bool okPrecio;
+    double precioVal = precioStr.toDouble(&okPrecio);
+    if (!okPrecio || precioVal < 0) {
+        throw InsertException("Error: El precio '" + _precio + "' no es un numero valido o es negativo.");
+    }
+
+    bool okStock;
+    int stockVal = stockStr.toInt(&okStock);
+    if (!okStock || stockVal < 0) {
+        throw InsertException("Error: El stock '" + _stock + "' no es un entero valido o es negativo.");
+    }
+
+    QDate checkFecha = QDate::fromString(fecha, "yyyy-MM-dd");
+    if (!checkFecha.isValid()) {
+        throw InsertException("Error: La fecha '" + _fechaExpiracion + "' no tiene formato ISO valido (YYYY-MM-DD).");
+    }
+
+}
+
 
 
 /*Metodo que permite armar el log de errores*/
@@ -290,7 +364,7 @@ QString GestorEstructuras::generarContenidoLog() {
 }
 
 
-/*Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/
+/*Apartado de Metodos utilizados para poder crear la lista ordenada y ordenar las listas acorde a los diferentes parametros*/
 
 /*Metodo delegado para poder ordenar a la lista en base a un criterio*/
 /*
@@ -302,6 +376,7 @@ void GestorEstructuras::generarListaOrdenada(int criterio){
 
     if(this->listaOrdenada != nullptr){
         delete this->listaOrdenada;
+        this->listaOrdenada = nullptr;
     }
     this->listaOrdenada = new ListaEnlazada<Producto>();
 
@@ -345,4 +420,57 @@ void GestorEstructuras::generarListaOrdenada(int criterio){
 
 }
 
+
+/*Metodo delegado para poder ordenar a la lista en base a un criterio*/
+/*
+* 1 -> nombre
+* 2 -> categoria
+* 3 -> fecha
+*/
+void GestorEstructuras::ordenarLista(int criterio){
+
+    if (this->listaOrdenada == nullptr || this->listaOrdenada->getLongitud() <= 1) {
+        return;
+    }
+
+    std::vector<Producto> buffer;
+    NodoLista<Producto>* actual = this->listaOrdenada->getCabeza();
+    while (actual != nullptr) {
+        buffer.push_back(actual->getDato());
+        actual = actual->getSiguiente();
+    }
+
+    int n = buffer.size();
+
+    for (int i = 0; i < n - 1; i++) {
+        int indiceMinimo = i;
+        for (int j = i + 1; j < n; j++) {
+
+            bool esMenor = false;
+            if (criterio == 1){
+                esMenor = (buffer[j].getNombre() < buffer[indiceMinimo].getNombre());
+            }
+            else if (criterio == 2){
+                esMenor = (buffer[j].getCategoria() < buffer[indiceMinimo].getCategoria());
+            }
+            else if (criterio == 3){
+                esMenor = (buffer[j].getFechaExpiracion() < buffer[indiceMinimo].getFechaExpiracion());
+            }
+            if (esMenor) {
+                indiceMinimo = j;
+            }
+        }
+
+        /*Clasico*/
+        Producto temp = buffer[i];
+        buffer[i] = buffer[indiceMinimo];
+        buffer[indiceMinimo] = temp;
+    }
+
+    this->listaOrdenada->limpiar();
+
+    for (const Producto& p : buffer) {
+        this->listaOrdenada->insertarAtras(p);
+    }
+}
 /*Fin del Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/

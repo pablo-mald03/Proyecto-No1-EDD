@@ -26,13 +26,13 @@
          <property name="minimumSize">
           <size>
            <width>480</width>
-           <height>30</height>
+           <height>35</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>450</width>
-           <height>30</height>
+           <height>35</height>
           </size>
          </property>
          <property name="styleSheet">
@@ -75,7 +75,7 @@
            <height>16777215</height>
           </size>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_8">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_3">
             <item>
@@ -467,6 +467,76 @@ QLineEdit#textBarra:disabled {
            </layout>
           </item>
           <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_12">
+            <item>
+             <widget class="QLabel" name="labelPrecio">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel#labelPrecio {        
+ 
+    color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+	stop:0 rgb(0, 0, 0), 
+	stop:1 rgb(8, 2, 48));
+
+  	 font-size: 15px;
+    font-weight: bold;
+    font-family: &quot;Segoe UI&quot;, Arial;
+    
+    background: transparent;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+</string>
+              </property>
+              <property name="text">
+               <string>Precio</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="textPrecio">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit#textPrecio {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: rgb(222, 221, 218);
+	font-size: 15px;
+    color: black;
+    selection-background-color: #3498db;
+}
+
+QLineEdit#textPrecio:focus {
+    border: 2px solid #3498db;
+    background-color: #ffffff;
+}
+
+QLineEdit#textPrecio:disabled {
+    background-color: rgba(0, 0, 0, 50);
+    color: rgba(255, 255, 255, 60);      
+    border: 1px dashed rgba(255, 255, 255, 30); 
+}</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
              <widget class="QLabel" name="labelStock">
@@ -673,22 +743,7 @@ QPushButton#btnLimpiar:pressed {
          <height>500</height>
         </size>
        </property>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="spacing">
-         <number>4</number>
-        </property>
-        <property name="leftMargin">
-         <number>4</number>
-        </property>
-        <property name="topMargin">
-         <number>4</number>
-        </property>
-        <property name="rightMargin">
-         <number>4</number>
-        </property>
-        <property name="bottomMargin">
-         <number>4</number>
-        </property>
+       <layout class="QVBoxLayout" name="verticalLayout_8">
         <item>
          <widget class="QWidget" name="widget_4" native="true">
           <property name="minimumSize">
@@ -852,7 +907,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
                      </property>
                      <property name="text">
-                      <string>Tiempo de insercion:</string>
+                      <string>Tiempo de insercion: 0 ms</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -974,7 +1029,7 @@ QPushButton#btnLimpiar:pressed {
 </string>
                      </property>
                      <property name="text">
-                      <string>Tiempo de insercion:</string>
+                      <string>Tiempo de insercion: 0 ms</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1007,19 +1062,6 @@ QPushButton#btnLimpiar:pressed {
            </size>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
            <item>
             <widget class="QPushButton" name="btnVerArboles">
              <property name="minimumSize">
@@ -1072,17 +1114,71 @@ QPushButton#btnVerArboles:pressed {
             </widget>
            </item>
            <item>
-            <spacer name="horizontalSpacer_4">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
+            <widget class="QWidget" name="widget_13" native="true">
+             <property name="minimumSize">
               <size>
-               <width>40</width>
-               <height>20</height>
+               <width>120</width>
+               <height>0</height>
               </size>
              </property>
-            </spacer>
+             <property name="maximumSize">
+              <size>
+               <width>60</width>
+               <height>16777215</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnLimpiarLogs">
+             <property name="minimumSize">
+              <size>
+               <width>150</width>
+               <height>60</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>150</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton#btnLimpiarLogs {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(77, 5, 57), 
+                        stop:1 rgb(38, 162, 105));
+    
+    border: 3px solid black;
+    border-radius: 8px;
+    
+    color: white;
+    font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    padding: 10px 25px;
+}
+
+QPushButton#btnLimpiarLogs:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgba(41, 128, 185, 255), 
+                        stop:1 rgba(142, 68, 173, 255));
+    border-color: #f1c40f;
+}
+
+
+QPushButton#btnLimpiarLogs:pressed {
+    background-color: #2c3e50;
+    padding-top: 12px;
+    padding-left: 27px;
+}</string>
+             </property>
+             <property name="text">
+              <string>Limpiar Logs</string>
+             </property>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -1097,13 +1193,13 @@ QPushButton#btnVerArboles:pressed {
      <property name="minimumSize">
       <size>
        <width>450</width>
-       <height>300</height>
+       <height>290</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>16777215</width>
-       <height>300</height>
+       <height>260</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -1225,7 +1321,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de insercion:</string>
+               <string>Tiempo de insercion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1353,7 +1449,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de insercion:</string>
+               <string>Tiempo de insercion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1481,7 +1577,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de insercion:</string>
+               <string>Tiempo de insercion: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>

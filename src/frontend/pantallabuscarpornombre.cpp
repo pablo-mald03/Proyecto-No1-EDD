@@ -30,22 +30,28 @@ PantallaBuscarPorNombre::~PantallaBuscarPorNombre()
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
 void PantallaBuscarPorNombre::appendAvlLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textArbolAvl->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaBuscarPorNombre::appendListOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaBuscarPorNombre::appendListNoOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaNoOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
@@ -60,20 +66,22 @@ void PantallaBuscarPorNombre::appendListNoOrdenadaLog(QString mensaje, QString c
 * 3 -> LISTA NO ORDENADA
 *
 */
-void PantallaBuscarPorNombre::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaBuscarPorNombre::mostrarTiempo(int estructura, double milisegundos){
+
+    QString tiempoTexto = "Tiempo de busqueda: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoAvl->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoAvl->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoOrdenada->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoNoOrdenada->setText(tiempoTexto);
         break;
     }
 
@@ -92,9 +100,9 @@ void PantallaBuscarPorNombre::limpiarLogs(){
     this->ui->textListaNoOrdenada->clear();
     this->ui->textListaOrdenada->clear();
 
-    this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda:");
-    this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda:");
-    this->ui->labelTiempoAvl->setText("Tiempo de busqueda:");
+    this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: 0 ms");
+    this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: 0 ms");
+    this->ui->labelTiempoAvl->setText("Tiempo de busqueda: 0 ms");
 
 }
 
@@ -104,21 +112,21 @@ void PantallaBuscarPorNombre::on_btnBuscar_clicked()
 
     this->limpiarLogs();
 
-    QString nombre = ui->textNombre->text();
+    QString nombreOriginal = ui->textNombre->text();
+    QString nombreLimpio = nombreOriginal.trimmed();
 
-    if (nombre.trimmed().isEmpty()) {
+    if (nombreLimpio.isEmpty()) {
 
         QMessageBox::warning(
             this,
             "Campo requerido",
-            "Ingrese un nombre valido"
+            "Ingrese un nombre valido (no puede esta vacio)."
             );
 
         return;
     }
 
-    emit buscarPorNombre(nombre.toStdString());
-
+    emit buscarPorNombre(nombreLimpio.toStdString());
 }
 
 /*Metodo que permite emitir la signal para poder limpiar*/

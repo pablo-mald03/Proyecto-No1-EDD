@@ -535,7 +535,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de busqueda:</string>
+               <string>Tiempo de busqueda: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -669,7 +669,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de busqueda:</string>
+               <string>Tiempo de busqueda: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -803,7 +803,7 @@ QPushButton#btnVerArboles:pressed {
 </string>
               </property>
               <property name="text">
-               <string>Tiempo de busqueda:</string>
+               <string>Tiempo de busqueda: 0 ms</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignmentFlag::AlignCenter</set>

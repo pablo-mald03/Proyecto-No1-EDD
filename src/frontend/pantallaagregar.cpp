@@ -82,27 +82,29 @@ void PantallaAgregar::appendListNoOrdenadaLog(QString mensaje, QString color){
 * 5 -> LISTA NO ORDENADA
 *
 */
-void PantallaAgregar::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaAgregar::mostrarTiempo(int estructura, double milisegundos){
+
+    QString tiempoTexto = "Tiempo de insercion: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoAvl->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoAvl->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoB->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoB->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoBMas->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoBMas->setText( tiempoTexto);
         break;
 
     case 4:
-        this->ui->labelTiempoListOrdenada->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoListOrdenada->setText( tiempoTexto);
         break;
     case 5:
-        this->ui->labelTiempoListNoOrdenada->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoListNoOrdenada->setText(tiempoTexto );
         break;
     }
 
@@ -152,7 +154,7 @@ void PantallaAgregar::on_btnAgregar_clicked()
     std::string marca = this->ui->textMarca->text().trimmed().toStdString();
     std::string precio = this->ui->textPrecio->text().trimmed().toStdString();
     std::string stock = this->ui->textStock->text().trimmed().toStdString();
-    std::string fecha = this->ui->dateExpiracion->date().toString("yyyy-MM-dd").toStdString();
+    std::string fecha = this->ui->dateExpiracion->date().toString("yyyy-MM-dd").trimmed().toStdString();
 
     emit insertarProducto(nombre, barra, categoria,fecha,marca,precio,stock);
 }

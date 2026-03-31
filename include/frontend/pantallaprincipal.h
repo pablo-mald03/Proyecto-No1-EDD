@@ -52,7 +52,7 @@ public slots:
 
     void appendLogCarga(QString mensaje, QString color);
 
-    void mostrarTiempo(int estructura, qint64 milisegundos);
+    void mostrarTiempo(int estructura, double milisegundos);
 
     /*Metodo que permite verificar si hay errores para habilitar la descarga del log*/
     void evaluarErrores(bool evaluacion);

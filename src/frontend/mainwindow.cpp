@@ -131,6 +131,7 @@ void MainWindow::mostrarBuscarNombre(){
     }
 
     emit this->limpiarBuscarNombre();
+    this->controladorCrud->ordenarListado(1);
     this->ui->labelTasks->setText("Busqueda por nombre");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaNombre);
 
@@ -164,6 +165,7 @@ void MainWindow::mostrarBuscarCategoria(){
     }
 
     emit this->limpiarBuscarCategoria();
+    this->controladorCrud->ordenarListado(2);
     this->ui->labelTasks->setText("Busqueda por categoria");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaCategoria);
 
@@ -197,7 +199,7 @@ void MainWindow::mostrarBuscarRango(){
     }
 
     emit this->limpiarBuscarRango();
-
+    this->controladorCrud->ordenarListado(3);
     this->ui->labelTasks->setText("Busqueda por rango de caducidad");
     this->ui->stackedWidget->setCurrentWidget(this->pantallaBusquedaRango);
 

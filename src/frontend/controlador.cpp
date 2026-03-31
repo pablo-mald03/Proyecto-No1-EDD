@@ -116,9 +116,9 @@ void Controlador::procesarCsv(const std::vector<QString> & data){
 
             this->gestorBackend->validarCsv(columnas, filaActual);
 
-            datosValidados.push_back(linea);
+            datosValidados.push_back(linea.trimmed());
 
-            emit logCargaCsv(linea, "white");
+            emit logCargaCsv(linea.trimmed(), "white");
 
         }catch (const ReaderCsvException& e) {
             emit logCargaCsv(QString::fromUtf8(e.what()), "red");
@@ -174,17 +174,17 @@ void Controlador::insertarArbolAvlCsv(const std::vector<QString> & data){
             continue;
         }
 
-        std::string nombre = columnas[0].toStdString();
-        std::string key = columnas[1].toStdString();
-        std::string categoria = columnas[2].toStdString();
-        std::string fechaExp = columnas[3].toStdString();
-        std::string marca = columnas[4].toStdString();
+        std::string nombre = columnas[0].trimmed().toStdString();
+        std::string key = columnas[1].trimmed().toStdString();
+        std::string categoria = columnas[2].trimmed().toStdString();
+        std::string fechaExp = columnas[3].trimmed().toStdString();
+        std::string marca = columnas[4].trimmed().toStdString();
 
         bool okPrecio;
         bool okStock;
 
-        double precio = columnas[5].toDouble(&okPrecio);
-        int stock = columnas[6].toInt(&okStock);
+        double precio = columnas[5].trimmed().toDouble(&okPrecio);
+        int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
             emit logArbolAvl("Error en conversion numerica: " + linea, "red");
@@ -211,7 +211,7 @@ void Controlador::insertarArbolAvlCsv(const std::vector<QString> & data){
         filaActual++;
     }
 
-    qint64 tiempo = timer.elapsed();
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
     emit tiempoProceso(1, tiempo);
 }
 
@@ -236,17 +236,17 @@ void Controlador::insertarArbolBCsv(const std::vector<QString> & data){
             continue;
         }
 
-        std::string nombre = columnas[0].toStdString();
-        std::string key = columnas[1].toStdString();
-        std::string categoria = columnas[2].toStdString();
-        std::string fechaExp = columnas[3].toStdString();
-        std::string marca = columnas[4].toStdString();
+        std::string nombre = columnas[0].trimmed().toStdString();
+        std::string key = columnas[1].trimmed().toStdString();
+        std::string categoria = columnas[2].trimmed().toStdString();
+        std::string fechaExp = columnas[3].trimmed().toStdString();
+        std::string marca = columnas[4].trimmed().toStdString();
 
         bool okPrecio;
         bool okStock;
 
-        double precio = columnas[5].toDouble(&okPrecio);
-        int stock = columnas[6].toInt(&okStock);
+        double precio = columnas[5].trimmed().toDouble(&okPrecio);
+        int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
             emit logArbolB("Error en conversion numerica: " + linea, "red");
@@ -273,7 +273,7 @@ void Controlador::insertarArbolBCsv(const std::vector<QString> & data){
         filaActual++;
     }
 
-    qint64 tiempo = timer.elapsed();
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
     emit tiempoProceso(2, tiempo);
 }
 
@@ -297,17 +297,17 @@ void Controlador::insertarArbolBMasCsv(const std::vector<QString> & data){
             continue;
         }
 
-        std::string nombre = columnas[0].toStdString();
-        std::string key = columnas[1].toStdString();
-        std::string categoria = columnas[2].toStdString();
-        std::string fechaExp = columnas[3].toStdString();
-        std::string marca = columnas[4].toStdString();
+        std::string nombre = columnas[0].trimmed().toStdString();
+        std::string key = columnas[1].trimmed().toStdString();
+        std::string categoria = columnas[2].trimmed().toStdString();
+        std::string fechaExp = columnas[3].trimmed().toStdString();
+        std::string marca = columnas[4].trimmed().toStdString();
 
         bool okPrecio;
         bool okStock;
 
-        double precio = columnas[5].toDouble(&okPrecio);
-        int stock = columnas[6].toInt(&okStock);
+        double precio = columnas[5].trimmed().toDouble(&okPrecio);
+        int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
             emit logArbolBMas("Error en conversion numerica: " + linea, "red");
@@ -323,7 +323,6 @@ void Controlador::insertarArbolBMasCsv(const std::vector<QString> & data){
             emit logArbolBMas("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
         }
         catch (const ReaderCsvException& e) {
-
             this->gestorBackend->agregarErrorLista(e.what(), filaActual);
             emit logArbolBMas("Fila: " + QString::number(filaActual) + " " + QString::fromStdString(e.what()), "red");
         }
@@ -334,7 +333,7 @@ void Controlador::insertarArbolBMasCsv(const std::vector<QString> & data){
         filaActual++;
     }
 
-    qint64 tiempo = timer.elapsed();
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
     emit tiempoProceso(3, tiempo);
 }
 
@@ -358,17 +357,17 @@ void Controlador::insertarListaCsv(const std::vector<QString> & data){
             continue;
         }
 
-        std::string nombre = columnas[0].toStdString();
-        std::string key = columnas[1].toStdString();
-        std::string categoria = columnas[2].toStdString();
-        std::string fechaExp = columnas[3].toStdString();
-        std::string marca = columnas[4].toStdString();
+        std::string nombre = columnas[0].trimmed().toStdString();
+        std::string key = columnas[1].trimmed().toStdString();
+        std::string categoria = columnas[2].trimmed().toStdString();
+        std::string fechaExp = columnas[3].trimmed().toStdString();
+        std::string marca = columnas[4].trimmed().toStdString();
 
         bool okPrecio;
         bool okStock;
 
-        double precio = columnas[5].toDouble(&okPrecio);
-        int stock = columnas[6].toInt(&okStock);
+        double precio = columnas[5].trimmed().toDouble(&okPrecio);
+        int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
             emit logLista("Error en conversion numerica: " + linea, "red");
@@ -392,7 +391,7 @@ void Controlador::insertarListaCsv(const std::vector<QString> & data){
         filaActual++;
     }
 
-    qint64 tiempo = timer.elapsed();
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
     emit tiempoProceso(4, tiempo);
 }
 
@@ -455,7 +454,7 @@ void Controlador::insertarEnListas(const std::string &_nombre,const std::string 
 
         this->gestorBackend->insertarListaNoOrdenada(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
         emit logInsertListaNoOrdenada("Producto insertaro correctamente: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
-        qint64 tiempo1 = timer1.elapsed();
+        double tiempo1 = timer1.nsecsElapsed() / 1000000.0;
         emit tiempoProcesoInsert(5, tiempo1);
 
 
@@ -465,7 +464,8 @@ void Controlador::insertarEnListas(const std::string &_nombre,const std::string 
         this->gestorBackend->insertarListaOrdenada(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
         emit logInsertListaOrdenada("Producto insertaro correctamente: {" + QString::fromStdString(_codigoBarra)+ "}", "green");
 
-        qint64 tiempo2 = timer2.elapsed();
+        double tiempo2 = timer2.nsecsElapsed() / 1000000.0;
+
         emit tiempoProcesoInsert(4, tiempo2);
 
     }catch (const InsertException& e) {
@@ -486,7 +486,8 @@ void Controlador::insertarEnArbolAvl(const std::string &_nombre,const std::strin
         this->gestorBackend->insertarArbolAvl(_nombre,_codigoBarra,_categoria,_fechaExpiracion,_marca,_precio,_stock);
         emit logInsertArbolAvl("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
 
-        qint64 tiempo = timer.elapsed();
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
         emit tiempoProcesoInsert(1, tiempo);
 
     }catch (const InsertException& e) {
@@ -507,7 +508,8 @@ void Controlador::insertarEnArbolB(const std::string &_nombre,const std::string 
 
         emit logInsertArbolB("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
 
-        qint64 tiempo = timer.elapsed();
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
         emit tiempoProcesoInsert(2, tiempo);
 
     }catch (const InsertException& e) {
@@ -529,7 +531,8 @@ void Controlador::insertarEnArbolBMas(const std::string &_nombre,const std::stri
 
         emit logInsertArbolBMas("Insertado: {" + QString::fromStdString(_codigoBarra)+ "}" , "green");
 
-        qint64 tiempo = timer.elapsed();
+        double tiempo = timer.nsecsElapsed() / 1000000.0;
+
         emit tiempoProcesoInsert(3, tiempo);
     }catch (const InsertException& e) {
         throw;
@@ -542,14 +545,123 @@ void Controlador::insertarEnArbolBMas(const std::string &_nombre,const std::stri
 /*-------Apartado de metodos de insercion de datos (Rollback)-------*/
 
 
-/*Metodo que permite buscar los productos por nombre*/
-void Controlador::buscarPorNombre(std::string nombre){
+/*-------Apartado de metodos que permiten buscar los productos por nombre-------*/
+void Controlador::buscarPorNombre(const std::string &nombre){
 
-    /*Pendiente*/
-    emit logBusquedaNombreArbolAvl("Nombre buscado: "+ QString::fromStdString(nombre), "green");
-    emit logBusquedaNombreListaOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
-    emit logBusquedaNombreListaNoOrdenada("Nombre buscado: "+ QString::fromStdString(nombre), "green");
+    try{
+
+        this->buscarAvlNombre(nombre);
+        this->buscarListasNombre(nombre);
+
+    }catch (const std::exception& ex) {
+        emit logBusquedaNombreArbolAvl("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaNombreListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaNombreListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
+
 }
+
+/*Metodos auxiliares que permiten generar las busquedas en la lista ordenada, la lista no ordenada y el arbol AVL*/
+void Controlador::buscarAvlNombre(const std::string &nombre){
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> lista = this->gestorBackend->buscarProductoAvl(nombre);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(lista.esVacia()){
+        emit logBusquedaNombreArbolAvl("No se han encontrado productos con el nombre: "+ QString::fromStdString(nombre), "yellow");
+        emit tiempoProcesoBusquedaNombre(1,tiempo);
+        return;
+    }
+
+    for(int i = 0; i < lista.getLongitud(); i++) {
+        Producto product = lista.getValor(i);
+
+        QString logMensaje = "------------------------------------------\n"
+                             "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                             "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                             "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                             "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                             "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                             "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                             "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                             "------------------------------------------\n";
+
+        emit logBusquedaNombreArbolAvl(logMensaje.replace("\n", "<br>"), "cyan");
+    }
+
+    emit tiempoProcesoBusquedaNombre(1, tiempo);
+}
+
+/*Permite listar por nombre*/
+void Controlador::buscarListasNombre(const std::string &nombre){
+
+    QElapsedTimer timerOrdenada;
+    timerOrdenada.start();
+    ListaEnlazada<Producto> listaOrdenada = this->gestorBackend->buscarProductoListaOrdenada(nombre);
+
+    double tiempoOrdenado = timerOrdenada.nsecsElapsed() / 1000000.0;
+
+    if(listaOrdenada.esVacia()){
+        emit logBusquedaNombreListaOrdenada("No se han encontrado productos con el nombre: "+ QString::fromStdString(nombre), "yellow");
+        emit tiempoProcesoBusquedaNombre(2,tiempoOrdenado);
+    }else{
+
+        for(int i = 0; i < listaOrdenada.getLongitud(); i++) {
+            Producto product = listaOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaNombreListaOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaNombre(2, tiempoOrdenado);
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> listaNoOrdenada = this->gestorBackend->buscarProductoListaNoOrdenada(nombre);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(listaNoOrdenada.esVacia()){
+        emit logBusquedaNombreListaNoOrdenada("No se han encontrado productos con el nombre: "+ QString::fromStdString(nombre), "yellow");
+        emit tiempoProcesoBusquedaNombre(3,tiempo);
+
+    }else{
+
+        for(int i = 0; i < listaNoOrdenada.getLongitud(); i++) {
+            Producto product = listaNoOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaNombreListaNoOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaNombre(3, tiempo);
+    }
+}
+
+
+/*-------Fin del apartado de Metodos que permiten buscar los productos por nombre-------*/
 
 
 /*Metodo que permite buscar los productos por categoria*/
@@ -648,3 +760,9 @@ void Controlador::generarGraphArbolBMas(){
 }
 
 /*-----*---Fin del apartado de metodos para poder generar los graphviz de los arboles---*-----*/
+
+
+/*Metodo que permite ordenar a la lista*/
+void Controlador::ordenarListado(int orden){
+    this->gestorBackend->ordenarLista(orden);
+}

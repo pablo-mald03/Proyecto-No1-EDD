@@ -24,6 +24,9 @@ public:
     /*Metodo que permite rellenar los datos actualizados con los de la lista*/
     void actualizarDatosIngresados();
 
+    /*Metodo que permite ordenar a la lista*/
+    void ordenarListado(int orden);
+
 
 private:
     GestorEstructuras * gestorBackend = nullptr;
@@ -47,6 +50,10 @@ private:
     void insertarEnArbolB(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
     void insertarEnArbolBMas(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, double _precio, int _stock);
 
+    /*Metodos que permiten buscar datos por nombre*/
+    void buscarAvlNombre(const std::string &nombre);
+    void buscarListasNombre(const std::string &nombre);
+
 
 public slots:
 
@@ -61,7 +68,7 @@ public slots:
 
     /*Metodos que permiten realizar el CRUD de la aplicacion*/
     void insercionProducto(const std::string &_nombre,const std::string &_codigoBarra, const std::string &_categoria, const std::string &_fechaExpiracion, const std::string &_marca, const std::string &_precio, const std::string &_stock);
-    void buscarPorNombre(std::string nombre);
+    void buscarPorNombre(const std::string &nombre);
     void buscarPorCategoria(std::string categoria);
     void buscarPorFecha(std::string limiteInferior, std::string limiteSuperior);
     void eliminarProducto(std::string codigo);
@@ -118,7 +125,7 @@ signals:
     void logCargaCsv(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProceso(int estructura, qint64 milisegundos);
+    void tiempoProceso(int estructura, double milisegundos);
 
     /*Fin de los Signals que permiten comunicarse con la pantalla del csv */
 
@@ -131,7 +138,7 @@ signals:
     void logInsertListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProcesoInsert (int estructura, qint64 milisegundos);
+    void tiempoProcesoInsert (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de agregar */
 
@@ -142,7 +149,7 @@ signals:
     void logBusquedaNombreListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProcesoBusquedaNombre (int estructura, qint64 milisegundos);
+    void tiempoProcesoBusquedaNombre (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombrer */
 

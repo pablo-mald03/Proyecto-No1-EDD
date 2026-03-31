@@ -239,24 +239,26 @@ void PantallaPrincipal::appendListLog(QString mensaje, QString color){
 * 4 -> LISTA
 *
 */
-void PantallaPrincipal::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaPrincipal::mostrarTiempo(int estructura, double milisegundos){
+
+    QString tiempoTexto = "Tiempo total: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
         case 1:
-        this->ui->labelTiempoAvl->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoAvl->setText(tiempoTexto);
             break;
 
         case 2:
-            this->ui->labelTiempoB->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+            this->ui->labelTiempoB->setText( tiempoTexto);
             break;
 
         case 3:
-            this->ui->labelTiempoBMas->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+            this->ui->labelTiempoBMas->setText( tiempoTexto);
             break;
 
         case 4:
-            this->ui->labelTiempoLista->setText("Tiempo total: " + QString::number(milisegundos) + " ms");
+            this->ui->labelTiempoLista->setText(tiempoTexto);
             break;
     }
 

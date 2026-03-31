@@ -474,3 +474,55 @@ void GestorEstructuras::ordenarLista(int criterio){
     }
 }
 /*Fin del Apartado de Metodos utilizados para poder ordenar las listas acorde a los diferentes parametros*/
+
+
+/*-*----Metodos de busqueda por nombre----*--*/
+
+/*Busqueda en arbol AVL*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoAvl(const std::string& nombre){
+    return this->arbolAvl->buscarProducto(nombre);
+}
+
+/*Busqueda en lista ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoListaOrdenada(const std::string& nombre){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaOrdenada->getValor(i);
+
+        if (product.getNombre() == nombre) {
+            resultados.insertarAtras(product);
+        }
+        else if (product.getNombre() > nombre) {
+            break;
+        }
+    }
+
+    return resultados;
+
+}
+
+/*Busqueda en lista no ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoListaNoOrdenada(const std::string& nombre){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaNoOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaNoOrdenada->getValor(i);
+
+        if (product.getNombre() == nombre) {
+            resultados.insertarAtras(product);
+        }
+    }
+
+    return resultados;
+}
+
+
+/*-*----Metodos de busqueda por categoria----*--*/
+

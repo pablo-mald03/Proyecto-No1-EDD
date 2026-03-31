@@ -26,7 +26,7 @@ public slots:
     void appendListOrdenadaLog(QString mensaje, QString color);
     void appendListNoOrdenadaLog(QString mensaje, QString color);
 
-    void mostrarTiempo(int estructura, qint64 milisegundos);
+    void mostrarTiempo(int estructura, double milisegundos);
 
     void limpiarPantalla();
 

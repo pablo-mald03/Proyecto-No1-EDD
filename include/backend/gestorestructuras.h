@@ -95,6 +95,12 @@ public:
                           const std::string &_marca, const std::string &_precio,
                           const std::string &_stock);
 
+
+    /*Metodos de busqueda de datos por nombre*/
+    ListaEnlazada<Producto> buscarProductoAvl(const std::string& nombre);
+    ListaEnlazada<Producto> buscarProductoListaOrdenada(const std::string& nombre);
+    ListaEnlazada<Producto> buscarProductoListaNoOrdenada(const std::string& nombre);
+
 private:
 
     /*Arbol AVL*/

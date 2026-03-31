@@ -54,6 +54,10 @@ private:
     void buscarAvlNombre(const std::string &nombre);
     void buscarListasNombre(const std::string &nombre);
 
+    /*Metodos que permiten buscar datos por categoria*/
+    void buscarListasCategoria(const std::string &categoria);
+    void buscarBMasCategoria(const std::string &categoria);
+
 
 public slots:
 
@@ -159,7 +163,7 @@ signals:
     void logBusquedaCategoriaListaNoOrdenada(QString mensaje, QString color);
 
     /*Signal que permite setear el tiempo en el label*/
-    void tiempoProcesoBusquedaCategoria (int estructura, qint64 milisegundos);
+    void tiempoProcesoBusquedaCategoria (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de buscar por nombre*/
 

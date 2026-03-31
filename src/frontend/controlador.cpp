@@ -576,6 +576,12 @@ void Controlador::buscarAvlNombre(const std::string &nombre){
         return;
     }
 
+    QString cantidad = "==========================================\n"
+                       "Productos encontrados:   " + QString::number(lista.getLongitud()) + "\n" +
+                       "==========================================\n\n";
+
+    emit logBusquedaNombreArbolAvl(cantidad.replace("\n", "<br>"), "cyan");
+
     for(int i = 0; i < lista.getLongitud(); i++) {
         Producto product = lista.getValor(i);
 
@@ -609,6 +615,12 @@ void Controlador::buscarListasNombre(const std::string &nombre){
         emit tiempoProcesoBusquedaNombre(2,tiempoOrdenado);
     }else{
 
+        QString cantidadLista = "==========================================\n"
+                           "Productos encontrados:   " + QString::number(listaOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logBusquedaNombreListaOrdenada(cantidadLista.replace("\n", "<br>"), "cyan");
+
         for(int i = 0; i < listaOrdenada.getLongitud(); i++) {
             Producto product = listaOrdenada.getValor(i);
 
@@ -640,6 +652,12 @@ void Controlador::buscarListasNombre(const std::string &nombre){
 
     }else{
 
+        QString cantidad = "==========================================\n"
+                           "Productos encontrados:   " + QString::number(listaNoOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logBusquedaNombreListaNoOrdenada(cantidad.replace("\n", "<br>"), "cyan");
+
         for(int i = 0; i < listaNoOrdenada.getLongitud(); i++) {
             Producto product = listaNoOrdenada.getValor(i);
 
@@ -664,14 +682,142 @@ void Controlador::buscarListasNombre(const std::string &nombre){
 /*-------Fin del apartado de Metodos que permiten buscar los productos por nombre-------*/
 
 
+/*-------Apartado de Metodos que permiten buscar los productos por categoria-------*/
+
 /*Metodo que permite buscar los productos por categoria*/
 void Controlador::buscarPorCategoria(std::string categoria){
 
-    /*Pendiente*/
-    emit logBusquedaCategoriaArbolBMas("Categoria buscado: "+ QString::fromStdString(categoria), "green");
-    emit logBusquedaCategoriaListaOrdenada("Categoria buscado: "+ QString::fromStdString(categoria), "green");
-    emit logBusquedaCategoriaListaNoOrdenada("Categoria buscado: "+ QString::fromStdString(categoria), "green");
+
+    try{
+
+        this->buscarBMasCategoria(categoria);
+        this->buscarListasCategoria(categoria);
+
+    }catch (const std::exception& ex) {
+        emit logBusquedaCategoriaArbolBMas("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaCategoriaListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaCategoriaListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
 }
+
+/*Metodos auxiliares que permiten generar las busquedas en la lista ordenada, la lista no ordenada y el arbol AVL*/
+void Controlador::buscarBMasCategoria(const std::string &categoria){
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> lista = this->gestorBackend->buscarProductoBMas(categoria);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(lista.esVacia()){
+        emit logBusquedaCategoriaArbolBMas("No se han encontrado productos con la categoria: "+ QString::fromStdString(categoria), "yellow");
+        emit tiempoProcesoBusquedaCategoria(1,tiempo);
+        return;
+    }
+
+    QString cantidad = "==========================================\n"
+                       "Productos encontrados:   " + QString::number(lista.getLongitud()) + "\n" +
+                       "==========================================\n\n";
+
+    emit logBusquedaCategoriaArbolBMas(cantidad.replace("\n", "<br>"), "cyan");
+
+    for(int i = 0; i < lista.getLongitud(); i++) {
+        Producto product = lista.getValor(i);
+
+        QString logMensaje = "------------------------------------------\n"
+                             "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                             "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                             "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                             "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                             "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                             "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                             "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                             "------------------------------------------\n";
+
+        emit logBusquedaCategoriaArbolBMas(logMensaje.replace("\n", "<br>"), "cyan");
+    }
+
+    emit tiempoProcesoBusquedaCategoria(1, tiempo);
+}
+
+/*Permite listar por nombre*/
+void Controlador::buscarListasCategoria(const std::string &categoria){
+
+    QElapsedTimer timerOrdenada;
+    timerOrdenada.start();
+    ListaEnlazada<Producto> listaOrdenada = this->gestorBackend->buscarProductoCategoriaListaOrdenada(categoria);
+
+    double tiempoOrdenado = timerOrdenada.nsecsElapsed() / 1000000.0;
+
+    if(listaOrdenada.esVacia()){
+        emit logBusquedaCategoriaListaOrdenada("No se han encontrado productos con la categoria: "+ QString::fromStdString(categoria), "yellow");
+        emit tiempoProcesoBusquedaCategoria(2,tiempoOrdenado);
+    }else{
+
+        QString cantidad = "==========================================\n"
+                           "Productos encontrados:   " + QString::number(listaOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logBusquedaCategoriaListaOrdenada(cantidad.replace("\n", "<br>"), "cyan");
+
+        for(int i = 0; i < listaOrdenada.getLongitud(); i++) {
+            Producto product = listaOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaCategoriaListaOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaCategoria(2, tiempoOrdenado);
+    }
+
+    QElapsedTimer timer;
+    timer.start();
+    ListaEnlazada<Producto> listaNoOrdenada = this->gestorBackend->buscarProductoCategoriaListaNoOrdenada(categoria);
+
+    double tiempo = timer.nsecsElapsed() / 1000000.0;
+
+    if(listaNoOrdenada.esVacia()){
+        emit logBusquedaCategoriaListaNoOrdenada("No se han encontrado productos con la categoria: "+ QString::fromStdString(categoria), "yellow");
+        emit tiempoProcesoBusquedaCategoria(3,tiempo);
+
+    }else{
+
+        QString cantidadLista = "==========================================\n"
+                           "Productos encontrados:   " + QString::number(listaNoOrdenada.getLongitud()) + "\n" +
+                           "==========================================\n\n";
+
+        emit logBusquedaCategoriaListaNoOrdenada(cantidadLista.replace("\n", "<br>"), "cyan");
+
+        for(int i = 0; i < listaNoOrdenada.getLongitud(); i++) {
+            Producto product = listaNoOrdenada.getValor(i);
+
+            QString logMensaje = "------------------------------------------\n"
+                                 "Categoria:   " + QString::fromStdString(product.getCategoria()) + "\n" +
+                                 "Producto:    " + QString::fromStdString(product.getNombre()) + "\n" +
+                                 "Codigo Barra:      " + QString::fromStdString(product.getCodigoBarra()) + "\n" +
+                                 "Expiracion:  " + QString::fromStdString(product.getFechaExpiracion()) + "\n" +
+                                 "Marca:       " + QString::fromStdString(product.getMarca()) + "\n" +
+                                 "Precio:      $" + QString::number(product.getPrecio(), 'f', 2) + "\n" +
+                                 "Stock:       " + QString::number(product.getStock()) + " unidades\n" +
+                                 "------------------------------------------\n";
+
+            emit logBusquedaCategoriaListaNoOrdenada(logMensaje.replace("\n", "<br>"), "cyan");
+        }
+
+        emit tiempoProcesoBusquedaCategoria(3, tiempo);
+    }
+}
+
+/*-------Fin del apartado de Metodos que permiten buscar los productos por categoria-------*/
 
 /*Metodo que permite buscar los productos por fechas*/
 void Controlador::buscarPorFecha(std::string limiteInferior, std::string limiteSuperior){

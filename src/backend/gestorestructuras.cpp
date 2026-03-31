@@ -526,3 +526,50 @@ ListaEnlazada<Producto> GestorEstructuras::buscarProductoListaNoOrdenada(const s
 
 /*-*----Metodos de busqueda por categoria----*--*/
 
+/*Busqueda en arbol AVL*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoBMas(const std::string& categoria){
+    return this->arbolBMas->buscarPorCategoria(categoria);
+}
+
+/*Busqueda en lista ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoCategoriaListaOrdenada(const std::string& categoria){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaOrdenada->getValor(i);
+
+        if (product.getCategoria() == categoria) {
+            resultados.insertarAtras(product);
+        }
+        else if (product.getCategoria() > categoria) {
+            break;
+        }
+    }
+
+    return resultados;
+
+}
+
+/*Busqueda en lista no ordenada*/
+ListaEnlazada<Producto> GestorEstructuras::buscarProductoCategoriaListaNoOrdenada(const std::string& categoria){
+
+    ListaEnlazada<Producto> resultados;
+
+    int longitud = this->listaNoOrdenada->getLongitud();
+
+    for (int i = 0; i < longitud; i++) {
+        Producto product = this->listaNoOrdenada->getValor(i);
+
+        if (product.getCategoria() == categoria) {
+            resultados.insertarAtras(product);
+        }
+    }
+
+    return resultados;
+}
+
+
+

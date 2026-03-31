@@ -20,6 +20,7 @@ PantallaBuscarPorCategoria::PantallaBuscarPorCategoria(QWidget *parent)
     this->ui->textListaNoOrdenada->setReadOnly(true);
 }
 
+/*Destructor*/
 PantallaBuscarPorCategoria::~PantallaBuscarPorCategoria()
 {
     delete ui;
@@ -30,22 +31,28 @@ PantallaBuscarPorCategoria::~PantallaBuscarPorCategoria()
 /*---***---Apartado de metodos que permiten comunicar a la UI los logs que se van a mostrar----***--*/
 void PantallaBuscarPorCategoria::appendBMasLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textArbolBMas->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaBuscarPorCategoria::appendListOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
 void PantallaBuscarPorCategoria::appendListNoOrdenadaLog(QString mensaje, QString color){
 
+    QString htmlMensaje = mensaje.replace("\n", "<br>");
+
     this->ui->textListaNoOrdenada->append(
-        "<span style='color:" + color + ";'>" + mensaje + "</span>"
+        "<span style='color:" + color + ";'>" + htmlMensaje + "</span>"
         );
 }
 
@@ -79,20 +86,23 @@ void PantallaBuscarPorCategoria::limpiarLogs(){
 * 3 -> LISTA NO ORDENADA
 *
 */
-void PantallaBuscarPorCategoria::mostrarTiempo(int estructura, qint64 milisegundos){
+void PantallaBuscarPorCategoria::mostrarTiempo(int estructura, double milisegundos){
+
+
+    QString tiempoTexto = "Tiempo de busqueda: " + QString::number(milisegundos, 'f', 3) + " ms";
 
     switch(estructura){
 
     case 1:
-        this->ui->labelTiempoBMas->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoBMas->setText(tiempoTexto);
         break;
 
     case 2:
-        this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoOrdenada->setText(tiempoTexto);
         break;
 
     case 3:
-        this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: " + QString::number(milisegundos) + " ms");
+        this->ui->labelTiempoNoOrdenada->setText(tiempoTexto);
         break;
     }
 
@@ -106,20 +116,21 @@ void PantallaBuscarPorCategoria::on_btnBuscar_clicked()
 
     this->limpiarLogs();
 
-    QString nombre = ui->textCategoria->text();
+    QString nombreOriginal = ui->textCategoria->text();
+    QString nombreLimpio = nombreOriginal.trimmed();
 
-    if (nombre.trimmed().isEmpty()) {
+    if (nombreLimpio.isEmpty()) {
 
         QMessageBox::warning(
             this,
             "Campo requerido",
-            "Ingrese una categoria valida"
+            "Ingrese un nombre valido (no puede esta vacio)."
             );
 
         return;
     }
 
-    emit buscarPorCategoria(nombre.toStdString());
+    emit buscarPorCategoria(nombreLimpio.toStdString());
 }
 
 /*Metodo que permite limpiar los datos*/

@@ -101,6 +101,11 @@ public:
     ListaEnlazada<Producto> buscarProductoListaOrdenada(const std::string& nombre);
     ListaEnlazada<Producto> buscarProductoListaNoOrdenada(const std::string& nombre);
 
+    /*Metodos de busqueda de datos por categoria*/
+    ListaEnlazada<Producto> buscarProductoBMas(const std::string& categoria);
+    ListaEnlazada<Producto> buscarProductoCategoriaListaOrdenada(const std::string& categoria);
+    ListaEnlazada<Producto> buscarProductoCategoriaListaNoOrdenada(const std::string& categoria);
+
 private:
 
     /*Arbol AVL*/

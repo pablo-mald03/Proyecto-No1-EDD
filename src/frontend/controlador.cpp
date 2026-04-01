@@ -1299,3 +1299,36 @@ void Controlador::generarGraphArbolBMas(){
 void Controlador::ordenarListado(int orden){
     this->gestorBackend->ordenarLista(orden);
 }
+
+
+/*--*****---Apartado de metodos que permiten generar las pruebas con las busquedas de arboles---*****--*/
+
+/*Metodo que permite generar las consultas aleatorias por rango de fechas*/
+void Controlador::pruebaAleatoriaFechas(int consultas,int veces){
+
+}
+
+/*Metodo que permite generar las consultas en extremos por rango de fechas*/
+void Controlador::pruebaExtremosFechas(int consultas,int veces){
+
+}
+
+/*Metodo que permite generar las consultas aleatorias por nombre*/
+void Controlador::pruebaAleatoriaNombre(int consultas,int veces){
+
+}
+
+/*Metodo que permite generar las consultas en extremos por nombre*/
+void Controlador::pruebaExtremosNombre(int consultas,int veces){
+
+}
+
+/*Metodo que permite generar las consultas aleatorias por categoria*/
+void Controlador::pruebaAleatoriaCategoria(int consultas,int veces){
+
+}
+
+/*Metodo que permite generar las consultas en extremos por categoria*/
+void Controlador::pruebaExtremosCategoria(int consultas,int veces){
+
+}

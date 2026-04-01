@@ -589,7 +589,7 @@ QLineEdit#textVeces:disabled {
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 18px;
+  	 font-size: 14px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -601,7 +601,7 @@ QLineEdit#textVeces:disabled {
 </string>
                  </property>
                  <property name="text">
-                  <string>Promedio de consultas:</string>
+                  <string>Promedio de consultas: 0 ms</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignmentFlag::AlignCenter</set>

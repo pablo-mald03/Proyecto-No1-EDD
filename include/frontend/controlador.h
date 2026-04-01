@@ -107,6 +107,27 @@ public slots:
     /*Metodo que permite obtener los datos para poder descargar el Log de errores*/
     void prepararLogParaDescarga();
 
+
+    /*Apartado de metodos que permiten generar las pruebas con las busquedas de arboles*/
+
+    /*Metodo que permite generar las consultas aleatorias por rango de fechas*/
+    void pruebaAleatoriaFechas(int consultas,int veces);
+
+    /*Metodo que permite generar las consultas en extremos por rango de fechas*/
+    void pruebaExtremosFechas(int consultas,int veces);
+
+    /*Metodo que permite generar las consultas aleatorias por nombre*/
+    void pruebaAleatoriaNombre(int consultas,int veces);
+
+    /*Metodo que permite generar las consultas en extremos por nombre*/
+    void pruebaExtremosNombre(int consultas,int veces);
+
+    /*Metodo que permite generar las consultas aleatorias por categoria*/
+    void pruebaAleatoriaCategoria(int consultas,int veces);
+
+    /*Metodo que permite generar las consultas en extremos por categoria*/
+    void pruebaExtremosCategoria(int consultas,int veces);
+
 signals:
 
     /*Metodos que permiten enviar la informacion para poder generar el graphviz los arboles*/
@@ -216,6 +237,11 @@ signals:
     void tiempoProcesoListarNombre (int estructura, double milisegundos);
 
     /*Fin de las Signals que permiten comunicarse con la pantalla de listai productos */
+
+    /*Apartado de metodos que permiten generar las pruebas con las busquedas de arboles*/
+    void mostrarTiempoPruebasNombre(double milisegundos);
+    void mostrarTiempoPruebasCategoria(double milisegundos);
+    void mostrarTiempoPruebasFechas(double milisegundos);
 
 };
 

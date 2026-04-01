@@ -19,7 +19,7 @@
      <property name="minimumSize">
       <size>
        <width>300</width>
-       <height>265</height>
+       <height>300</height>
       </size>
      </property>
      <property name="maximumSize">
@@ -28,31 +28,44 @@
        <height>300</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
-        <item>
-         <widget class="QLabel" name="labelEntrada">
-          <property name="minimumSize">
-           <size>
-            <width>800</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>450</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLabel#labelEntrada {        
+       <widget class="QWidget" name="widget_13" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>420</width>
+          <height>300</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>420</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="labelEntrada">
+           <property name="minimumSize">
+            <size>
+             <width>390</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>390</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel#labelEntrada {        
  
     color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(77, 5, 57));
 
-  	 font-size: 20px;
+  	 font-size: 16px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -62,57 +75,67 @@
 }
 
 </string>
-          </property>
-          <property name="text">
-           <string>Ingrese el rango de Fecha de Caducidad</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignmentFlag::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QWidget" name="widget_16" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>800</width>
-            <height>200</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>450</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
-            <widget class="QWidget" name="widget_2" native="true">
-             <property name="minimumSize">
-              <size>
-               <width>260</width>
-               <height>80</height>
-              </size>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_4">
-                <item>
-                 <widget class="QLabel" name="labelInferior">
-                  <property name="minimumSize">
-                   <size>
-                    <width>130</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel#labelInferior {        
+           </property>
+           <property name="text">
+            <string>Ingrese el rango de Fecha de Caducidad</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_16" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>400</width>
+             <height>200</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>400</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QWidget" name="widget_2" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>380</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>380</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QLabel" name="labelInferior">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel#labelInferior {        
  
     color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 18px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -122,25 +145,31 @@
 }
 
 </string>
-                  </property>
-                  <property name="text">
-                   <string>Limite inferior:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QDateEdit" name="dateInferior">
-                  <property name="minimumSize">
-                   <size>
-                    <width>260</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QDateEdit {
+                 </property>
+                 <property name="text">
+                  <string>Limite inferior:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDateEdit" name="dateInferior">
+                 <property name="minimumSize">
+                  <size>
+                   <width>200</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QDateEdit {
     border: 2px solid #bdc3c7;
     border-radius: 4px;
     padding: 5px 10px;
@@ -197,62 +226,59 @@ QCalendarWidget QSpinBox {
 QCalendarWidget QWidget#qt_calendar_navigationbar {
     background-color: #161B22;
 }</string>
-                  </property>
-                  <property name="displayFormat">
-                   <string>dd/MM/yyyy</string>
-                  </property>
-                  <property name="date">
-                   <date>
-                    <year>2026</year>
-                    <month>1</month>
-                    <day>1</day>
-                   </date>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <spacer name="horizontalSpacer_2">
-                  <property name="orientation">
-                   <enum>Qt::Orientation::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <widget class="QWidget" name="widget_4" native="true">
-             <property name="minimumSize">
-              <size>
-               <width>260</width>
-               <height>80</height>
-              </size>
-             </property>
-             <layout class="QHBoxLayout" name="horizontalLayout_3">
-              <item>
-               <widget class="QLabel" name="labelSuperior">
-                <property name="minimumSize">
-                 <size>
-                  <width>182</width>
-                  <height>60</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QLabel#labelSuperior {        
+                 </property>
+                 <property name="displayFormat">
+                  <string>dd/MM/yyyy</string>
+                 </property>
+                 <property name="date">
+                  <date>
+                   <year>2026</year>
+                   <month>1</month>
+                   <day>1</day>
+                  </date>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_4" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>380</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>380</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_4">
+               <item>
+                <widget class="QLabel" name="labelSuperior">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel#labelSuperior {        
  
     color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
 	stop:0 rgb(0, 0, 0), 
 	stop:1 rgb(8, 2, 48));
 
-  	 font-size: 18px;
+  	 font-size: 15px;
     font-weight: bold;
     font-family: &quot;Segoe UI&quot;, Arial;
     
@@ -262,25 +288,31 @@ QCalendarWidget QWidget#qt_calendar_navigationbar {
 }
 
 </string>
-                </property>
-                <property name="text">
-                 <string>Limite Superior:</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QDateEdit" name="dateSuperior">
-                <property name="minimumSize">
-                 <size>
-                  <width>260</width>
-                  <height>60</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QDateEdit {
+                 </property>
+                 <property name="text">
+                  <string>Limite Superior:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QDateEdit" name="dateSuperior">
+                 <property name="minimumSize">
+                  <size>
+                   <width>190</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QDateEdit {
     border: 2px solid #bdc3c7;
     border-radius: 4px;
     padding: 5px 10px;
@@ -337,77 +369,59 @@ QCalendarWidget QSpinBox {
 QCalendarWidget QWidget#qt_calendar_navigationbar {
     background-color: #161B22;
 }</string>
-                </property>
-                <property name="displayFormat">
-                 <string>dd/MM/yyyy</string>
-                </property>
-                <property name="date">
-                 <date>
-                  <year>2026</year>
-                  <month>1</month>
-                  <day>1</day>
-                 </date>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="horizontalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Orientation::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-       </layout>
+                 </property>
+                 <property name="displayFormat">
+                  <string>dd/MM/yyyy</string>
+                 </property>
+                 <property name="date">
+                  <date>
+                   <year>2026</year>
+                   <month>1</month>
+                   <day>1</day>
+                  </date>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </item>
       <item>
        <widget class="QWidget" name="widget_5" native="true">
         <property name="minimumSize">
          <size>
-          <width>360</width>
+          <width>220</width>
           <height>230</height>
          </size>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <property name="maximumSize">
+         <size>
+          <width>220</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
-          <widget class="QWidget" name="widget_13" native="true">
+          <widget class="QPushButton" name="btnBuscar">
            <property name="minimumSize">
             <size>
-             <width>60</width>
-             <height>0</height>
+             <width>200</width>
+             <height>60</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
+             <width>150</width>
              <height>16777215</height>
             </size>
            </property>
-          </widget>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <item>
-            <widget class="QPushButton" name="btnBuscar">
-             <property name="minimumSize">
-              <size>
-               <width>160</width>
-               <height>60</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#btnBuscar {
+           <property name="styleSheet">
+            <string notr="true">QPushButton#btnBuscar {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgb(50, 143, 42), 
                         stop:1 rgb(255, 163, 72));
@@ -437,22 +451,28 @@ QPushButton#btnBuscar:pressed {
     padding-top: 12px;
     padding-left: 27px;
 }</string>
-             </property>
-             <property name="text">
-              <string>Buscar</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnLimpiar">
-             <property name="minimumSize">
-              <size>
-               <width>160</width>
-               <height>60</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#btnLimpiar {
+           </property>
+           <property name="text">
+            <string>Buscar</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnLimpiar">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>60</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#btnLimpiar {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgb(198, 70, 0), 
                         stop:1 rgb(192, 97, 203));
@@ -482,28 +502,28 @@ QPushButton#btnLimpiar:pressed {
     padding-top: 12px;
     padding-left: 27px;
 }</string>
-             </property>
-             <property name="text">
-              <string>Limpiar Busqueda</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnVerArboles">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>60</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>220</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton#btnVerArboles {
+           </property>
+           <property name="text">
+            <string>Limpiar Busqueda</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnVerArboles">
+           <property name="minimumSize">
+            <size>
+             <width>200</width>
+             <height>60</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>200</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton#btnVerArboles {
     background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
                         stop:0 rgb(8, 2, 48), 
                         stop:1 rgb(255, 163, 72));
@@ -513,7 +533,7 @@ QPushButton#btnLimpiar:pressed {
     
     color: white;
     font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
-    font-size: 15px;
+    font-size: 13px;
     font-weight: bold;
     text-transform: uppercase;
     
@@ -533,28 +553,422 @@ QPushButton#btnVerArboles:pressed {
     padding-top: 12px;
     padding-left: 27px;
 }</string>
-             </property>
-             <property name="text">
-              <string>Ver Arboles</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+           </property>
+           <property name="text">
+            <string>Ver Arboles</string>
+           </property>
+          </widget>
          </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QWidget" name="widget_12" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>500</width>
+          <height>0</height>
+         </size>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_10">
          <item>
-          <widget class="QWidget" name="widget_12" native="true">
+          <widget class="QLabel" name="labelPruebas">
            <property name="minimumSize">
             <size>
-             <width>60</width>
-             <height>0</height>
+             <width>400</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>60</width>
-             <height>16777215</height>
+             <width>16777215</width>
+             <height>40</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel#labelPruebas {        
+ 
+    color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+	stop:0 rgb(0, 0, 0), 
+	stop:1 rgb(77, 5, 57));
+
+  	 font-size: 17px;
+    font-weight: bold;
+    font-family: &quot;Segoe UI&quot;, Arial;
+    
+    background: transparent;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+</string>
+           </property>
+           <property name="text">
+            <string>Pruebas de rendimiento:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignmentFlag::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="widget_7" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>500</width>
+             <height>220</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>220</height>
+            </size>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QWidget" name="widget_8" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>190</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>200</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_8">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="QLabel" name="labelConsultas">
+                   <property name="minimumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#labelConsultas {        
+ 
+    color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+	stop:0 rgb(0, 0, 0), 
+	stop:1 rgb(8, 2, 48));
+
+  	 font-size: 15px;
+    font-weight: bold;
+    font-family: &quot;Segoe UI&quot;, Arial;
+    
+    background: transparent;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+</string>
+                   </property>
+                   <property name="text">
+                    <string>Consultas (N):</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="textConsulta">
+                   <property name="minimumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit#textConsulta {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: rgb(222, 221, 218);
+	font-size: 15px;
+    color: black;
+    selection-background-color: #3498db;
+}
+
+QLineEdit#textConsulta:focus {
+    border: 2px solid #3498db;
+    background-color: #ffffff;
+}
+
+QLineEdit#textConsulta:disabled {
+    background-color: rgba(0, 0, 0, 50);
+    color: rgba(255, 255, 255, 60);      
+    border: 1px dashed rgba(255, 255, 255, 30); 
+}</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_6">
+                 <item>
+                  <widget class="QLabel" name="labelVeces">
+                   <property name="minimumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel#labelVeces {        
+ 
+    color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+	stop:0 rgb(0, 0, 0), 
+	stop:1 rgb(8, 2, 48));
+
+  	 font-size: 15px;
+    font-weight: bold;
+    font-family: &quot;Segoe UI&quot;, Arial;
+    
+    background: transparent;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+</string>
+                   </property>
+                   <property name="text">
+                    <string>Veces (M):</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLineEdit" name="textVeces">
+                   <property name="minimumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>50</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit#textVeces {
+    border: 2px solid #bdc3c7;
+    border-radius: 4px;
+    padding: 5px 10px;
+    background-color: rgb(222, 221, 218);
+	font-size: 15px;
+    color: black;
+    selection-background-color: #3498db;
+}
+
+QLineEdit#textVeces:focus {
+    border: 2px solid #3498db;
+    background-color: #ffffff;
+}
+
+QLineEdit#textVeces:disabled {
+    background-color: rgba(0, 0, 0, 50);
+    color: rgba(255, 255, 255, 60);      
+    border: 1px dashed rgba(255, 255, 255, 30); 
+}</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelPromedio">
+                 <property name="minimumSize">
+                  <size>
+                   <width>300</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>350</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel#labelPromedio {        
+ 
+    color: qlineargradient(x1:0, y1:0, x2:1, y2:1, 
+	stop:0 rgb(0, 0, 0), 
+	stop:1 rgb(8, 2, 48));
+
+  	 font-size: 14px;
+    font-weight: bold;
+    font-family: &quot;Segoe UI&quot;, Arial;
+    
+    background: transparent;
+    padding: 2px;
+    margin-bottom: 5px;
+}
+
+</string>
+                 </property>
+                 <property name="text">
+                  <string>Promedio de consultas: 0 ms</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignmentFlag::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_14" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>165</width>
+                <height>190</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>200</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QPushButton" name="btnAleatorio">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#btnAleatorio {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(255, 120, 0), 
+                        stop:1 rgb(38, 162, 105));
+    
+    border: 3px solid black;
+    border-radius: 8px;
+    
+    color: white;
+    font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    padding: 10px 25px;
+}
+
+QPushButton#btnAleatorio:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(77, 5, 57), 
+                        stop:1 rgb(143, 240, 164));
+    border-color: #f1c40f;
+}
+
+
+QPushButton#btnAleatorio:pressed {
+    background-color: #2c3e50;
+    padding-top: 12px;
+    padding-left: 27px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Aleatoria</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="btnExtremos">
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>150</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton#btnExtremos {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(255, 120, 0), 
+                        stop:1 rgb(77, 5, 57));
+    
+    border: 3px solid black;
+    border-radius: 8px;
+    
+    color: white;
+    font-family: &quot;Arial Black&quot;, Gadget, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    
+    padding: 10px 25px;
+}
+
+QPushButton#btnExtremos:hover {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, 
+                        stop:0 rgb(77, 5, 57), 
+                        stop:1 rgb(143, 240, 164));
+    border-color: #f1c40f;
+}
+
+
+QPushButton#btnExtremos:pressed {
+    background-color: #2c3e50;
+    padding-top: 12px;
+    padding-left: 27px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Extremos</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </widget>
          </item>
         </layout>

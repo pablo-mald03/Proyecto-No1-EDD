@@ -128,6 +128,13 @@ void MainWindow::mostrarBuscarNombre(){
         connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempo);
 
         connect(this, &MainWindow::limpiarBuscarNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::limpiarPantalla);
+
+        /*Pruebas*/
+        connect(this->controladorCrud, &Controlador::mostrarTiempoPruebasNombre, this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::mostrarTiempoPruebas);
+
+        connect(this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::pruebaAleatoria, this->controladorCrud, &Controlador::pruebaAleatoriaNombre);
+
+        connect(this->pantallaBusquedaNombre, &PantallaBuscarPorNombre::pruebaExtremos, this->controladorCrud, &Controlador::pruebaExtremosNombre);
     }
 
     emit this->limpiarBuscarNombre();
@@ -162,6 +169,14 @@ void MainWindow::mostrarBuscarCategoria(){
         connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::mostrarTiempo);
 
         connect(this, &MainWindow::limpiarBuscarCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::limpiarPantalla);
+
+        /*Pruebas*/
+        connect(this->controladorCrud, &Controlador::mostrarTiempoPruebasCategoria, this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::mostrarTiempoPruebas);
+
+        connect(this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::pruebaAleatoria, this->controladorCrud, &Controlador::pruebaAleatoriaCategoria);
+
+        connect(this->pantallaBusquedaCategoria, &PantallaBuscarPorCategoria::pruebaExtremos, this->controladorCrud, &Controlador::pruebaExtremosCategoria);
+
     }
 
     emit this->limpiarBuscarCategoria();
@@ -196,6 +211,14 @@ void MainWindow::mostrarBuscarRango(){
         connect(this->controladorCrud, &Controlador::tiempoProcesoBusquedaCategoria, this->pantallaBusquedaRango, &PantallaBuscarRango::mostrarTiempo);
 
         connect(this, &MainWindow::limpiarBuscarRango, this->pantallaBusquedaRango, &PantallaBuscarRango::limpiarPantalla);
+
+        /*Pruebas*/
+        connect(this->controladorCrud, &Controlador::mostrarTiempoPruebasFechas, this->pantallaBusquedaRango, &PantallaBuscarRango::mostrarTiempoPruebas);
+
+        connect(this->pantallaBusquedaRango, &PantallaBuscarRango::pruebaAleatoria, this->controladorCrud, &Controlador::pruebaAleatoriaFechas);
+
+        connect(this->pantallaBusquedaRango, &PantallaBuscarRango::pruebaExtremos, this->controladorCrud, &Controlador::pruebaExtremosFechas);
+
     }
 
     emit this->limpiarBuscarRango();

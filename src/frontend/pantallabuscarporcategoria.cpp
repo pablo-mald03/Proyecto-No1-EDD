@@ -72,6 +72,7 @@ void PantallaBuscarPorCategoria::limpiarLogs(){
     this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: 0 ms");
     this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: 0 ms");
     this->ui->labelTiempoBMas->setText("Tiempo de busqueda: 0 ms");
+    this->ui->labelPromedio->setText("Promedio de consultas: 0 ms");
 
 }
 
@@ -105,6 +106,14 @@ void PantallaBuscarPorCategoria::mostrarTiempo(int estructura, double milisegund
         break;
     }
 
+}
+
+/*Metodo que permite mostrar el tiempo que tomo hacer las pruebas*/
+void PantallaBuscarPorCategoria::mostrarTiempoPruebas(double milisegundos){
+
+    QString tiempoTexto = "Promedio de consultas: " + QString::number(milisegundos, 'f', 3) + " ms";
+
+    this->ui->labelPromedio->setText(tiempoTexto);
 }
 
 
@@ -148,5 +157,65 @@ void PantallaBuscarPorCategoria::on_btnVerArboles_clicked()
 void PantallaBuscarPorCategoria::limpiarPantalla(){
     this->limpiarDatos();
     this->limpiarLogs();
+}
+
+/*Metodo que permite validar los campos de entrada*/
+bool PantallaBuscarPorCategoria::validarPruebas(int &consultas, int &veces){
+
+    QString strVeces = this->ui->textVeces->text().trimmed();
+    QString strConsulta = this->ui->textConsulta->text().trimmed();
+
+    if (strVeces.isEmpty() || strConsulta.isEmpty()) {
+        QMessageBox::warning(this, "Campos vacios", "Por favor llene todos los campos \"Consultas\" y \"Veces\".");
+        return false;
+    }
+
+    bool okVeces, okConsulta;
+    veces = strVeces.toInt(&okVeces);
+    consultas = strConsulta.toInt(&okConsulta);
+
+    if (!okVeces || !okConsulta) {
+        QMessageBox::warning(this, "Campos no numericos", "El valor de veces y de consultas tiene que ser numerico entero.");
+        return false;
+    }
+
+    if (veces <= 0 || consultas <= 0) {
+        QMessageBox::warning(this, "Campos negativos", "El valor de veces y de consultas no puede ser negativo.");
+        return false;
+    }
+
+   return true;
+}
+
+/*Metodo que permite generar las pruebas aleatorias*/
+void PantallaBuscarPorCategoria::on_btnAleatorio_clicked()
+{
+    int veces = 0;
+    int consultas = 0;
+
+    bool validarEntradas = validarPruebas(consultas,veces);
+
+    if(!validarEntradas){
+        return;
+    }
+
+    emit pruebaAleatoria(consultas, veces);
+}
+
+/*Metodo que permite generar las pruebas en extremos*/
+void PantallaBuscarPorCategoria::on_btnExtremos_clicked()
+{
+
+    int veces = 0;
+    int consultas = 0;
+
+    bool validarEntradas = validarPruebas(consultas,veces);
+
+    if(!validarEntradas){
+        return;
+    }
+
+    emit pruebaExtremos(consultas, veces);
+
 }
 

@@ -188,13 +188,13 @@ void Controlador::insertarArbolAvlCsv(const std::vector<QString> & data){
         int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
-            emit logArbolAvl("Error en conversion numerica: " + linea, "red");
+            emit logArbolAvl(QString::number(filaActual)+". Error en conversion numerica: " + linea, "red");
             continue;
         }
         try{
 
             this->gestorBackend->insertarArbolAvl(nombre,key,categoria,fechaExp,marca,precio,stock);
-            emit logArbolAvl("Insertado: " + QString::fromStdString(key), "green");
+            emit logArbolAvl(QString::number(filaActual)+". Insertado: " + QString::fromStdString(key), "green");
         }
         catch (const InsertException& e) {
             this->gestorBackend->agregarErrorLista(e.what(), filaActual);
@@ -250,13 +250,13 @@ void Controlador::insertarArbolBCsv(const std::vector<QString> & data){
         int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
-            emit logArbolB("Error en conversion numerica: " + linea, "red");
+            emit logArbolB(QString::number(filaActual)+". Error en conversion numerica: " + linea, "red");
             continue;
         }
         try{
 
             this->gestorBackend->insertarArbolB(nombre,key,categoria,fechaExp,marca,precio,stock);
-            emit logArbolB("Insertado: " + QString::fromStdString(key), "green");
+            emit logArbolB(QString::number(filaActual)+". Insertado: " + QString::fromStdString(key), "green");
         }
         catch (const InsertException& e) {
             this->gestorBackend->agregarErrorLista(e.what(), filaActual);
@@ -311,13 +311,13 @@ void Controlador::insertarArbolBMasCsv(const std::vector<QString> & data){
         int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
-            emit logArbolBMas("Error en conversion numerica: " + linea, "red");
+            emit logArbolBMas(QString::number(filaActual)+". Error en conversion numerica: " + linea, "red");
             continue;
         }
         try{
 
             this->gestorBackend->insertarArbolBMas(nombre,key,categoria,fechaExp,marca,precio,stock);
-            emit logArbolBMas("Insertado: " + QString::fromStdString(key), "green");
+            emit logArbolBMas(QString::number(filaActual)+". Insertado: " + QString::fromStdString(key), "green");
         }
         catch (const InsertException& e) {
             this->gestorBackend->agregarErrorLista(e.what(), filaActual);
@@ -371,14 +371,14 @@ void Controlador::insertarListaCsv(const std::vector<QString> & data){
         int stock = columnas[6].trimmed().toInt(&okStock);
 
         if (!okPrecio || !okStock) {
-            emit logLista("Error en conversion numerica: " + linea, "red");
+            emit logLista(QString::number(filaActual)+". Error en conversion numerica: " + linea, "red");
             continue;
         }
         try{
 
             this->gestorBackend->insertarListasCsv(nombre,key,categoria,fechaExp,marca,precio,stock);
 
-            emit logLista("Insertado: " + QString::fromStdString(key), "green");
+            emit logLista(QString::number(filaActual)+". Insertado: " + QString::fromStdString(key), "green");
 
         }catch (const ReaderCsvException& e) {
 

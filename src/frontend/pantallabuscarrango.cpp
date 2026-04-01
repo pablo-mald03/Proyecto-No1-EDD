@@ -207,7 +207,25 @@ void PantallaBuscarRango::on_btnAleatorio_clicked()
         return;
     }
 
-    emit pruebaAleatoria(consultas, veces);
+    this->limpiarLogs();
+
+    QDate fechaInf = ui->dateInferior->date();
+    QDate fechaSup = ui->dateSuperior->date();
+
+    if (fechaInf > fechaSup) {
+        QMessageBox::warning(
+            this,
+            "Rango inválido",
+            "La fecha inferior no puede ser mayor que la fecha superior"
+            );
+        return;
+    }
+
+    std::string fechaInferior = fechaInf.toString("yyyy-MM-dd").trimmed().toStdString();
+    std::string fechaSuperior = fechaSup.toString("yyyy-MM-dd").trimmed().toStdString();
+
+
+    emit pruebaAleatoria(consultas, veces,fechaInferior, fechaSuperior);
 }
 
 /*Metodo que permite generar las pruebas en extremos*/
@@ -222,6 +240,8 @@ void PantallaBuscarRango::on_btnExtremos_clicked()
     if(!validarEntradas){
         return;
     }
+
+    this->limpiarLogs();
 
     emit pruebaExtremos(consultas, veces);
 }

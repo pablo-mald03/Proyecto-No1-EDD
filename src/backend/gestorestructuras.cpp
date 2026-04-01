@@ -7,6 +7,8 @@
 /*Librerias solo utilizadas como buffers para poder ordenar*/
 #include <vector>
 #include <sstream>
+#include <cstdlib>
+#include <ctime>
 
 GestorEstructuras::GestorEstructuras():
     listaNoOrdenada(new ListaEnlazada<Producto>()),
@@ -17,6 +19,7 @@ GestorEstructuras::GestorEstructuras():
     arbolBMas(new ArbolBMas(5)),
     cargoArchivo(false)
 {
+    srand(time(NULL));
 }
 
 /*Destructor*/
@@ -764,6 +767,117 @@ ListaEnlazada<Producto> GestorEstructuras::listarProductosNoOrdenados(){
     delete[] buffer;
 
     return resultados;
+}
+
+/*----Apartado de metodos que permiten generar pruebas de estres----*/
+
+/*Metodo que permite obtener los productos en los extremos de la lista*/
+ListaEnlazada<Producto> GestorEstructuras::getProductosExtremos(){
+
+    ListaEnlazada<Producto> extremos;
+
+    if(this->listaOrdenada->esVacia()){
+        return extremos;
+    }
+
+    int limite = this->listaOrdenada->getLongitud() - 1;
+
+    extremos.insertarFrente(this->listaOrdenada->getValor(0));
+    extremos.insertarFrente(this->listaOrdenada->getValor(limite));
+    return extremos;
+}
+
+/*Metodo que permite obtener los productos aleatoriamente en un intervalo de productos
+* 1 -> nombre
+* 2 -> categoria
+* 3 -> fecha
+*/
+ListaEnlazada<Producto> GestorEstructuras::getProductosIntervalo(const Producto &productoInferior,const Producto &productoSuperior, int orden){
+
+    ListaEnlazada<Producto> productosFiltrados;
+
+    ListaEnlazada<Producto> productosAleatorios;
+
+    NodoLista<Producto>* actual = this->listaOrdenada->getCabeza();
+
+    //(Complejidad O(N))
+    while (actual != nullptr) {
+        Producto pActual = actual->getDato();
+        bool dentroDelRango = false;
+
+        switch(orden){
+        case 1: // Por Nombre
+            if (pActual.getNombre() >= productoInferior.getNombre() &&
+                pActual.getNombre() <= productoSuperior.getNombre()) {
+                dentroDelRango = true;
+            }
+            break;
+
+        case 2: // Por Categoria
+            if (pActual.getCategoria() >= productoInferior.getCategoria() &&
+                pActual.getCategoria() <= productoSuperior.getCategoria()) {
+                dentroDelRango = true;
+            }
+            break;
+
+        case 3: // Por Fecha
+            if (pActual.getFechaExpiracion() >= productoInferior.getFechaExpiracion() &&
+                pActual.getFechaExpiracion() <= productoSuperior.getFechaExpiracion()) {
+                dentroDelRango = true;
+            }
+            break;
+
+        default:
+            break;
+        }
+
+        if (dentroDelRango) {
+            productosFiltrados.insertarFrente(pActual);
+        }
+
+        actual = actual->getSiguiente();
+    }
+
+    int cantidadFiltrados = productosFiltrados.getLongitud();
+
+    if (cantidadFiltrados > 0) {
+
+        for (int i = 0; i < cantidadFiltrados; ++i) {
+            int indiceAleatorio = rand() % cantidadFiltrados;
+
+            Producto pAleatorio = productosFiltrados.getValor(indiceAleatorio);
+
+            productosAleatorios.insertarFrente(pAleatorio);
+        }
+    }
+
+    return productosAleatorios;
+}
+
+/*Metodo que permite obtener dos rangos aleatoriamente*/
+ListaEnlazada<Producto> GestorEstructuras::getRangosAleatorios(){
+
+    ListaEnlazada<Producto> productosAleatorios;
+
+    int longitud = this->listaOrdenada->getLongitud();
+
+    if(longitud < 2){
+        return productosAleatorios;
+    }
+
+    int mitad = longitud / 2;
+
+    int indiceInferior = rand() % mitad;
+
+    int indiceSuperior = mitad + (rand() % (longitud - mitad));
+
+    Producto pInferior = this->listaOrdenada->getValor(indiceInferior);
+    Producto pSuperior = this->listaOrdenada->getValor(indiceSuperior);
+
+    productosAleatorios.insertarFrente(pInferior);
+    productosAleatorios.insertarFrente(pSuperior);
+
+    return productosAleatorios;
 }
 
 

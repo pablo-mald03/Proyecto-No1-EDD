@@ -31,7 +31,7 @@ signals:
     void verArboles();
 
     /*Metodo que permite generar las consultas aleatorias*/
-    void pruebaAleatoria(int consultas,int veces);
+    void pruebaAleatoria(int consultas,int veces, const std::string &limiteInferior, const std::string &limiteSuperior);
 
     /*Metodo que permite generar las consultas en extremos*/
     void pruebaExtremos(int consultas,int veces);

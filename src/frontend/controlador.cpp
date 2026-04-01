@@ -1304,12 +1304,34 @@ void Controlador::ordenarListado(int orden){
 /*--*****---Apartado de metodos que permiten generar las pruebas con las busquedas de arboles---*****--*/
 
 /*Metodo que permite generar las consultas aleatorias por rango de fechas*/
-void Controlador::pruebaAleatoriaFechas(int consultas,int veces){
+void Controlador::pruebaAleatoriaFechas(int consultas,int veces, const std::string &limiteInferior, const std::string &limiteSuperior){
+
+    try{
+
+        /*this->buscarBFecha(limiteInferior, limiteSuperior);
+        this->buscarListasFecha(limiteInferior, limiteSuperior);
+*/
+    }catch (const std::exception& ex) {
+        emit logBusquedaFechasArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
 
 }
 
 /*Metodo que permite generar las consultas en extremos por rango de fechas*/
 void Controlador::pruebaExtremosFechas(int consultas,int veces){
+
+    try{
+
+       /* this->buscarBFecha(limiteInferior, limiteSuperior);
+        this->buscarListasFecha(limiteInferior, limiteSuperior);
+*/
+    }catch (const std::exception& ex) {
+        emit logBusquedaFechasArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+        emit logBusquedaFechasListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
+    }
 
 }
 

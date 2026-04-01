@@ -111,7 +111,7 @@ public slots:
     /*Apartado de metodos que permiten generar las pruebas con las busquedas de arboles*/
 
     /*Metodo que permite generar las consultas aleatorias por rango de fechas*/
-    void pruebaAleatoriaFechas(int consultas,int veces);
+    void pruebaAleatoriaFechas(int consultas,int veces, const std::string &limiteInferior, const std::string &limiteSuperior);
 
     /*Metodo que permite generar las consultas en extremos por rango de fechas*/
     void pruebaExtremosFechas(int consultas,int veces);

@@ -198,6 +198,8 @@ void PantallaBuscarPorNombre::on_btnAleatorio_clicked()
         return;
     }
 
+    this->limpiarLogs();
+
     emit pruebaAleatoria(consultas, veces);
 
 }
@@ -214,6 +216,8 @@ void PantallaBuscarPorNombre::on_btnExtremos_clicked()
     if(!validarEntradas){
         return;
     }
+
+    this->limpiarLogs();
 
     emit pruebaExtremos(consultas, veces);
 

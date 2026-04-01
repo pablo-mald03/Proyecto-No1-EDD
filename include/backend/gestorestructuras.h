@@ -133,6 +133,15 @@ public:
     ListaEnlazada<Producto> listarProductosOrdenados();
     ListaEnlazada<Producto> listarProductosNoOrdenados();
 
+    /*Metodo que permite obtener los productos en los extremos de la lista*/
+    ListaEnlazada<Producto> getProductosExtremos();
+
+    /*Metodo que permite obtener los productos aleatoriamente en un intervalo de productos*/
+    ListaEnlazada<Producto> getProductosIntervalo(const Producto &productoInferior,const Producto &productoSuperior, int orden);
+
+    /*Metodo que permite obtener dos rangos aleatoriamente*/
+    ListaEnlazada<Producto> getRangosAleatorios();
+
 private:
 
     /*Arbol AVL*/

@@ -53,9 +53,13 @@ private:
     /*Metodos que permiten buscar datos por nombre*/
     void buscarAvlNombre(const std::string &nombre);
     void buscarListasNombre(const std::string &nombre);
+    void buscarListasOrdenadaNombre(const std::string &nombre);
+    void buscarListasNoOrdenadaNombre(const std::string &nombre);
 
     /*Metodos que permiten buscar datos por categoria*/
     void buscarListasCategoria(const std::string &categoria);
+    void buscarListasOrdenadaCategoria(const std::string &categoria);
+    void buscarListasNoOrdenadaCategoria(const std::string &categoria);
     void buscarBMasCategoria(const std::string &categoria);
 
     /*Metodos que permiten buscar datos por fecha*/

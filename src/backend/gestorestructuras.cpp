@@ -827,34 +827,69 @@ ListaEnlazada<Producto> GestorEstructuras::getProductosExtremos(){
 ListaEnlazada<Producto> GestorEstructuras::getProductosIntervalo(const Producto &productoInferior,const Producto &productoSuperior, int orden){
 
     ListaEnlazada<Producto> productosFiltrados;
-
     ListaEnlazada<Producto> productosAleatorios;
+
+    std::string limiteInf;
+    std::string limiteSup;
+
+    switch(orden){
+
+    case 1: { // Por Nombre
+        std::string val1 = productoInferior.getNombre();
+        std::string val2 = productoSuperior.getNombre();
+        if (val1 <= val2) {
+            limiteInf = val1; limiteSup = val2;
+        } else {
+            limiteInf = val2; limiteSup = val1;
+        }
+        break;
+    }
+    case 2: { // Por Categoria
+        std::string val1 = productoInferior.getCategoria();
+        std::string val2 = productoSuperior.getCategoria();
+        if (val1 <= val2) {
+            limiteInf = val1; limiteSup = val2;
+        } else {
+            limiteInf = val2; limiteSup = val1;
+        }
+        break;
+    }
+    case 3: { // Por Fecha
+        std::string val1 = productoInferior.getFechaExpiracion();
+        std::string val2 = productoSuperior.getFechaExpiracion();
+        if (val1 <= val2) {
+            limiteInf = val1; limiteSup = val2;
+        } else {
+            limiteInf = val2; limiteSup = val1;
+        }
+        break;
+    }
+    default:
+        break;
+    }
 
     NodoLista<Producto>* actual = this->listaOrdenada->getCabeza();
 
-    //(Complejidad O(N))
+    //Complejidad O(n)
     while (actual != nullptr) {
         Producto pActual = actual->getDato();
         bool dentroDelRango = false;
 
         switch(orden){
         case 1: // Por Nombre
-            if (pActual.getNombre() >= productoInferior.getNombre() &&
-                pActual.getNombre() <= productoSuperior.getNombre()) {
+            if (pActual.getNombre() >= limiteInf && pActual.getNombre() <= limiteSup) {
                 dentroDelRango = true;
             }
             break;
 
         case 2: // Por Categoria
-            if (pActual.getCategoria() >= productoInferior.getCategoria() &&
-                pActual.getCategoria() <= productoSuperior.getCategoria()) {
+            if (pActual.getCategoria() >= limiteInf && pActual.getCategoria() <= limiteSup) {
                 dentroDelRango = true;
             }
             break;
 
         case 3: // Por Fecha
-            if (pActual.getFechaExpiracion() >= productoInferior.getFechaExpiracion() &&
-                pActual.getFechaExpiracion() <= productoSuperior.getFechaExpiracion()) {
+            if (pActual.getFechaExpiracion() >= limiteInf && pActual.getFechaExpiracion() <= limiteSup) {
                 dentroDelRango = true;
             }
             break;
@@ -873,12 +908,9 @@ ListaEnlazada<Producto> GestorEstructuras::getProductosIntervalo(const Producto 
     int cantidadFiltrados = productosFiltrados.getLongitud();
 
     if (cantidadFiltrados > 0) {
-
         for (int i = 0; i < cantidadFiltrados; ++i) {
             int indiceAleatorio = rand() % cantidadFiltrados;
-
             Producto pAleatorio = productosFiltrados.getValor(indiceAleatorio);
-
             productosAleatorios.insertarFrente(pAleatorio);
         }
     }

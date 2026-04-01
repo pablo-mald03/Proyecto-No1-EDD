@@ -38,21 +38,23 @@ PantallaArbolB::~PantallaArbolB()
 /*Metodo que permite generar el graphviz del arbol B*/
 void PantallaArbolB::generarGraphviz(std::string graph){
 
-    QString ruta = QFileDialog::getSaveFileName(
+    QString rutaImagen = QFileDialog::getSaveFileName(
         this,
         "Guardar arbol B como imagen",
         "",
         "Imagen PNG (*.png)"
         );
 
-    if (ruta.isEmpty()) return;
+    if (rutaImagen.isEmpty()) return;
 
-    QString dotPath = QDir::tempPath() + "/arbol_b.dot";
+    QFileInfo info(rutaImagen);
+    QString rutaBase = info.absolutePath() + "/" + info.baseName();
+    QString dotPath = rutaBase + ".dot";
 
     QFile file(dotPath);
 
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        QMessageBox::critical(this, "Error", "No se pudo crear el archivo temporal.");
+        QMessageBox::critical(this, "Error", "No se pudo crear el archivo fuente (.dot) temporal.");
         return;
     }
 
@@ -70,7 +72,8 @@ void PantallaArbolB::generarGraphviz(std::string graph){
 
     QProcess proceso;
     QStringList argumentos;
-    argumentos << "-Tpng" << dotPath << "-o" << ruta;
+    argumentos << "-Tpng" << dotPath << "-o" << rutaImagen;
+
 
     proceso.start(programa, argumentos);
 
@@ -79,9 +82,13 @@ void PantallaArbolB::generarGraphviz(std::string graph){
         return;
     }
 
-    if (QFile::exists(ruta)) {
-        QMessageBox::information(this, "Exito", "Imagen generada correctamente.");
-        QDesktopServices::openUrl(QUrl::fromLocalFile(ruta));
+    if (QFile::exists(rutaImagen)) {
+
+        QMessageBox::information(this, "Exito",
+                                 "Archivos generados correctamente:\n" +
+                                     info.baseName() + ".png\n" +
+                                     info.baseName() + ".dot");
+        QDesktopServices::openUrl(QUrl::fromLocalFile(rutaImagen));
     } else {
 
         QString errorDetalle = proceso.readAllStandardError();

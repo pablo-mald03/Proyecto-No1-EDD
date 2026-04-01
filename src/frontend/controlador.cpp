@@ -886,6 +886,13 @@ void Controlador::buscarBFecha(const std::string &limiteInferior, const std::str
 /*Permite listar por rango de fechas*/
 void Controlador::buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
 
+    this->buscarListaOrdenadaFecha(limiteInferior,limiteSuperior);
+    this->buscarListaNoOrdenadaFecha(limiteInferior, limiteSuperior);
+}
+
+/*-----Metodos auxiliares para buscar por fecha-----*/
+void Controlador::buscarListaOrdenadaFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
+
     QElapsedTimer timerOrdenada;
     timerOrdenada.start();
     ListaEnlazada<Producto> listaOrdenada = this->gestorBackend->buscarProductoFechasListaOrdenada(limiteInferior, limiteSuperior);
@@ -921,6 +928,9 @@ void Controlador::buscarListasFecha(const std::string &limiteInferior, const std
 
         emit tiempoProcesoBusquedaFechas(2, tiempoOrdenado);
     }
+}
+
+void Controlador::buscarListaNoOrdenadaFecha(const std::string &limiteInferior, const std::string &limiteSuperior){
 
     QElapsedTimer timer;
     timer.start();
@@ -960,7 +970,7 @@ void Controlador::buscarListasFecha(const std::string &limiteInferior, const std
     }
 }
 
-
+/*-----Metodos auxiliares para buscar por fecha-----*/
 
 /*Metodo que permite eliminar un producto por codigo*/
 void Controlador::eliminarProducto(const std::string &codigo){
@@ -1308,9 +1318,180 @@ void Controlador::pruebaAleatoriaFechas(int consultas,int veces, const std::stri
 
     try{
 
-        /*this->buscarBFecha(limiteInferior, limiteSuperior);
-        this->buscarListasFecha(limiteInferior, limiteSuperior);
-*/
+        ListaEnlazada<Producto> lista = this->gestorBackend->buscarProductoFechasListaOrdenada(limiteInferior,limiteSuperior);
+
+        if(lista.esVacia()){
+            emit logBusquedaFechasArbolB("El arbol B no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaOrdenada("La lista Ordenada esta vacia", "yellow");
+            emit logBusquedaFechasListaNoOrdenada("La lista No Ordenada esta vacia", "yellow");
+            return;
+        }
+
+        if(lista.getLongitud() < 2){
+            emit logBusquedaFechasArbolB("El arbol B no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaOrdenada("La lista no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaNoOrdenada("La lista no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            return;
+        }
+
+        int longitudLista = lista.getLongitud();
+        double tiempoTotal = 0.0;
+        int repeticiones = veces * consultas;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int indiceBase = rand() % (longitudLista - 1);
+
+            Producto p1 = lista.getValor(indiceBase);
+            Producto p2 = lista.getValor(indiceBase + 1);
+
+            std::string fecha1 = p1.getFechaExpiracion();
+            std::string fecha2 = p2.getFechaExpiracion();
+
+            std::string inferior = (fecha1 <= fecha2) ? fecha1 : fecha2;
+            std::string superior = (fecha1 <= fecha2) ? fecha2 : fecha1;
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarBFecha(inferior, superior);
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                    "Tiempo transcurrido: " +
+                    tiempoStr + "\n" +
+                    "==========================================\n\n";
+
+                emit logBusquedaFechasArbolB(cantidad.replace("\n", "<br>"),
+                                             "yellow");
+            }
+
+            tiempoTotal += tiempoPasado;
+        }
+
+        double tiempoPromedio = tiempoTotal / (veces * consultas);
+
+        QString tiempoStrTotalB = QString::number(tiempoTotal, 'f', 4);
+
+        emit mostrarTiempoPruebasFechas(tiempoPromedio);
+
+        QString cantidadFinalB =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL ARBOL B: " + tiempoStrTotalB + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedio, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasArbolB(cantidadFinalB.replace("\n", "<br>"), "yellow");
+
+
+        double tiempoTotalOrdenado = 0.0;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int indiceBase = rand() % (longitudLista - 1);
+
+            Producto p1 = lista.getValor(indiceBase);
+            Producto p2 = lista.getValor(indiceBase + 1);
+
+            std::string fecha1 = p1.getFechaExpiracion();
+            std::string fecha2 = p2.getFechaExpiracion();
+
+            std::string inferior = (fecha1 <= fecha2) ? fecha1 : fecha2;
+            std::string superior = (fecha1 <= fecha2) ? fecha2 : fecha1;
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarListaOrdenadaFecha(inferior, superior);
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                    "Tiempo transcurrido: " +
+                    tiempoStr + "\n" +
+                    "==========================================\n\n";
+
+                emit logBusquedaFechasListaOrdenada(cantidad.replace("\n", "<br>"),
+                                                    "yellow");
+            }
+
+            tiempoTotalOrdenado += tiempoPasado;
+        }
+
+        double tiempoPromedioOrdenado = tiempoTotalOrdenado / repeticiones;
+
+        QString tiempoStrTotalOrdenado = QString::number(tiempoTotalOrdenado, 'f', 4);
+
+        QString cantidadFinal =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL LISTA: " + tiempoStrTotalOrdenado + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedioOrdenado, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasListaOrdenada(cantidadFinal.replace("\n", "<br>"), "yellow");
+
+
+        double tiempoTotalNoOrdenado = 0.0;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int indiceBase = rand() % (longitudLista - 1);
+
+            Producto p1 = lista.getValor(indiceBase);
+            Producto p2 = lista.getValor(indiceBase + 1);
+
+            std::string fecha1 = p1.getFechaExpiracion();
+            std::string fecha2 = p2.getFechaExpiracion();
+
+            std::string inferior = (fecha1 <= fecha2) ? fecha1 : fecha2;
+            std::string superior = (fecha1 <= fecha2) ? fecha2 : fecha1;
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarListaNoOrdenadaFecha(inferior, superior);
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                    "Tiempo transcurrido: " +
+                    tiempoStr + "\n" +
+                    "==========================================\n\n";
+
+                emit logBusquedaFechasListaNoOrdenada(cantidad.replace("\n", "<br>"),
+                                                      "yellow");
+            }
+
+            tiempoTotalNoOrdenado += tiempoPasado;
+        }
+
+        double tiempoPromedioNoOrdenado = tiempoTotalNoOrdenado / repeticiones;
+
+        QString tiempoStrTotalNoOrdenado = QString::number(tiempoTotalNoOrdenado, 'f', 4);
+
+        QString cantidadNoOrdenadaFinal =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL LISTA: " + tiempoStrTotalNoOrdenado + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedioNoOrdenado, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasListaNoOrdenada(cantidadNoOrdenadaFinal.replace("\n", "<br>"), "yellow");
     }catch (const std::exception& ex) {
         emit logBusquedaFechasArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
         emit logBusquedaFechasListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
@@ -1324,15 +1505,197 @@ void Controlador::pruebaExtremosFechas(int consultas,int veces){
 
     try{
 
-       /* this->buscarBFecha(limiteInferior, limiteSuperior);
-        this->buscarListasFecha(limiteInferior, limiteSuperior);
-*/
+        ListaEnlazada<Producto> lista = this->gestorBackend->getProductosExtremosIntervalo();
+
+        if(lista.esVacia()){
+            emit logBusquedaFechasArbolB("El arbol B no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaOrdenada("La lista Ordenada esta vacia", "yellow");
+            emit logBusquedaFechasListaNoOrdenada("La lista No Ordenada esta vacia", "yellow");
+            return;
+        }
+
+        if(lista.getLongitud() < 4){
+            emit logBusquedaFechasArbolB("El arbol B no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaOrdenada("La lista no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            emit logBusquedaFechasListaNoOrdenada("La lista no cuenta con los suficientes datos para hacer pruebas de extremos", "yellow");
+            return;
+        }
+
+        double tiempoTotal = 0.0;
+
+        int repeticiones = veces*consultas;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int decisionRango = rand() % 2;
+
+            Producto limiteInferior;
+            Producto limiteSuperior;
+
+            if (decisionRango == 0) {
+
+                limiteInferior = lista.getValor(0);
+                limiteSuperior = lista.getValor(1);
+            } else {
+
+                limiteInferior = lista.getValor(2);
+                limiteSuperior = lista.getValor(3);
+            }
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarBFecha(limiteInferior.getFechaExpiracion(), limiteSuperior.getFechaExpiracion());
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                                   "Tiempo transcurrido: " +
+                                   tiempoStr + "\n" +
+                                   "==========================================\n\n";
+
+                emit logBusquedaFechasArbolB(cantidad.replace("\n", "<br>"),
+                                             "yellow");
+            }
+
+            tiempoTotal += tiempoPasado;
+        }
+
+        double tiempoPromedio = tiempoTotal / (veces * consultas);
+
+        QString tiempoStrTotalB = QString::number(tiempoTotal, 'f', 4);
+
+        emit mostrarTiempoPruebasFechas(tiempoPromedio);
+
+        QString cantidadFinalB =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL ARBOL B: " + tiempoStrTotalB + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedio, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasArbolB(cantidadFinalB.replace("\n", "<br>"), "yellow");
+
+
+        double tiempoTotalOrdenado = 0.0;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int decisionRango = rand() % 2;
+
+            Producto limiteInferior;
+            Producto limiteSuperior;
+
+            if (decisionRango == 0) {
+
+                limiteInferior = lista.getValor(0);
+                limiteSuperior = lista.getValor(1);
+            } else {
+
+                limiteInferior = lista.getValor(2);
+                limiteSuperior = lista.getValor(3);
+            }
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarListaOrdenadaFecha(limiteInferior.getFechaExpiracion(), limiteSuperior.getFechaExpiracion());
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                    "Tiempo transcurrido: " +
+                    tiempoStr + "\n" +
+                    "==========================================\n\n";
+
+                emit logBusquedaFechasListaOrdenada(cantidad.replace("\n", "<br>"),
+                                             "yellow");
+            }
+
+            tiempoTotalOrdenado += tiempoPasado;
+        }
+
+        double tiempoPromedioOrdenado = tiempoTotalOrdenado / repeticiones;
+
+        QString tiempoStrTotalOrdenado = QString::number(tiempoTotalOrdenado, 'f', 4);
+
+        QString cantidadFinal =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL LISTA: " + tiempoStrTotalOrdenado + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedioOrdenado, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasListaOrdenada(cantidadFinal.replace("\n", "<br>"), "yellow");
+
+
+        double tiempoTotalNoOrdenado = 0.0;
+
+        for (int i = 0; i < repeticiones; ++i) {
+
+            int decisionRango = rand() % 2;
+
+            Producto limiteInferior;
+            Producto limiteSuperior;
+
+            if (decisionRango == 0) {
+
+                limiteInferior = lista.getValor(0);
+                limiteSuperior = lista.getValor(1);
+            } else {
+
+                limiteInferior = lista.getValor(2);
+                limiteSuperior = lista.getValor(3);
+            }
+
+            QElapsedTimer timer;
+            timer.start();
+
+            this->buscarListaNoOrdenadaFecha(limiteInferior.getFechaExpiracion(), limiteSuperior.getFechaExpiracion());
+
+            double tiempoPasado = timer.nsecsElapsed() / 1000000.0;
+
+            if (repeticiones <= 50) {
+
+                QString tiempoStr = QString::number(tiempoPasado, 'f', 4);
+
+                QString cantidad =
+                    "==========================================\n"
+                    "Tiempo transcurrido: " +
+                    tiempoStr + "\n" +
+                    "==========================================\n\n";
+
+                emit logBusquedaFechasListaNoOrdenada(cantidad.replace("\n", "<br>"),
+                                                    "yellow");
+            }
+
+            tiempoTotalNoOrdenado += tiempoPasado;
+        }
+
+        double tiempoPromedioNoOrdenado = tiempoTotalNoOrdenado / repeticiones;
+
+        QString tiempoStrTotalNoOrdenado = QString::number(tiempoTotalNoOrdenado, 'f', 4);
+
+        QString cantidadNoOrdenadaFinal =
+            "--------*****---------------*****---------\n"
+            "TIEMPO TOTAL LISTA: " + tiempoStrTotalNoOrdenado + " ms\n" +
+            "PROMEDIO POR CONSULTA: " + QString::number(tiempoPromedioNoOrdenado, 'f', 4) + " ms\n" +
+            "--------*****---------------*****---------\n\n";
+
+        emit logBusquedaFechasListaNoOrdenada(cantidadNoOrdenadaFinal.replace("\n", "<br>"), "yellow");
     }catch (const std::exception& ex) {
         emit logBusquedaFechasArbolB("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
         emit logBusquedaFechasListaOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
         emit logBusquedaFechasListaNoOrdenada("Error inesperado: " + QString::fromStdString(ex.what()) , "red");
     }
-
 }
 
 /*Metodo que permite generar las consultas aleatorias por nombre*/

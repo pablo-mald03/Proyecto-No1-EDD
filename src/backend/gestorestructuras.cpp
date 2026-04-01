@@ -771,6 +771,38 @@ ListaEnlazada<Producto> GestorEstructuras::listarProductosNoOrdenados(){
 
 /*----Apartado de metodos que permiten generar pruebas de estres----*/
 
+/*Metodo que permite obtener los extremos por intevalos (especializados para el arbol B)*/
+ListaEnlazada<Producto> GestorEstructuras::getProductosExtremosIntervalo(){
+
+    ListaEnlazada<Producto> extremos;
+
+    if(this->listaOrdenada->esVacia()){
+        return extremos;
+    }
+
+    if(this->listaOrdenada->getLongitud() < 4){
+
+        for (int i = 0; i < this->listaOrdenada->getLongitud(); ++i) {
+
+            Producto pAleatorio = this->listaOrdenada->getValor(i);
+
+            extremos.insertarFrente(pAleatorio);
+        }
+
+        return extremos;
+    }
+
+    int limite = this->listaOrdenada->getLongitud() - 1;
+
+    extremos.insertarAtras(this->listaOrdenada->getValor(0));
+    extremos.insertarAtras(this->listaOrdenada->getValor(1));
+    extremos.insertarAtras(this->listaOrdenada->getValor(limite -1));
+    extremos.insertarAtras(this->listaOrdenada->getValor(limite));
+    return extremos;
+}
+
+
+
 /*Metodo que permite obtener los productos en los extremos de la lista*/
 ListaEnlazada<Producto> GestorEstructuras::getProductosExtremos(){
 
@@ -782,8 +814,8 @@ ListaEnlazada<Producto> GestorEstructuras::getProductosExtremos(){
 
     int limite = this->listaOrdenada->getLongitud() - 1;
 
-    extremos.insertarFrente(this->listaOrdenada->getValor(0));
-    extremos.insertarFrente(this->listaOrdenada->getValor(limite));
+    extremos.insertarAtras(this->listaOrdenada->getValor(0));
+    extremos.insertarAtras(this->listaOrdenada->getValor(limite));
     return extremos;
 }
 

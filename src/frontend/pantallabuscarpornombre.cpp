@@ -99,6 +99,8 @@ void PantallaBuscarPorNombre::mostrarTiempoPruebas(double milisegundos){
 void PantallaBuscarPorNombre::limpiarDatos(){
 
     this->ui->textNombre->clear();
+    this->ui->textVeces->clear();
+    this->ui->textConsulta->clear();
 }
 
 /*Metodo que permite limpiar los logs*/

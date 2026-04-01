@@ -60,6 +60,8 @@ void PantallaBuscarPorCategoria::appendListNoOrdenadaLog(QString mensaje, QStrin
 void PantallaBuscarPorCategoria::limpiarDatos(){
 
     this->ui->textCategoria->clear();
+    this->ui->textVeces->clear();
+    this->ui->textConsulta->clear();
 }
 
 /*Metodo que permite limpiar los logs*/

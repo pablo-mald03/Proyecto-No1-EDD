@@ -142,6 +142,9 @@ public:
     /*Metodo que permite obtener dos rangos aleatoriamente*/
     ListaEnlazada<Producto> getRangosAleatorios();
 
+    /*Metodo que permite obtener los extremos por intevalos (especializados para el arbol B)*/
+    ListaEnlazada<Producto> getProductosExtremosIntervalo();
+
 private:
 
     /*Arbol AVL*/

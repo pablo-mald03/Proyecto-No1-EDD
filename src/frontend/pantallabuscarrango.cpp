@@ -65,6 +65,8 @@ void PantallaBuscarRango::limpiarDatos(){
 
     this->ui->dateSuperior->setDate(QDate::currentDate());
     this->ui->dateInferior->setDate(QDate::currentDate());
+    this->ui->textVeces->clear();
+    this->ui->textConsulta->clear();
 }
 
 /*Metodo que permite limpiar los logs*/
@@ -73,6 +75,7 @@ void PantallaBuscarRango::limpiarLogs(){
     this->ui->textArbolB->clear();
     this->ui->textListaNoOrdenada->clear();
     this->ui->textListaOrdenada->clear();
+
 
     this->ui->labelTiempoNoOrdenada->setText("Tiempo de busqueda: 0 ms");
     this->ui->labelTiempoOrdenada->setText("Tiempo de busqueda: 0 ms");

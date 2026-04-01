@@ -61,6 +61,8 @@ private:
     /*Metodos que permiten buscar datos por fecha*/
     void buscarBFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
     void buscarListasFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
+    void buscarListaOrdenadaFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
+    void buscarListaNoOrdenadaFecha(const std::string &limiteInferior, const std::string &limiteSuperior);
 
     /*Metodos que permiten eliminar un producto*/
     void eliminarEnListas(const std::string &_codigoBarra);

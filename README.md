@@ -88,17 +88,24 @@ chmod +x build.sh
 
 ## Si no tienes QT en tu pc sigue los pasos:
 
-Debido a que mi proyecto esta en QT este pide que este instalado, entonces sigue los siguientes pasos:
+Debido a que mi proyecto esta en QT este pide que este instalado, entonces sigue los siguientes pasos.
+O incluso si tienes problemas al compilar verifica que tengas instaladas las librerias de reenderizado:
 
 ## Compilacion en linux:
 
 ```
+#Actualizar repositorios
+
 sudo apt update
 
-sudo apt install qt6-base-dev qt6-base-dev-tools cmake build-essential
+#Instalar el paquete de qt6 y las librerias de reenderizado
+
+sudo apt install -y build-essential cmake qt6-base-dev qt6-base-dev-tools \
+libgl1-mesa-dev libxkbcommon-dev libvulkan-dev mesa-vulkan-drivers
+
+#Verificar version
 
 qmake6 --version 
-
 cmake --version
 
 ```

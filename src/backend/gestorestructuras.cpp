@@ -16,7 +16,7 @@ GestorEstructuras::GestorEstructuras():
     listaErrores(new ListaEnlazada<ErroresLectura>()),
     arbolAvl(new ArbolAvl()),
     arbolB(new ArbolB(5)),
-    arbolBMas(new ArbolBMas(5)),
+    arbolBMas(new ArbolBMas(10)),
     cargoArchivo(false)
 {
     srand(time(NULL));

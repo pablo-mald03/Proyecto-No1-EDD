@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    this->setStyleSheet("QMainWindow { background-color: #1a1a1a; } ");
+
     //Instrucciones indicadas para poder abrir en mas de una pantalla
     QList<QScreen *> screens = QGuiApplication::screens();
 

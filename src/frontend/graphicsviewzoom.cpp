@@ -4,6 +4,7 @@ GraphicsViewZoom::GraphicsViewZoom(QWidget *parent)
     : QGraphicsView(parent)
 {
 
+    this->setStyleSheet("background-color: #1a1a1a; border: none;");
     setDragMode(QGraphicsView::ScrollHandDrag);
 
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);

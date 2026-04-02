@@ -23,7 +23,7 @@ Aca les dejo un Scriptcito para que puedan generar el ejecutable en linux.
 
 ### Script build.sh
 
-Crear un archivo llamado `build.sh` en la raíz del proyecto con el siguiente contenido:
+Crear un archivo llamado `build.sh` en la raiz del proyecto con el siguiente contenido:
 
 ```bash
 #!/bin/bash
@@ -48,15 +48,15 @@ cd build
 
 echo "Generando proyecto con CMake..."
 
-# Intentamos primero la configuración estándar (si instalaron con apt)
-# Si tú quieres forzar tu ruta local de Qt, descomenta la línea de abajo y comenta la de arriba.
+#Si lo instalaste desde apt puede usar el comando 
+# Si quieres forzar tu ruta local de Qt, descomenta la linea de abajo y comenta la de arriba.
 cmake ..
 
 # Si falla el anterior (porque Qt6 no está en el PATH), podrías usar:
 # cmake -DCMAKE_PREFIX_PATH=/ruta/a/tu/qt/6.x.x/gcc_64 ..
 
 if [ $? -ne 0 ]; then
-    echo -e "${RED}Error en configuración CMake. Verifica que Qt6 esté instalado.${NC}"
+    echo -e "${RED}Error en configuracion CMake. Verifica que Qt6 este instalado.${NC}"
     exit 1
 fi
 
@@ -74,9 +74,8 @@ echo -e " El ejecutable está en: ${GREEN}$(pwd)${NC}"
 echo -e "${GREEN}------------------------------------${NC}"
 
 ```
-## ==========================================
 
-## Luego de copiar el script:
+## Luego de copiar el script o si usas el del repositorio:
 
 Abre tu terminal en el directorio donde clonaste mi repositorio 
 y ejecuta:
